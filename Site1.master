@@ -1,0 +1,1001 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site1.master.cs" Inherits="OnlineShop.Site1" %>
+<!DOCTYPE html>
+<html lang="en">
+<head runat="server">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+/* ==========================================================================
+   1. CSS Variables and Base Styles (Cập nhật)
+   ========================================================================== */
+:root {
+    /* Updated color scheme based on blue gradient image */
+    --primary: #0077B6;            /* Mid-blue as primary */
+    --primary-light: #00B4D8;      /* Brighter blue as light primary */
+    --primary-dark: #03045E;       /* Navy blue as dark primary */
+    --secondary: #90E0EF;          /* Light blue as secondary */
+    --secondary-light: #CAF0F8;    /* Very light cyan as light secondary */
+    --accent: #48CAE4;             /* Bright cyan as accent */
+    --soft-red: #0077B6;           /* Renamed but kept for backwards compatibility - using mid-blue */
+    --text-dark: #03045E;          /* Navy blue for dark text */
+    --text-medium: #0077B6;        /* Mid-blue for medium text */
+    --text-light: #ffffff;
+    --bg-light: #F0FAFF;           /* Very light blue background */
+    --bg-highlight: #E1F5FE;       /* Light blue highlight background */
+    --border-light: #CAF0F8;       /* Light cyan for borders */
+    
+    /* Updated background gradient matching the image */
+    --gradient-bg: linear-gradient(to bottom, 
+        #03045E, /* Navy */
+        #0077B6, /* Medium blue */
+        #00B4D8, /* Bright blue */
+        #90E0EF, /* Light blue */
+        #CAF0F8  /* Very light cyan */
+    );
+    
+    /* Shadow remains the same */
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+    --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0, 0.1);
+    
+    /* Font and other measurements remain unchanged */
+    --font-primary: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    --font-secondary: 'Arial', sans-serif;
+    
+    --font-size-xs: 0.75rem;   /* 12px */
+    --font-size-sm: 0.875rem;  /* 14px */
+    --font-size-md: 1rem;      /* 16px */
+    --font-size-lg: 1.125rem;  /* 18px */
+    --font-size-xl: 1.5rem;    /* 24px */
+    --font-size-xxl: 1.75rem;  /* 28px */
+    
+    --space-xs: 0.5rem;    /* 8px */
+    --space-sm: 0.75rem;   /* 12px */
+    --space-md: 1rem;      /* 16px */
+    --space-lg: 1.5rem;    /* 24px */
+    --space-xl: 2rem;      /* 32px */
+    --space-xxl: 3rem;     /* 48px */
+    
+    --radius-sm: 4px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+    --radius-circle: 50%;
+    
+    --transition-fast: 0.15s ease;
+    --transition-normal: 0.3s ease;
+    --transition-slow: 0.5s ease;
+}
+
+/* Reset and base styles remain the same */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+    height: 100%;
+}
+
+body {
+    font-family: var(--font-primary);
+    color: var(--text-dark);
+    background: var(--gradient-bg);
+    background-attachment: fixed;  /* Keeps gradient fixed while scrolling */
+    background-size: cover;  /* Ensures gradient covers entire viewport */
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100%;
+}
+
+/* Updated Header */
+.header {
+    background-color: rgba(0, 119, 182, 0.9);  /* #0077B6 with transparency */
+    backdrop-filter: blur(10px);
+    padding: var(--space-md) var(--space-lg);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: var(--shadow-md);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    color: var(--text-light);
+    transition: all var(--transition-normal);
+}
+
+/* Logo remains unchanged */
+.logo {
+    width: 80px;
+    height: 80px;
+    border-radius: var(--radius-circle);
+    overflow: hidden;
+    flex-shrink: 0;
+    transition: transform var(--transition-normal);
+    box-shadow: var(--shadow-sm);
+}
+
+.logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.logo:hover {
+    transform: scale(1.05);
+}
+
+/* Search bar remains unchanged */
+.search-container {
+    flex: 1;
+    max-width: 600px;
+    margin: 0 var(--space-lg);
+    position: relative;
+}
+
+.search-container input {
+    width: 100%;
+    padding: 0.75rem 1.25rem;
+    border: none;
+    border-radius: 50px;
+    font-size: var(--font-size-sm);
+    box-shadow: var(--shadow-sm);
+    transition: all var(--transition-normal);
+}
+
+.search-container input:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.3);
+}
+
+/* Updated Navigation with blue gradient */
+.nav-item {
+    display: flex;
+    justify-content: center;
+    background: linear-gradient(to right, var(--primary-dark), var(--primary), var(--primary-light), var(--secondary));
+    border-radius: var(--radius-md);
+    padding: 0.5rem;
+    box-shadow: var(--shadow-md);
+    position: relative;
+    overflow: hidden;
+    margin-left: auto;
+    min-width: 450px;
+}
+
+.nav-item:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to right, var(--primary), var(--accent), var(--secondary), var(--primary-dark));
+    opacity: 0;
+    transition: opacity 0.8s ease;
+    z-index: 1;
+}
+
+.nav-item:hover:before {
+    opacity: 1;
+}
+
+.menu-item {
+    flex: 1;
+    background: transparent !important;
+    border: none !important;
+    color: var(--text-light) !important;
+    font-weight: 700;
+    padding: var(--space-md) var(--space-lg) !important;
+    position: relative;
+    z-index: 2;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    outline: none !important;
+    text-transform: uppercase;
+    font-size: var(--font-size-md);
+    position: relative;
+    letter-spacing: 0.5px;
+}
+
+.menu-item:not(:last-child):after {
+    content: '';
+    position: absolute;
+    top: 25%;
+    right: 0;
+    height: 50%;
+    width: 1px;
+    background-color: rgba(255, 255, 255, 0.3);
+    z-index: 2;
+}
+
+.menu-item:hover {
+    color: white;
+    transform: translateY(-3px);
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+}
+
+.menu-item::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 3px;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: white;
+    transition: width var(--transition-normal);
+}
+
+.menu-item:hover::after {
+    width: 80%;
+}
+
+/* News Section */
+.news-section {
+    background-color: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(8px);
+    padding: var(--space-sm) 0;
+    box-shadow: var(--shadow-sm);
+    position: relative;
+    z-index: 999;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.news-section a {
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: 600;
+    margin: 0 var(--space-md);
+    font-size: var(--font-size-sm);
+    position: relative;
+    padding: var(--space-xs) 0;
+}
+
+.news-section a:hover {
+    color: var(--primary-dark);
+}
+
+.news-section a::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: 0;
+    left: 0;
+    background-color: var(--primary);
+    transition: width var(--transition-normal);
+}
+
+.news-section a:hover::after {
+    width: 100%;
+}
+
+/* Layout Structure remains unchanged */
+.main-layout {
+    display: flex;
+    flex-direction: row;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: var(--space-lg);
+    gap: var(--space-lg);
+    position: relative;
+    z-index: 1;
+}
+
+/* Updated Sidebar with blue theme */
+.sidebar {
+    width: 280px;
+    background-color: rgba(255, 255, 255, 0.95);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-md);
+    padding: var(--space-md);
+    position: sticky;
+    top: 120px;
+    align-self: flex-start;
+    height: calc(100vh - 140px);
+    overflow-y: auto;
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+}
+
+.sidebar .menu-item {
+    color: var(--text-light);
+    text-align: left;
+    padding: var(--space-md) var(--space-lg);
+    margin-bottom: var(--space-sm);
+    width: 100%;
+    border-radius: var(--radius-md);
+    transition: all var(--transition-normal);
+    font-weight: 600;
+    position: relative;
+    overflow: hidden;
+    /* Updated gradient for blue theme */
+    background: linear-gradient(to right, var(--primary), var(--primary-dark)) !important;
+    box-shadow: var(--shadow-sm);
+    border: none;
+}
+
+.sidebar .menu-item:hover {
+    background: linear-gradient(to right, var(--primary-light), var(--primary)) !important;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+    color: white;
+}
+
+.sidebar .menu-item.active {
+    background: linear-gradient(to right, var(--secondary), var(--accent)) !important;
+    color: white;
+    box-shadow: var(--shadow-md);
+}
+
+.sidebar .menu-item::before {
+    content: '►';
+    margin-right: var(--space-sm);
+    display: inline-block;
+    transition: transform var(--transition-normal);
+    font-size: 0.8em;
+}
+
+.sidebar .menu-item:hover::before {
+    transform: translateX(3px);
+}
+
+.sidebar-section-title {
+    font-size: var(--font-size-sm);
+    font-weight: 700;
+    color: var(--text-dark);
+    margin: var(--space-lg) 0 var(--space-xs) var(--space-xs);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-bottom: 2px solid var(--primary-light);
+    padding-bottom: var(--space-xs);
+}
+
+.sidebar-section-title:first-child {
+    margin-top: 0;
+}
+
+/* Main Content */
+.main-content {
+    flex: 1;
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+    padding: var(--space-xl);
+    min-height: 80vh;
+    backdrop-filter: blur(5px);
+}
+
+/* Banner */
+.banner {
+    position: relative;
+    margin-bottom: var(--space-lg);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+}
+
+.banner .carousel-inner {
+    height: 300px;
+}
+
+.carousel-inner .carousel-item {
+    height: 300px;
+}
+
+.carousel-inner img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.banner .banner-text {
+    position: absolute;
+    bottom: 40px;
+    left: 40px;
+    color: var(--text-light);
+    font-size: var(--font-size-xxl);
+    font-weight: bold;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+    max-width: 60%;
+    z-index: 10;
+}
+
+/* Product Grid */
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: var(--space-lg);
+    margin-top: var(--space-lg);
+}
+
+.product-item {
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    transition: all var(--transition-normal);
+    display: flex;
+    flex-direction: column;
+    backdrop-filter: blur(5px);
+}
+
+.product-item:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+    background: rgba(255, 255, 255, 0.95);
+}
+
+.product-image {
+    height: 240px;
+    overflow: hidden;
+    position: relative;
+}
+
+.product-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    transition: transform var(--transition-slow);
+    background: rgba(249, 249, 249, 0.8);
+    padding: var(--space-md);
+}
+
+.product-item:hover .product-image img {
+    transform: scale(1.05);
+}
+
+.discount-badge {
+    position: absolute;
+    top: var(--space-sm);
+    right: var(--space-sm);
+    background-color: var(--primary);
+    color: white;
+    padding: var(--space-xs) var(--space-sm);
+    border-radius: var(--radius-sm);
+    font-weight: bold;
+    font-size: var(--font-size-xs);
+    z-index: 2;
+}
+
+.product-info {
+    padding: var(--space-md);
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    text-decoration:none;
+}
+
+.product-title {
+    font-size: var(--font-size-md);
+    margin-bottom: var(--space-sm);
+    font-weight: 600;
+    color: var(--text-dark);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    min-height: 3em;
+    line-height: 1.5;
+    text-decoration:none;
+}
+
+.product-price {
+    margin-top: auto;
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+}
+
+.current-price {
+    color: var(--primary);
+    font-size: var(--font-size-lg);
+    font-weight: 700;
+}
+
+.original-price {
+    color: var(--text-medium);
+    text-decoration: line-through;
+    font-size: var(--font-size-sm);
+}
+
+.product-actions {
+    display: flex;
+    margin-top: var(--space-md);
+}
+
+/* Updated Buy Now button with blue gradient */
+.btn-buy-now,
+.mua-ngay-button {
+    width: 100%;
+    padding: var(--space-md);
+    border: none;
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    font-size: var(--font-size-md);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(to right, var(--primary), var(--primary-dark)) !important;
+    color: white;
+    box-shadow: var(--shadow-sm);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-buy-now:hover,
+.mua-ngay-button:hover {
+    background: linear-gradient(to right, var(--primary-light), var(--primary)) !important;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+    color: white;
+}
+
+.btn-buy-now::before,
+.mua-ngay-button::before {
+    content: '►';
+    margin-right: var(--space-sm);
+    display: inline-block;
+    transition: transform var(--transition-normal);
+    font-size: 0.8em;
+}
+
+.btn-buy-now:hover::before,
+.mua-ngay-button:hover::before {
+    transform: translateX(3px);
+}
+
+.btn-buy-now::after,
+.mua-ngay-button::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to right, var(--primary), var(--accent), var(--secondary), var(--primary-light));
+    opacity: 0;
+    transition: opacity 0.8s ease;
+    z-index: 1;
+}
+
+.btn-buy-now:hover::after,
+.mua-ngay-button:hover::after {
+    opacity: 0.3;
+}
+
+.btn-buy-now span,
+.mua-ngay-button span {
+    position: relative;
+    z-index: 2;
+}
+
+/* Footer */
+.footer {
+    background-color: rgba(3, 4, 94, 0.9); /* Darker blue for footer */
+    backdrop-filter: blur(10px);
+    color: white;
+    padding: var(--space-xxl) 0 0;
+    margin-top: var(--space-xxl);
+    position: relative;
+    z-index: 1;
+}
+
+.footer-content {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 var(--space-lg);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: var(--space-xl);
+}
+
+.footer-section {
+    margin-bottom: var(--space-xl);
+}
+
+.footer-title {
+    font-size: var(--font-size-lg);
+    margin-bottom: var(--space-md);
+    padding-bottom: var(--space-sm);
+    position: relative;
+    font-weight: 600;
+}
+
+.footer-title::after {
+    content: '';
+    position: absolute;
+    width: 40px;
+    height: 3px;
+    background-color: var(--primary);
+    bottom: 0;
+    left: 0;
+}
+
+.footer-links {
+    list-style: none;
+}
+
+.footer-links li {
+    margin-bottom: var(--space-sm);
+}
+
+.footer-links a {
+    color: #bbb;
+    text-decoration: none;
+    transition: all var(--transition-fast);
+    display: inline-block;
+    font-size: var(--font-size-sm);
+}
+
+.footer-links a:hover {
+    color: white;
+    transform: translateX(5px);
+}
+
+.footer-bottom {
+    text-align: center;
+    padding: var(--space-md) 0;
+    border-top: 1px solid #444;
+    margin-top: var(--space-lg);
+    font-size: var(--font-size-sm);
+    color: #999;
+}
+
+/* Pagination styling with blue theme */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: var(--space-lg) 0;
+    gap: var(--space-xs);
+}
+
+.pagination-item,
+.page-link,
+.page-number {
+    min-width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    text-decoration: none;
+    transition: all var(--transition-normal);
+    background-color: white;
+    color: var(--primary);
+    border: 1px solid var(--border-light);
+    box-shadow: var(--shadow-sm);
+}
+
+.pagination-item:hover,
+.page-link:hover,
+.page-number:hover {
+    background-color: var(--secondary-light);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+    color: var(--primary-dark);
+}
+
+.pagination-item.active,
+.page-link.active,
+.page-number.active,
+.pagination-current {
+    background: linear-gradient(to right, var(--primary), var(--primary-dark));
+    color: white;
+    border: none;
+}
+
+/* Next/Previous buttons in pagination */
+.pagination-next,
+.pagination-prev,
+.tiep-theo,
+.quay-lai {
+    background: linear-gradient(to right, var(--primary), var(--primary-dark));
+    color: white;
+    padding: var(--space-xs) var(--space-md);
+    position: relative;
+    overflow: hidden;
+}
+
+.pagination-next:hover,
+.pagination-prev:hover,
+.tiep-theo:hover,
+.quay-lai:hover {
+    background: linear-gradient(to right, var(--primary-light), var(--primary));
+    transform: translateY(-2px);
+}
+
+/* "Tiếp theo" (Next) specific styling */
+.tiep-theo,
+.pagination-next {
+    padding-right: var(--space-lg);
+}
+
+.tiep-theo::after,
+.pagination-next::after {
+    content: '›';
+    font-size: 1.5em;
+    position: absolute;
+    right: var(--space-sm);
+    top: 50%;
+    transform: translateY(-50%);
+    transition: transform var(--transition-fast);
+}
+
+.tiep-theo:hover::after,
+.pagination-next:hover::after {
+    transform: translate(3px, -50%);
+}
+
+/* "Quay lại" (Previous) specific styling */
+.quay-lai,
+.pagination-prev {
+    padding-left: var(--space-lg);
+}
+
+.quay-lai::before,
+.pagination-prev::before {
+    content: '‹';
+    font-size: 1.5em;
+    position: absolute;
+    left: var(--space-sm);
+    top: 50%;
+    transform: translateY(-50%);
+    transition: transform var(--transition-fast);
+}
+
+.quay-lai:hover::before,
+.pagination-prev:hover::before {
+    transform: translate(-3px, -50%);
+}
+
+/* Responsive pagination for smaller screens */
+@media (max-width: 576px) {
+    .pagination {
+        flex-wrap: wrap;
+    }
+    
+    .pagination-item,
+    .page-link,
+    .page-number {
+        min-width: 36px;
+        height: 36px;
+        font-size: var(--font-size-sm);
+    }
+    
+    /* Hide some page numbers on very small screens */
+    .pagination-item:not(:first-child):not(:last-child):not(.active):not(.pagination-next):not(.pagination-prev):not(.tiep-theo):not(.quay-lai) {
+        display: none;
+    }
+}
+/* Responsive Design - remains unchanged */
+@media (max-width: 1200px) {
+    .main-layout {
+        padding: var(--space-md);
+    }
+    
+    .banner-text {
+        font-size: var(--font-size-xl);
+        max-width: 60%;
+    }
+}
+
+@media (max-width: 992px) {
+    .main-layout {
+        flex-direction: column;
+    }
+    
+    .sidebar {
+        width: 100%;
+        position: static;
+        height: auto;
+        margin-bottom: var(--space-lg);
+    }
+    
+    .header {
+        flex-wrap: wrap;
+        padding: var(--space-md);
+    }
+    
+    .search-container {
+        order: 3;
+        width: 100%;
+        margin: var(--space-md) 0;
+    }
+    
+    .nav-item {
+        margin-left: 0;
+        min-width: unset;
+        width: 100%;
+    }
+    
+    .banner-text {
+        font-size: var(--font-size-lg);
+        bottom: var(--space-lg);
+        left: var(--space-lg);
+    }
+}
+
+@media (max-width: 768px) {
+    .logo {
+        width: 60px;
+        height: 60px;
+    }
+    
+    .product-grid {
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    }
+    
+    .banner-text {
+        max-width: 80%;
+        font-size: var(--font-size-md);
+    }
+    
+    .footer-content {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 576px) {
+    .nav-item {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    .menu-item {
+        padding: var(--space-xs);
+        font-size: var(--font-size-xs);
+    }
+    
+    .product-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .banner-text {
+        display: none;
+    }
+}    </style>
+    <asp:ContentPlaceHolder ID="HeaderContent" runat="server"></asp:ContentPlaceHolder>
+</head>
+<body>
+    <form runat="server">
+        <!-- Header -->
+        <div class="header">
+            <div class="logo">
+                <asp:Image ID="Logo" runat="server" ImageUrl="~/Img/Logo.jpg" AlternateText="Logo" />
+            </div>
+           <div class="search-container">
+                <input type="text" placeholder="Bạn cần tìm gì?" />
+            </div>
+            <div class="nav-item">
+                <asp:Button ID="Button1" runat="server" Text="Trang Chủ" CssClass="menu-item" OnClick="ButtonHome_Click" />
+                <asp:Button ID="Contact" runat="server" Text="Liên Hệ" CssClass="menu-item" OnClick="Contact_Click"/>
+                <asp:Button ID="Button2" runat="server" Text="Dịch Vụ" CssClass="menu-item" OnClick="Services_Click"/>
+                <asp:Button ID="Button3" runat="server" Text="Tra cứu đơn hàng" CssClass="menu-item" OnClick="Cart_Click"/>
+                <asp:Button ID="Button4" runat="server" Text="Giỏ Hàng" CssClass="menu-item" OnClick="Cart_Click"/>
+                <asp:LoginView ID="LoginView1" runat="server">
+                    <AnonymousTemplate>
+                        <asp:Button ID="Button5" runat="server" Text="Đăng Nhập" CssClass="menu-item" OnClick="Login_Click" />
+                        <asp:Button ID="Button6" runat="server" Text="Đăng Ký" CssClass="menu-item" OnClick="Register_Click" />
+                    </AnonymousTemplate>
+                    <LoggedInTemplate>
+                        <asp:Button ID="Button7" runat="server" Text="Tài Khoản" CssClass="menu-item" OnClick="Account_Click" />
+                    </LoggedInTemplate>
+                </asp:LoginView>
+            </div>
+        </div>
+        <!-- News Section -->
+        <div class="news-section">
+            <asp:ContentPlaceHolder ID="NewsContent" runat="server"></asp:ContentPlaceHolder>
+        </div>
+
+        <!-- Main Layout -->
+        <div class="main-layout">
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <asp:ContentPlaceHolder ID="SidebarContent" runat="server">
+                </asp:ContentPlaceHolder>
+            </div>
+
+            <!-- Main Content -->
+            <div class="main-content">
+                <!-- Banner -->
+                <asp:ContentPlaceHolder ID="BannerContent" runat="server">
+                    <div class="banner">
+                        <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+                            <!-- Indicators -->
+                            <div class="carousel-indicators">
+                                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                            </div>
+
+                            <!-- Slides -->
+                            <div class="carousel-inner">
+                                <div class="carousel-item active">
+                                    <asp:Image ID="Image1" runat="server" ImageUrl="~/Img/Banner1.png" AlternateText="Banner 1" />
+                                </div>
+                                <div class="carousel-item">
+                                    <asp:Image ID="Image2" runat="server" ImageUrl="~/Img/Banner2.png" AlternateText="Banner 2" />
+                                </div>
+                                <div class="carousel-item">
+                                    <asp:Image ID="Image3" runat="server" ImageUrl="~/Img/Banner3.png" AlternateText="Banner 3" />
+                                </div>
+                            </div>
+
+                            <!-- Controls -->
+                            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Previous</span>
+                            </button>
+                            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Next</span>
+                            </button>
+                        </div>
+
+                        <div class="banner-text">
+                            Khám Phá Sản Phẩm Công Nghệ Mới Nhất
+                        </div>
+                    </div>
+                </asp:ContentPlaceHolder>
+
+                <!-- Breadcrumb -->
+                <div class="breadcrumb">
+                    <asp:ContentPlaceHolder ID="BreadcrumbContent" runat="server"></asp:ContentPlaceHolder>
+                </div>
+
+                <!-- Main Content -->
+                <asp:ContentPlaceHolder ID="MainContent" runat="server">
+                </asp:ContentPlaceHolder>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3 class="footer-title">Thông tin liên hệ</h3>
+                    <ul class="footer-links">
+                        <li>Email: Radian@Radianshop.com</li>
+                        <li>Điện thoại: +84 123 456 789</li>
+                        <li>Địa chỉ: 1Sơn Trà/ Đà nẵng</li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3 class="footer-title">Chính sách</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Chính sách bảo mật</a></li>
+                        <li><a href="#">Chính sách vận chuyển</a></li>
+                        <li><a href="#">Chính sách đổi trả</a></li>
+                        <li><a href="#">Quy định sử dụng</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3 class="footer-title">Hỗ trợ khách hàng</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Trung tâm trợ giúp</a></li>
+                        <li><a href="#">Hướng dẫn mua hàng</a></li>
+                        <li><a href="#">Phương thức thanh toán</a></li>
+                        <li><a href="#">Câu hỏi thường gặp</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Radian Shop. Tất cả các quyền được bảo lưu.</p>
+            </div>
+            <asp:ContentPlaceHolder ID="FooterContent" runat="server"></asp:ContentPlaceHolder>
+        </div>
+    </form>
+</body>
+</html>
