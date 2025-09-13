@@ -44,7 +44,7 @@ Quản lý đơn hàng (duyệt, hủy, thống kê)
 
 ⚙️ Cài đặt & Chạy dự án
 1️⃣ Clone repo
-git clone https://github.com/your-username/Ecommerce.git
+git clone https://github.com/ChyKenHa/Ecommerce.git
 cd ecommerce-aspnet
 
 2️⃣ Cấu hình cơ sở dữ liệu
