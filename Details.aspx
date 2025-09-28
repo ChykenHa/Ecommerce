@@ -702,7 +702,4 @@
     </div>
     <asp:Label ID="lblReviewError" runat="server" CssClass="text-danger" Visible="false"></asp:Label>
 <asp:Label ID="lblReviewSuccess" runat="server" CssClass="text-success" Visible="false"></asp:Label>
-
-// Đảm bảo có btnAddToWishlist trong form
-<asp:Button ID="btnAddToWishlist" runat="server" Text="Thêm vào yêu thích" CssClass="btn-add-wishlist" OnClick="btnAddToWishlist_Click" />
 </asp:Content>

@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -12,7 +10,7 @@ namespace OnlineShop
     public partial class Details : System.Web.UI.Page
     {
         // Chuỗi kết nối đến cơ sở dữ liệu
-        string connect = @"Data Source=DARLING\SQLEXPRESS;Initial Catalog=OnlineShopDB;Integrated Security=True";
+        string connect = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\DataBase.mdf;Integrated Security=True";
         // Lưu trữ ID của sản phẩm đang xem
         int productId = 0;
 
@@ -37,6 +35,7 @@ namespace OnlineShop
                 else
                 {
                     // Xử lý trường hợp ID không hợp lệ
+                    Response.Write("<script>alert('ID sản phẩm không hợp lệ!');</script>");
                     Response.Redirect("SanPham.aspx");
                 }
             }
@@ -53,7 +52,7 @@ namespace OnlineShop
             {
                 using (SqlConnection conn = new SqlConnection(connect))
                 {
-                    using (SqlCommand cmd = new SqlCommand("SELECT * FROM Products WHERE ProductId = @ProductId", conn))
+                    using (SqlCommand cmd = new SqlCommand("SELECT * FROM MatHang WHERE id_hang = @ProductId", conn))
                     {
                         cmd.Parameters.AddWithValue("@ProductId", productId);
                         conn.Open();
@@ -62,27 +61,35 @@ namespace OnlineShop
                         if (reader.Read())
                         {
                             // Hiển thị thông tin cơ bản của sản phẩm
-                            lblName.Text = reader["Name"].ToString();
-                            lblProductName.Text = reader["Name"].ToString();
+                            lblName.Text = reader["tenhang"].ToString();
+                            lblProductName.Text = reader["tenhang"].ToString();
                             lblProductId.Text = productId.ToString();
-                            lblCategory.Text = GetCategoryName(Convert.ToInt32(reader["CategoryId"]));
-                            lblStatus.Text = Convert.ToBoolean(reader["InStock"]) ? "Còn hàng" : "Hết hàng";
+                            lblCategory.Text = GetCategoryName(Convert.ToInt32(reader["id_loai"]));
+                            lblStatus.Text = Convert.ToInt32(reader["soluongton"]) > 0 ? "Còn hàng" : "Hết hàng";
 
-                            decimal price = Convert.ToDecimal(reader["Price"]);
+                            decimal price = Convert.ToDecimal(reader["dongia"]);
                             decimal originalPrice = price * 1.2M; // Giả sử giá gốc cao hơn 20%
 
                             lblPrice.Text = string.Format("{0:N0} ₫", price);
                             lblOriginalPrice.Text = string.Format("{0:N0} ₫", originalPrice);
 
-                            lblDescription.Text = reader["Description"].ToString();
-                            litFullDescription.Text = reader["FullDescription"].ToString();
+                            lblDescription.Text = reader["mota"].ToString();
+                            litFullDescription.Text = reader["mota"].ToString(); // Sử dụng lại trường mô tả cho mô tả đầy đủ
 
                             // Hiển thị hình ảnh sản phẩm
-                            imgProductDetail.ImageUrl = reader["ImageUrl"].ToString();
+                            if (reader["hinhanh"] != DBNull.Value)
+                            {
+                                imgProductDetail.ImageUrl = reader["hinhanh"].ToString();
+                            }
+                            else
+                            {
+                                imgProductDetail.ImageUrl = "~/Images/no-image.jpg"; // Hình mặc định nếu không có hình
+                            }
                         }
                         else
                         {
                             // Sản phẩm không tồn tại, chuyển hướng về trang sản phẩm
+                            Response.Write("<script>alert('Không tìm thấy sản phẩm với ID: " + productId + "');</script>");
                             Response.Redirect("SanPham.aspx");
                         }
                     }
@@ -90,27 +97,28 @@ namespace OnlineShop
             }
             catch (Exception ex)
             {
-                // Xử lý ngoại lệ
-                // Có thể ghi log lỗi hoặc hiển thị thông báo
-                Response.Write("<script>alert('Có lỗi xảy ra: " + ex.Message + "');</script>");
+                // Xử lý ngoại lệ - hiển thị thông báo lỗi
+                string errorMessage = "Lỗi khi tải thông tin sản phẩm: " + ex.Message;
+                Response.Write("<script>console.error('" + errorMessage + "');</script>");
+                Response.Write("<script>alert('" + errorMessage + "');</script>");
             }
         }
 
         private string GetCategoryName(int categoryId)
         {
-            string categoryName = string.Empty;
+            string categoryName = "Không xác định";
 
             try
             {
                 using (SqlConnection conn = new SqlConnection(connect))
                 {
-                    using (SqlCommand cmd = new SqlCommand("SELECT CategoryName FROM Categories WHERE CategoryId = @CategoryId", conn))
+                    using (SqlCommand cmd = new SqlCommand("SELECT tenloai FROM LoaiHang WHERE id_loai = @CategoryId", conn))
                     {
                         cmd.Parameters.AddWithValue("@CategoryId", categoryId);
                         conn.Open();
 
                         object result = cmd.ExecuteScalar();
-                        if (result != null)
+                        if (result != null && result != DBNull.Value)
                         {
                             categoryName = result.ToString();
                         }
@@ -119,7 +127,8 @@ namespace OnlineShop
             }
             catch (Exception ex)
             {
-                // Xử lý ngoại lệ
+                // Xử lý ngoại lệ - ghi log hoặc hiển thị thông báo
+                Response.Write("<script>console.error('Lỗi khi lấy tên danh mục: " + ex.Message + "');</script>");
             }
 
             return categoryName;
@@ -127,18 +136,27 @@ namespace OnlineShop
 
         private void LoadProductThumbnails()
         {
+            // Trong trường hợp này, chúng ta có thể không có bảng riêng cho hình ảnh sản phẩm
+            // Nếu bạn có bảng hình ảnh riêng, hãy thay đổi truy vấn tương ứng
             try
             {
                 using (SqlConnection conn = new SqlConnection(connect))
                 {
-                    using (SqlCommand cmd = new SqlCommand("SELECT ImageUrl FROM ProductImages WHERE ProductId = @ProductId", conn))
+                    using (SqlCommand cmd = new SqlCommand("SELECT hinhanh FROM MatHang WHERE id_hang = @ProductId", conn))
                     {
                         cmd.Parameters.AddWithValue("@ProductId", productId);
                         conn.Open();
 
                         DataTable dt = new DataTable();
-                        SqlDataAdapter adapter = new SqlDataAdapter(cmd);
-                        adapter.Fill(dt);
+                        dt.Columns.Add("ImageUrl", typeof(string));
+
+                        SqlDataReader reader = cmd.ExecuteReader();
+                        if (reader.Read() && reader["hinhanh"] != DBNull.Value)
+                        {
+                            DataRow row = dt.NewRow();
+                            row["ImageUrl"] = reader["hinhanh"].ToString();
+                            dt.Rows.Add(row);
+                        }
 
                         rptThumbnails.DataSource = dt;
                         rptThumbnails.DataBind();
@@ -147,44 +165,18 @@ namespace OnlineShop
             }
             catch (Exception ex)
             {
-                // Xử lý ngoại lệ
+                Response.Write("<script>console.error('Lỗi khi tải hình ảnh thu nhỏ: " + ex.Message + "');</script>");
             }
         }
 
         private void LoadProductSpecifications()
         {
+            // Tạo một DataTable chứa các thông số kỹ thuật từ các cột trong bảng MatHang
             try
             {
                 using (SqlConnection conn = new SqlConnection(connect))
                 {
-                    using (SqlCommand cmd = new SqlCommand("SELECT SpecName AS Name, SpecValue AS Value FROM ProductSpecifications WHERE ProductId = @ProductId", conn))
-                    {
-                        cmd.Parameters.AddWithValue("@ProductId", productId);
-                        conn.Open();
-
-                        DataTable dt = new DataTable();
-                        SqlDataAdapter adapter = new SqlDataAdapter(cmd);
-                        adapter.Fill(dt);
-
-                        rptSpecifications.DataSource = dt;
-                        rptSpecifications.DataBind();
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                // Xử lý ngoại lệ
-            }
-        }
-
-        private void LoadProductReviews()
-        {
-            try
-            {
-                using (SqlConnection conn = new SqlConnection(connect))
-                {
-                    // Tính điểm đánh giá trung bình
-                    using (SqlCommand cmd = new SqlCommand("SELECT AVG(Rating) AS AverageRating, COUNT(*) AS TotalReviews FROM ProductReviews WHERE ProductId = @ProductId", conn))
+                    using (SqlCommand cmd = new SqlCommand("SELECT * FROM MatHang WHERE id_hang = @ProductId", conn))
                     {
                         cmd.Parameters.AddWithValue("@ProductId", productId);
                         conn.Open();
@@ -192,59 +184,82 @@ namespace OnlineShop
                         SqlDataReader reader = cmd.ExecuteReader();
                         if (reader.Read())
                         {
-                            object avgRating = reader["AverageRating"];
-                            if (avgRating != DBNull.Value)
-                            {
-                                double averageRating = Convert.ToDouble(avgRating);
-                                lblAverageRating.Text = averageRating.ToString("0.0");
+                            DataTable dt = new DataTable();
+                            dt.Columns.Add("Name", typeof(string));
+                            dt.Columns.Add("Value", typeof(string));
 
-                                // Hiển thị sao đánh giá
-                                string stars = "";
-                                for (int i = 1; i <= 5; i++)
-                                {
-                                    if (i <= Math.Round(averageRating))
-                                        stars += "★";
-                                    else
-                                        stars += "☆";
-                                }
-                                litRatingStars.Text = stars;
-                            }
-                            else
+                            // Thêm các hàng với các thông số kỹ thuật từ bảng MatHang
+                            // Điều chỉnh theo các cột thực tế trong bảng MatHang của bạn
+                            if (reader["id_loai"] != DBNull.Value)
                             {
-                                lblAverageRating.Text = "0.0";
-                                litRatingStars.Text = "☆☆☆☆☆";
+                                DataRow row1 = dt.NewRow();
+                                row1["Name"] = "Loại";
+                                row1["Value"] = GetCategoryName(Convert.ToInt32(reader["id_loai"]));
+                                dt.Rows.Add(row1);
                             }
 
-                            lblTotalReviews.Text = reader["TotalReviews"].ToString();
+                            if (reader["dongia"] != DBNull.Value)
+                            {
+                                DataRow row2 = dt.NewRow();
+                                row2["Name"] = "Giá";
+                                row2["Value"] = string.Format("{0:N0} ₫", Convert.ToDecimal(reader["dongia"]));
+                                dt.Rows.Add(row2);
+                            }
+
+                            if (reader["soluongton"] != DBNull.Value)
+                            {
+                                DataRow row3 = dt.NewRow();
+                                row3["Name"] = "Số lượng tồn";
+                                row3["Value"] = reader["soluongton"].ToString();
+                                dt.Rows.Add(row3);
+                            }
+
+                            if (reader["tinhtrang"] != DBNull.Value)
+                            {
+                                DataRow row4 = dt.NewRow();
+                                row4["Name"] = "Tình trạng";
+                                row4["Value"] = reader["tinhtrang"].ToString();
+                                dt.Rows.Add(row4);
+                            }
+
+                            // Thêm các thông số khác nếu có
+
+                            rptSpecifications.DataSource = dt;
+                            rptSpecifications.DataBind();
                         }
-                        reader.Close();
-                    }
-
-                    // Lấy danh sách đánh giá
-                    using (SqlCommand cmd = new SqlCommand(
-                        @"SELECT PR.ReviewId, PR.Rating, PR.ReviewText, PR.ReviewDate, 
-                U.UserName as ReviewerName
-                FROM ProductReviews PR
-                JOIN Users U ON PR.UserId = U.UserId
-                WHERE PR.ProductId = @ProductId
-                ORDER BY PR.ReviewDate DESC", conn))
-                    {
-                        cmd.Parameters.AddWithValue("@ProductId", productId);
-
-                        DataTable dt = new DataTable();
-                        SqlDataAdapter adapter = new SqlDataAdapter(cmd);
-                        adapter.Fill(dt);
-
-                        rptProductReviews.DataSource = dt;
-                        rptProductReviews.DataBind();
                     }
                 }
             }
             catch (Exception ex)
             {
-                // Xử lý ngoại lệ
-                ScriptManager.RegisterStartupScript(this, GetType(), "AlertMessage",
-                    "console.error('Lỗi khi tải đánh giá: " + ex.Message + "');", true);
+                Response.Write("<script>console.error('Lỗi khi tải thông số kỹ thuật: " + ex.Message + "');</script>");
+            }
+        }
+
+        private void LoadProductReviews()
+        {
+            // Nếu bạn có bảng đánh giá sản phẩm, hãy thay đổi truy vấn tương ứng
+            // Ở đây tôi sẽ giả định là bạn không có bảng đánh giá riêng
+            try
+            {
+                DataTable dt = new DataTable();
+                dt.Columns.Add("ReviewId", typeof(int));
+                dt.Columns.Add("Rating", typeof(int));
+                dt.Columns.Add("ReviewText", typeof(string));
+                dt.Columns.Add("ReviewDate", typeof(DateTime));
+                dt.Columns.Add("ReviewerName", typeof(string));
+
+                // Gán 0 đánh giá và hiển thị thông báo
+                lblAverageRating.Text = "0.0";
+                litRatingStars.Text = "☆☆☆☆☆";
+                lblTotalReviews.Text = "0";
+
+                rptProductReviews.DataSource = dt;
+                rptProductReviews.DataBind();
+            }
+            catch (Exception ex)
+            {
+                Response.Write("<script>console.error('Lỗi khi tải đánh giá: " + ex.Message + "');</script>");
             }
         }
 
@@ -256,13 +271,13 @@ namespace OnlineShop
                 {
                     // Lấy CategoryId của sản phẩm hiện tại
                     int categoryId = 0;
-                    using (SqlCommand cmd = new SqlCommand("SELECT CategoryId FROM Products WHERE ProductId = @ProductId", conn))
+                    using (SqlCommand cmd = new SqlCommand("SELECT id_loai FROM MatHang WHERE id_hang = @ProductId", conn))
                     {
                         cmd.Parameters.AddWithValue("@ProductId", productId);
                         conn.Open();
 
                         object result = cmd.ExecuteScalar();
-                        if (result != null)
+                        if (result != null && result != DBNull.Value)
                         {
                             categoryId = Convert.ToInt32(result);
                         }
@@ -270,7 +285,7 @@ namespace OnlineShop
                     }
 
                     // Lấy các sản phẩm cùng danh mục, ngoại trừ sản phẩm hiện tại
-                    using (SqlCommand cmd = new SqlCommand("SELECT TOP 4 ProductId, Name, Price, ImageUrl FROM Products WHERE CategoryId = @CategoryId AND ProductId != @ProductId", conn))
+                    using (SqlCommand cmd = new SqlCommand("SELECT TOP 4 id_hang AS ProductId, tenhang AS Name, dongia AS Price, hinhanh AS ImageUrl FROM MatHang WHERE id_loai = @CategoryId AND id_hang != @ProductId", conn))
                     {
                         cmd.Parameters.AddWithValue("@CategoryId", categoryId);
                         cmd.Parameters.AddWithValue("@ProductId", productId);
@@ -287,7 +302,7 @@ namespace OnlineShop
             }
             catch (Exception ex)
             {
-                // Xử lý ngoại lệ
+                Response.Write("<script>console.error('Lỗi khi tải sản phẩm liên quan: " + ex.Message + "');</script>");
             }
         }
 
@@ -349,66 +364,8 @@ namespace OnlineShop
             // Lấy số lượng từ TextBox
             int quantity = Convert.ToInt32(txtQuantity.Text);
 
-            // Kiểm tra hoặc tạo giỏ hàng trong Session
-            DataTable dtCart;
-            if (Session["ShoppingCart"] == null)
-            {
-                // Tạo giỏ hàng mới nếu chưa có
-                dtCart = new DataTable();
-                dtCart.Columns.Add("ProductId", typeof(int));
-                dtCart.Columns.Add("Name", typeof(string));
-                dtCart.Columns.Add("Price", typeof(decimal));
-                dtCart.Columns.Add("Quantity", typeof(int));
-                dtCart.Columns.Add("ImageUrl", typeof(string));
-            }
-            else
-            {
-                // Sử dụng giỏ hàng hiện có
-                dtCart = (DataTable)Session["ShoppingCart"];
-            }
-
-            // Kiểm tra sản phẩm đã có trong giỏ hàng chưa
-            bool productExists = false;
-            foreach (DataRow row in dtCart.Rows)
-            {
-                if (Convert.ToInt32(row["ProductId"]) == productId)
-                {
-                    // Nếu sản phẩm đã có, tăng số lượng
-                    row["Quantity"] = Convert.ToInt32(row["Quantity"]) + quantity;
-                    productExists = true;
-                    break;
-                }
-            }
-
-            // Nếu sản phẩm chưa có trong giỏ hàng, thêm sản phẩm mới
-            if (!productExists)
-            {
-                // Lấy thông tin sản phẩm từ cơ sở dữ liệu
-                using (SqlConnection conn = new SqlConnection(connect))
-                {
-                    using (SqlCommand cmd = new SqlCommand("SELECT Name, Price, ImageUrl FROM Products WHERE ProductId = @ProductId", conn))
-                    {
-                        cmd.Parameters.AddWithValue("@ProductId", productId);
-                        conn.Open();
-
-                        SqlDataReader reader = cmd.ExecuteReader();
-                        if (reader.Read())
-                        {
-                            // Thêm sản phẩm vào giỏ hàng
-                            DataRow newRow = dtCart.NewRow();
-                            newRow["ProductId"] = productId;
-                            newRow["Name"] = reader["Name"].ToString();
-                            newRow["Price"] = Convert.ToDecimal(reader["Price"]);
-                            newRow["Quantity"] = quantity;
-                            newRow["ImageUrl"] = reader["ImageUrl"].ToString();
-                            dtCart.Rows.Add(newRow);
-                        }
-                    }
-                }
-            }
-
-            // Lưu giỏ hàng vào Session
-            Session["ShoppingCart"] = dtCart;
+            // Thêm sản phẩm vào giỏ hàng
+            AddProductToCart(productId, quantity);
 
             // Hiển thị thông báo thành công
             ScriptManager.RegisterStartupScript(this, GetType(), "AlertMessage", "alert('Đã thêm sản phẩm vào giỏ hàng!');", true);
@@ -416,11 +373,82 @@ namespace OnlineShop
 
         protected void btnBuyNow_Click(object sender, EventArgs e)
         {
+            // Lấy số lượng từ TextBox
+            int quantity = Convert.ToInt32(txtQuantity.Text);
+
             // Thêm sản phẩm vào giỏ hàng
-            btnAddToCart_Click(sender, e);
+            AddProductToCart(productId, quantity);
 
             // Chuyển hướng đến trang giỏ hàng
             Response.Redirect("GioHang.aspx");
+        }
+        private void AddProductToCart(int productId, int quantity)
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connect))
+                {
+                    using (SqlCommand cmd = new SqlCommand("SELECT id_hang AS ProductId, tenhang AS ProductName, dongia AS Price, hinhanh AS ImageUrl FROM MatHang WHERE id_hang = @ProductId", conn))
+                    {
+                        cmd.Parameters.AddWithValue("@ProductId", productId);
+                        conn.Open();
+
+                        SqlDataReader reader = cmd.ExecuteReader();
+                        if (reader.Read())
+                        {
+                            // Lấy thông tin sản phẩm
+                            int pId = reader.GetInt32(reader.GetOrdinal("ProductId"));
+                            string pName = reader.GetString(reader.GetOrdinal("ProductName"));
+                            decimal pPrice = reader.GetDecimal(reader.GetOrdinal("Price"));
+                            string pImage = reader["ImageUrl"] != DBNull.Value ? reader.GetString(reader.GetOrdinal("ImageUrl")) : "~/Images/no-image.jpg";
+
+                            // Lấy giỏ hàng từ session
+                            List<CartItem> cartItems;
+                            if (Session["Cart"] == null)
+                            {
+                                cartItems = new List<CartItem>();
+                            }
+                            else
+                            {
+                                cartItems = (List<CartItem>)Session["Cart"];
+                            }
+
+                            // Kiểm tra sản phẩm đã có trong giỏ hàng chưa
+                            /*  CartItem existingItem = cartItems.FirstOrDefault(c => c.ProductId == pId);
+                              if (existingItem != null)
+                              {
+                                  // Nếu sản phẩm đã có trong giỏ hàng, tăng số lượng
+                                  existingItem.Quantity += quantity;
+                                  existingItem.Total = existingItem.Price * existingItem.Quantity;
+                              }
+                              else
+                              {
+                                  // Nếu sản phẩm chưa có trong giỏ hàng, thêm mới
+                                  CartItem newItem = new CartItem
+                                  {
+                                      ProductId = pId,
+                                      ProductName = pName,
+                                      Price = pPrice,
+                                      Quantity = quantity,
+                                      Total = pPrice * quantity,
+                                      ImageUrl = pImage
+                                  };
+                                  cartItems.Add(newItem);
+                              }*/
+
+                            // Lưu giỏ hàng vào session
+                            Session["Cart"] = cartItems;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Hiển thị thông báo lỗi
+                string errorMessage = "Lỗi khi thêm sản phẩm vào giỏ hàng: " + ex.Message;
+                ScriptManager.RegisterStartupScript(this, GetType(), "ErrorMessage", $"alert('{errorMessage.Replace("'", "\\'")}');", true);
+                System.Diagnostics.Debug.WriteLine(errorMessage);
+            }
         }
 
         protected void btnAddToWishlist_Click(object sender, EventArgs e)
@@ -433,48 +461,8 @@ namespace OnlineShop
                 return;
             }
 
-            int userId = Convert.ToInt32(Session["UserId"]);
-
-            try
-            {
-                using (SqlConnection conn = new SqlConnection(connect))
-                {
-                    // Kiểm tra sản phẩm đã có trong danh sách yêu thích chưa
-                    using (SqlCommand cmd = new SqlCommand("SELECT COUNT(*) FROM Wishlist WHERE UserId = @UserId AND ProductId = @ProductId", conn))
-                    {
-                        cmd.Parameters.AddWithValue("@UserId", userId);
-                        cmd.Parameters.AddWithValue("@ProductId", productId);
-                        conn.Open();
-
-                        int count = Convert.ToInt32(cmd.ExecuteScalar());
-                        if (count > 0)
-                        {
-                            // Sản phẩm đã có trong danh sách yêu thích
-                            ScriptManager.RegisterStartupScript(this, GetType(), "AlertMessage", "alert('Sản phẩm đã có trong danh sách yêu thích!');", true);
-                        }
-                        else
-                        {
-                            // Thêm sản phẩm vào danh sách yêu thích
-                            using (SqlCommand insertCmd = new SqlCommand("INSERT INTO Wishlist (UserId, ProductId, DateAdded) VALUES (@UserId, @ProductId, @DateAdded)", conn))
-                            {
-                                insertCmd.Parameters.AddWithValue("@UserId", userId);
-                                insertCmd.Parameters.AddWithValue("@ProductId", productId);
-                                insertCmd.Parameters.AddWithValue("@DateAdded", DateTime.Now);
-
-                                insertCmd.ExecuteNonQuery();
-
-                                // Hiển thị thông báo thành công
-                                ScriptManager.RegisterStartupScript(this, GetType(), "AlertMessage", "alert('Đã thêm sản phẩm vào danh sách yêu thích!');", true);
-                            }
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                // Xử lý ngoại lệ
-                ScriptManager.RegisterStartupScript(this, GetType(), "AlertMessage", "alert('Có lỗi xảy ra: " + ex.Message + "');", true);
-            }
+            // Giả sử bạn có bảng WishList, hãy điều chỉnh theo cấu trúc của bạn
+            ScriptManager.RegisterStartupScript(this, GetType(), "AlertMessage", "alert('Chức năng danh sách yêu thích hiện chưa được hỗ trợ.');", true);
         }
 
         protected void btnSubmitReview_Click(object sender, EventArgs e)
@@ -487,94 +475,8 @@ namespace OnlineShop
                 return;
             }
 
-            int userId = Convert.ToInt32(Session["UserId"]);
-            string reviewText = txtComment.Text.Trim(); // Thay đổi txtReviewText thành txtComment
-            int rating = Convert.ToInt32(rblRating.SelectedValue);
-
-            // Kiểm tra nội dung đánh giá
-            if (string.IsNullOrEmpty(reviewText))
-            {
-                lblReviewError.Text = "Vui lòng nhập nội dung đánh giá";
-                lblReviewError.Visible = true;
-                return;
-            }
-
-            // Kiểm tra điểm đánh giá
-            if (rating < 1 || rating > 5)
-            {
-                lblReviewError.Text = "Vui lòng chọn số sao đánh giá";
-                lblReviewError.Visible = true;
-                return;
-            }
-
-            try
-            {
-                using (SqlConnection conn = new SqlConnection(connect))
-                {
-                    // Kiểm tra người dùng đã đánh giá sản phẩm này chưa
-                    using (SqlCommand cmd = new SqlCommand("SELECT COUNT(*) FROM ProductReviews WHERE UserId = @UserId AND ProductId = @ProductId", conn))
-                    {
-                        cmd.Parameters.AddWithValue("@UserId", userId);
-                        cmd.Parameters.AddWithValue("@ProductId", productId);
-                        conn.Open();
-
-                        int count = Convert.ToInt32(cmd.ExecuteScalar());
-                        if (count > 0)
-                        {
-                            // Cập nhật đánh giá cũ
-                            using (SqlCommand updateCmd = new SqlCommand(
-                                "UPDATE ProductReviews SET Rating = @Rating, ReviewText = @ReviewText, ReviewDate = @ReviewDate WHERE UserId = @UserId AND ProductId = @ProductId", conn))
-                            {
-                                updateCmd.Parameters.AddWithValue("@UserId", userId);
-                                updateCmd.Parameters.AddWithValue("@ProductId", productId);
-                                updateCmd.Parameters.AddWithValue("@Rating", rating);
-                                updateCmd.Parameters.AddWithValue("@ReviewText", reviewText);
-                                updateCmd.Parameters.AddWithValue("@ReviewDate", DateTime.Now);
-
-                                updateCmd.ExecuteNonQuery();
-
-                                // Hiển thị thông báo thành công
-                                lblReviewSuccess.Text = "Đã cập nhật đánh giá của bạn!";
-                                lblReviewSuccess.Visible = true;
-                                lblReviewError.Visible = false;
-                            }
-                        }
-                        else
-                        {
-                            // Thêm đánh giá mới
-                            using (SqlCommand insertCmd = new SqlCommand(
-                                "INSERT INTO ProductReviews (ProductId, UserId, Rating, ReviewText, ReviewDate) VALUES (@ProductId, @UserId, @Rating, @ReviewText, @ReviewDate)", conn))
-                            {
-                                insertCmd.Parameters.AddWithValue("@ProductId", productId);
-                                insertCmd.Parameters.AddWithValue("@UserId", userId);
-                                insertCmd.Parameters.AddWithValue("@Rating", rating);
-                                insertCmd.Parameters.AddWithValue("@ReviewText", reviewText);
-                                insertCmd.Parameters.AddWithValue("@ReviewDate", DateTime.Now);
-
-                                insertCmd.ExecuteNonQuery();
-
-                                // Hiển thị thông báo thành công
-                                lblReviewSuccess.Text = "Cảm ơn bạn đã đánh giá sản phẩm!";
-                                lblReviewSuccess.Visible = true;
-                                lblReviewError.Visible = false;
-                            }
-                        }
-
-                        // Làm mới dữ liệu đánh giá
-                        LoadProductReviews();
-                        // Xóa nội dung đánh giá
-                        txtComment.Text = "";
-                        rblRating.ClearSelection();
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                // Xử lý ngoại lệ
-                lblReviewError.Text = "Có lỗi xảy ra: " + ex.Message;
-                lblReviewError.Visible = true;
-                lblReviewSuccess.Visible = false;
-            }
+            // Giả sử bạn có bảng đánh giá sản phẩm, hãy điều chỉnh theo cấu trúc của bạn
+            ScriptManager.RegisterStartupScript(this, GetType(), "AlertMessage", "alert('Chức năng đánh giá sản phẩm hiện chưa được hỗ trợ.');", true);
         }
 
         protected void rptRelatedProducts_ItemCommand(object source, RepeaterCommandEventArgs e)
@@ -627,7 +529,7 @@ namespace OnlineShop
                     // Lấy thông tin sản phẩm từ cơ sở dữ liệu
                     using (SqlConnection conn = new SqlConnection(connect))
                     {
-                        using (SqlCommand cmd = new SqlCommand("SELECT Name, Price, ImageUrl FROM Products WHERE ProductId = @ProductId", conn))
+                        using (SqlCommand cmd = new SqlCommand("SELECT tenhang AS Name, dongia AS Price, hinhanh AS ImageUrl FROM MatHang WHERE id_hang = @ProductId", conn))
                         {
                             cmd.Parameters.AddWithValue("@ProductId", relatedProductId);
                             conn.Open();
@@ -641,7 +543,7 @@ namespace OnlineShop
                                 newRow["Name"] = reader["Name"].ToString();
                                 newRow["Price"] = Convert.ToDecimal(reader["Price"]);
                                 newRow["Quantity"] = 1;
-                                newRow["ImageUrl"] = reader["ImageUrl"].ToString();
+                                newRow["ImageUrl"] = reader["ImageUrl"] != DBNull.Value ? reader["ImageUrl"].ToString() : "~/Images/no-image.jpg";
                                 dtCart.Rows.Add(newRow);
                             }
                         }

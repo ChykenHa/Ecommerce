@@ -1,18 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using System.Data;
-using System.Data.SqlClient;
-using System.Security.Principal;
+using System.Web.Security;
 namespace OnlineShop
 {
     public partial class Site1 : System.Web.UI.MasterPage
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            Response.Cache.SetCacheability(HttpCacheability.NoCache);
+            Response.Cache.SetExpires(DateTime.UtcNow.AddMinutes(-1));
+            Response.Cache.SetNoStore();
             if (IsPostBack)
             {
 
@@ -51,6 +48,12 @@ namespace OnlineShop
         protected void Login_Click(object sender, EventArgs e)
         {
             Response.Redirect("Login.aspx");
+        }
+        protected void Logout_Click(object sender, EventArgs e)
+        {
+            FormsAuthentication.SignOut();
+            Session.Abandon(); // Hủy tất cả session nếu có dùng
+            Response.Redirect("~/Home.aspx", true); // Điều này rất quan trọng
         }
 
         protected void Cart_Click(object sender, EventArgs e)
@@ -95,13 +98,7 @@ namespace OnlineShop
 
         protected void Account_Click(object sender, EventArgs e)
         {
-            Response.Redirect("Account.aspx");
-        }
-        protected void Logout_Click(object sender, EventArgs e)
-        {
-            Session.Clear();
-            Session.Abandon();
-            Response.Redirect("Login.aspx");
+            Response.Redirect("TaiKhoan.aspx");
         }
     }
 }

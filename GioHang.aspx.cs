@@ -25,7 +25,6 @@ namespace OnlineShop
 
             rptCart.DataSource = cart;
             rptCart.DataBind();
-
             lblTotal.Text = CalculateTotal(cart).ToString("C");
         }
 
@@ -33,12 +32,9 @@ namespace OnlineShop
         {
             decimal total = 0;
             foreach (var item in cart)
-            {
                 total += item.Price * item.Quantity;
-            }
             return total;
         }
-
         protected void rptCart_ItemCommand(object source, RepeaterCommandEventArgs e)
         {
             var cart = Session["Cart"] as List<CartItem>;
@@ -57,15 +53,31 @@ namespace OnlineShop
                     item.Quantity = int.Parse(txtQuantity.Text);
                 }
             }
+            else if (e.CommandName == "Increase")
+            {
+                var item = cart.Find(c => c.ProductId == productId);
+                if (item != null)
+                {
+                    item.Quantity++;
+                }
+            }
+            else if (e.CommandName == "Decrease")
+            {
+                var item = cart.Find(c => c.ProductId == productId);
+                if (item != null && item.Quantity > 1)
+                {
+                    item.Quantity--;
+                }
+            }
 
             Session["Cart"] = cart;
             LoadCart();
         }
 
+
         protected void btnCheckout_Click(object sender, EventArgs e)
         {
-            // Xử lý thanh toán
-            Response.Redirect("Checkout.aspx");
+
         }
     }
 

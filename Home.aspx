@@ -81,5 +81,4 @@
 </asp:Content>
 
 <asp:Content ID="Content7" ContentPlaceHolderID="FooterContent" runat="server">
-    © 2025 - Radian Shop. Tất cả các quyền được bảo lưu.
 </asp:Content>

@@ -12,7 +12,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>OnlineShop</RootNamespace>
     <AssemblyName>OnlineShop</AssemblyName>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8.1</TargetFrameworkVersion>
     <UseIISExpress>true</UseIISExpress>
     <Use64BitIISExpress />
     <IISExpressSSLPort />
@@ -33,6 +33,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <UseWinFormsOutOfProcDesigner>True</UseWinFormsOutOfProcDesigner>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -42,6 +43,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <UseWinFormsOutOfProcDesigner>True</UseWinFormsOutOfProcDesigner>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Antlr3.Runtime, Version=3.4.1.9004, Culture=neutral, PublicKeyToken=eb42632606e9261f, processorArchitecture=MSIL">
@@ -169,60 +171,95 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Data\DataBase.mdf" />
+    <Content Include="App_Data\DataBase_log.ldf">
+      <DependentUpon>DataBase.mdf</DependentUpon>
+    </Content>
+    <Content Include="ThanhToan.aspx" />
     <Content Include="Details.aspx" />
     <Content Include="Dichvu.aspx" />
     <Content Include="GioHang.aspx" />
     <Content Include="Global.asax" />
-    <Content Include="images\acer_swift_5.jpg" />
-    <Content Include="images\airpods_pro_2nd_gen.jpg" />
-    <Content Include="images\asus_pa279cv.jpg" />
-    <Content Include="images\asus_pg27aqdm..jpg" />
-    <Content Include="images\asus_pg27aqdm.jpg" />
-    <Content Include="images\asus_rog_phone_8_pro.jpg" />
-    <Content Include="images\asus_rog_zephyrus_g14.jpg" />
-    <Content Include="images\benq_pd2705q.jpg" />
-    <Content Include="images\benq_sw271c.jpg" />
-    <Content Include="images\beyerdynamic_dt_770_pro.jpg" />
-    <Content Include="images\blackmagic_pcc_6k_g2.jpg" />
-    <Content Include="images\bose_qc_ultra.jpg" />
-    <Content Include="images\bowers_wilkins_px8.jpg" />
-    <Content Include="images\canon_eos_r7.jpg" />
-    <Content Include="images\canon_g7x_mark_iii.jpg" />
-    <Content Include="images\dell_u2723qe.jpg" />
-    <Content Include="images\dell_xps_13.jpg" />
-    <Content Include="images\dji_osmo_action_4.jpg" />
-    <Content Include="images\focal_utopia.jpg" />
-    <Content Include="images\fujifilm_x_t5.jpg" />
-    <Content Include="images\google_pixel_8_pro.jpg" />
-    <Content Include="images\gopro_hero_12_black.jpg" />
-    <Content Include="images\honor_magic6_pro.jpg" />
-    <Content Include="images\hp_envy_x360_15.jpg" />
-    <Content Include="images\insta360_x3.jpg" />
-    <Content Include="images\iphone_15_pro_max.jpg" />
-    <Content Include="images\lenovo_thinkpad_x1_carbon_gen10.jpg" />
-    <Content Include="images\lg_27gp95r.jpg" />
-    <Content Include="images\lg_gram_16.jpg" />
-    <Content Include="images\lg_ultrafine_5k.jpg" />
-    <Content Include="images\macbook_air_m2.jpg" />
-    <Content Include="images\microsoft_surface_laptop_5.jpg" />
-    <Content Include="images\msi_ge76_raider.jpg" />
-    <Content Include="images\msi_meg_342c_qd_oled.jpg" />
-    <Content Include="images\nothing_phone_2.jpg" />
-    <Content Include="images\oneplus_12.jpg" />
-    <Content Include="images\oppo_find_x7_pro.jpg" />
-    <Content Include="images\panasonic_lumix_gh6.jpg" />
-    <Content Include="images\razer_blade_15_advanced.jpg" />
-    <Content Include="images\samsung_odyssey_g7.jpg" />
-    <Content Include="images\samsung_odyssey_neo_g9.jpg" />
-    <Content Include="images\samsung_s24_ultra.jpg" />
-    <Content Include="images\sennheiser_hd_800_s.jpg" />
-    <Content Include="images\sennheiser_momentum_4.jpg" />
-    <Content Include="images\shure_aonic_50_gen_2.jpg" />
-    <Content Include="images\sony_alpha_6700.jpg" />
-    <Content Include="images\sony_wh_1000xm5.jpg" />
-    <Content Include="images\sony_zv_e1.jpg" />
-    <Content Include="images\vivo_x100_pro.jpg" />
-    <Content Include="images\xiaomi_14_pro.jpg" />
+    <Content Include="Images_DB\Loai_1\1.jpg" />
+    <Content Include="Images_DB\Loai_1\10.jpg" />
+    <Content Include="Images_DB\Loai_1\11.jpg" />
+    <Content Include="Images_DB\Loai_1\12.jpg" />
+    <Content Include="Images_DB\Loai_1\13.jpg" />
+    <Content Include="Images_DB\Loai_1\14.jpg" />
+    <Content Include="Images_DB\Loai_1\15.jpg" />
+    <Content Include="Images_DB\Loai_1\16.jpg" />
+    <Content Include="Images_DB\Loai_1\17.jpg" />
+    <Content Include="Images_DB\Loai_1\18.jpg" />
+    <Content Include="Images_DB\Loai_1\19.jpg" />
+    <Content Include="Images_DB\Loai_1\2.jpg" />
+    <Content Include="Images_DB\Loai_1\20.jpg" />
+    <Content Include="Images_DB\Loai_1\3.jpg" />
+    <Content Include="Images_DB\Loai_1\4.jpg" />
+    <Content Include="Images_DB\Loai_1\5.jpg" />
+    <Content Include="Images_DB\Loai_1\6.jpg" />
+    <Content Include="Images_DB\Loai_1\7.jpg" />
+    <Content Include="Images_DB\Loai_1\8.jpg" />
+    <Content Include="Images_DB\Loai_1\9.jpg" />
+    <Content Include="Images_DB\Loai_2\21.jpg" />
+    <Content Include="Images_DB\Loai_2\22.jpg" />
+    <Content Include="Images_DB\Loai_2\23.jpg" />
+    <Content Include="Images_DB\Loai_2\24.jpg" />
+    <Content Include="Images_DB\Loai_2\25.jpg" />
+    <Content Include="Images_DB\Loai_2\26.jpg" />
+    <Content Include="Images_DB\Loai_2\27.jpg" />
+    <Content Include="Images_DB\Loai_2\28.jpg" />
+    <Content Include="Images_DB\Loai_2\29.jpg" />
+    <Content Include="Images_DB\Loai_2\30.jpg" />
+    <Content Include="Images_DB\Loai_2\31.jpg" />
+    <Content Include="Images_DB\Loai_2\32.jpg" />
+    <Content Include="Images_DB\Loai_2\33.jpg" />
+    <Content Include="Images_DB\Loai_2\34.jpg" />
+    <Content Include="Images_DB\Loai_2\35.jpg" />
+    <Content Include="Images_DB\Loai_2\36.jpg" />
+    <Content Include="Images_DB\Loai_2\37.jpg" />
+    <Content Include="Images_DB\Loai_2\38.jpg" />
+    <Content Include="Images_DB\Loai_2\39.jpg" />
+    <Content Include="Images_DB\Loai_2\40.jpg" />
+    <Content Include="Images_DB\Loai_3\41.jpg" />
+    <Content Include="Images_DB\Loai_3\42.jpg" />
+    <Content Include="Images_DB\Loai_3\43.jpg" />
+    <Content Include="Images_DB\Loai_3\44.jpg" />
+    <Content Include="Images_DB\Loai_3\45.jpg" />
+    <Content Include="Images_DB\Loai_3\46.jpg" />
+    <Content Include="Images_DB\Loai_3\47.jpg" />
+    <Content Include="Images_DB\Loai_3\48.jpg" />
+    <Content Include="Images_DB\Loai_3\49.jpg" />
+    <Content Include="Images_DB\Loai_3\50.jpg" />
+    <Content Include="Images_DB\Loai_3\51.jpg" />
+    <Content Include="Images_DB\Loai_3\52.jpg" />
+    <Content Include="Images_DB\Loai_3\53.jpg" />
+    <Content Include="Images_DB\Loai_3\54.jpg" />
+    <Content Include="Images_DB\Loai_3\55.jpg" />
+    <Content Include="Images_DB\Loai_3\56.jpg" />
+    <Content Include="Images_DB\Loai_3\57.jpg" />
+    <Content Include="Images_DB\Loai_3\58.jpg" />
+    <Content Include="Images_DB\Loai_3\59.jpg" />
+    <Content Include="Images_DB\Loai_3\60.jpg" />
+    <Content Include="Images_DB\Loai_4\61.jpg" />
+    <Content Include="Images_DB\Loai_4\62.jpg" />
+    <Content Include="Images_DB\Loai_4\63.jpg" />
+    <Content Include="Images_DB\Loai_4\64.jpg" />
+    <Content Include="Images_DB\Loai_4\65.jpg" />
+    <Content Include="Images_DB\Loai_4\66.jpg" />
+    <Content Include="Images_DB\Loai_4\67.jpg" />
+    <Content Include="Images_DB\Loai_4\68.jpg" />
+    <Content Include="Images_DB\Loai_4\69.jpg" />
+    <Content Include="Images_DB\Loai_4\70.jpg" />
+    <Content Include="Images_DB\Loai_4\71.jpg" />
+    <Content Include="Images_DB\Loai_4\72.jpg" />
+    <Content Include="Images_DB\Loai_4\73.jpg" />
+    <Content Include="Images_DB\Loai_4\74.jpg" />
+    <Content Include="Images_DB\Loai_4\75.jpg" />
+    <Content Include="Images_DB\Loai_4\76.jpg" />
+    <Content Include="Images_DB\Loai_4\77.jpg" />
+    <Content Include="Images_DB\Loai_4\78.jpg" />
+    <Content Include="Images_DB\Loai_4\79.jpg" />
+    <Content Include="Images_DB\Loai_4\80.jpg" />
     <Content Include="Img\Airpod.png" />
     <Content Include="Img\Banner1.png" />
     <Content Include="Img\Banner2.png" />
@@ -236,23 +273,21 @@
     <Content Include="Img\Ship.png" />
     <Content Include="Img\Thanhvien.png" />
     <Content Include="Img\Tuvan.png" />
-    <Content Include="KhuyenMai.aspx" />
     <Content Include="Login.aspx" />
     <Content Include="Home.aspx" />
     <Content Include="Register.aspx" />
     <Content Include="SanPham.aspx" />
+    <Content Include="TaiKhoan.aspx" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataSet1.cs">
-      <DependentUpon>DataSet1.xsd</DependentUpon>
+    <Compile Include="ThanhToan.aspx.cs">
+      <DependentUpon>ThanhToan.aspx</DependentUpon>
     </Compile>
-    <Compile Include="DataSet1.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>DataSet1.xsd</DependentUpon>
+    <Compile Include="ThanhToan.aspx.designer.cs">
+      <DependentUpon>ThanhToan.aspx</DependentUpon>
     </Compile>
     <Compile Include="Details.aspx.cs">
       <DependentUpon>Details.aspx</DependentUpon>
@@ -277,13 +312,6 @@
     </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
-    </Compile>
-    <Compile Include="KhuyenMai.aspx.cs">
-      <DependentUpon>KhuyenMai.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="KhuyenMai.aspx.designer.cs">
-      <DependentUpon>KhuyenMai.aspx</DependentUpon>
     </Compile>
     <Compile Include="Login.aspx.cs">
       <DependentUpon>Login.aspx</DependentUpon>
@@ -321,19 +349,15 @@
     <Compile Include="Site1.master.designer.cs">
       <DependentUpon>Site1.master</DependentUpon>
     </Compile>
+    <Compile Include="TaiKhoan.aspx.cs">
+      <DependentUpon>TaiKhoan.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TaiKhoan.aspx.designer.cs">
+      <DependentUpon>TaiKhoan.aspx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="DataSet1.xsc">
-      <DependentUpon>DataSet1.xsd</DependentUpon>
-    </Content>
-    <None Include="DataSet1.xsd">
-      <SubType>Designer</SubType>
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>DataSet1.Designer.cs</LastGenOutput>
-    </None>
-    <Content Include="DataSet1.xss">
-      <DependentUpon>DataSet1.xsd</DependentUpon>
-    </Content>
     <None Include="packages.config" />
     <None Include="Site1.master" />
     <None Include="Web.Debug.config">
@@ -344,7 +368,8 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\" />
+    <Folder Include="ChatBot\" />
+    <Folder Include="Images_DB\Loai_5\" />
     <Folder Include="Models\" />
   </ItemGroup>
   <PropertyGroup>
