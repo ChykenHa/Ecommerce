@@ -1,0 +1,868 @@
+<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site1.master.cs" Inherits="OnlineShop.Site1" %>
+<!DOCTYPE html>
+<html lang="en">
+<head runat="server">
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <!-- Custom CSS -->
+    <link href="~/Assets/CSS/site-styles.css" rel="stylesheet" />
+    
+    <!-- Inline CSS for AI Chat Bubble (fallback) -->
+    <style>
+        #aiChatBubble {
+            position: fixed !important;
+            bottom: 20px !important;
+            right: 20px !important;
+            z-index: 99999 !important;
+            font-family: 'Segoe UI', system-ui, sans-serif !important;
+            display: block !important;
+            visibility: visible !important;
+        }
+        
+        #aiChatBubble .chat-button {
+            width: 60px !important;
+            height: 60px !important;
+            border-radius: 50% !important;
+            background: linear-gradient(135deg, #1B4D72, #4A90A4) !important;
+            border: none !important;
+            cursor: pointer !important;
+            box-shadow: 0 4px 15px rgba(15, 42, 62, 0.25) !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            transition: all 0.3s ease !important;
+            position: relative !important;
+        }
+        
+        #aiChatBubble .chat-button:hover {
+            transform: scale(1.1) !important;
+            background: linear-gradient(135deg, #0F2A3E, #1B4D72) !important;
+        }
+        
+        #aiChatBubble .chat-icon {
+            font-size: 24px !important;
+            color: white !important;
+            display: block !important;
+        }
+        
+        /* Chat window styles */
+        #aiChatBubble .chat-window {
+            position: absolute !important;
+            bottom: 80px !important;
+            right: 0 !important;
+            width: 350px !important;
+            height: 500px !important;
+            background: white !important;
+            border-radius: 20px !important;
+            box-shadow: 0 20px 40px rgba(15, 42, 62, 0.35) !important;
+            display: none !important;
+            flex-direction: column !important;
+            overflow: hidden !important;
+            border: 1px solid #C2D9E0 !important;
+        }
+        
+        #aiChatBubble .chat-window.active {
+            display: flex !important;
+            animation: slideUp 0.3s ease-out !important;
+        }
+        
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        #aiChatBubble .chat-header {
+            background: linear-gradient(135deg, #0F2A3E 0%, #1B4D72 20%, #2E6B8F 40%, #4A90A4 60%, #1B4D72 80%, #0F2A3E 100%) !important;
+            color: white !important;
+            padding: 15px 20px !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: space-between !important;
+            border-radius: 20px 20px 0 0 !important;
+        }
+        
+        #aiChatBubble .chat-title {
+            font-size: 16px !important;
+            font-weight: 600 !important;
+            margin: 0 !important;
+            display: flex !important;
+            align-items: center !important;
+            gap: 10px !important;
+        }
+        
+        #aiChatBubble .close-chat {
+            background: none !important;
+            border: none !important;
+            color: white !important;
+            font-size: 20px !important;
+            cursor: pointer !important;
+            padding: 5px !important;
+            border-radius: 50% !important;
+            transition: background-color 0.2s ease !important;
+        }
+        
+        #aiChatBubble .close-chat:hover {
+            background-color: rgba(255, 255, 255, 0.2) !important;
+        }
+        
+        #aiChatBubble .chat-messages {
+            flex: 1 !important;
+            padding: 20px !important;
+            overflow-y: auto !important;
+            display: flex !important;
+            flex-direction: column !important;
+            gap: 15px !important;
+            background: #F0F8FC !important;
+        }
+        
+        #aiChatBubble .chat-message {
+            max-width: 80% !important;
+            padding: 12px 16px !important;
+            border-radius: 18px !important;
+            font-size: 14px !important;
+            line-height: 1.4 !important;
+            word-wrap: break-word !important;
+            animation: messageSlide 0.3s ease-out !important;
+        }
+        
+        @keyframes messageSlide {
+            from {
+                opacity: 0;
+                transform: translateX(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        #aiChatBubble .message-user {
+            background: #1B4D72 !important;
+            color: white !important;
+            align-self: flex-end !important;
+            border-bottom-right-radius: 5px !important;
+        }
+        
+        #aiChatBubble .message-ai {
+            background: white !important;
+            color: #0F2A3E !important;
+            align-self: flex-start !important;
+            border-bottom-left-radius: 5px !important;
+            border: 1px solid #C2D9E0 !important;
+            box-shadow: 0 1px 3px rgba(15, 42, 62, 0.2) !important;
+        }
+        
+        #aiChatBubble .message-ai::before {
+            content: '🤖 ' !important;
+            font-size: 14px !important;
+        }
+        
+        #aiChatBubble .typing-indicator {
+            display: none !important;
+            align-items: center !important;
+            gap: 5px !important;
+            padding: 12px 16px !important;
+            background: white !important;
+            border-radius: 18px !important;
+            border-bottom-left-radius: 5px !important;
+            border: 1px solid #C2D9E0 !important;
+            box-shadow: 0 1px 3px rgba(15, 42, 62, 0.2) !important;
+            max-width: 80px !important;
+        }
+        
+        #aiChatBubble .typing-indicator.active {
+            display: flex !important;
+        }
+        
+        #aiChatBubble .typing-dot {
+            width: 8px !important;
+            height: 8px !important;
+            border-radius: 50% !important;
+            background: #1B4D72 !important;
+            animation: typing 1.4s infinite ease-in-out !important;
+        }
+        
+        #aiChatBubble .typing-dot:nth-child(1) { animation-delay: -0.32s !important; }
+        #aiChatBubble .typing-dot:nth-child(2) { animation-delay: -0.16s !important; }
+        
+        @keyframes typing {
+            0%, 80%, 100% {
+                transform: scale(0);
+                opacity: 0.5;
+            }
+            40% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+        
+        #aiChatBubble .chat-input-area {
+            padding: 20px !important;
+            background: white !important;
+            border-top: 1px solid #C2D9E0 !important;
+            display: flex !important;
+            gap: 10px !important;
+            align-items: flex-end !important;
+        }
+        
+        #aiChatBubble .chat-input {
+            flex: 1 !important;
+            border: 2px solid #C2D9E0 !important;
+            border-radius: 25px !important;
+            padding: 12px 20px !important;
+            font-size: 14px !important;
+            font-family: 'Segoe UI', system-ui, sans-serif !important;
+            resize: none !important;
+            outline: none !important;
+            transition: border-color 0.2s ease !important;
+            max-height: 100px !important;
+            min-height: 45px !important;
+        }
+        
+        #aiChatBubble .chat-input:focus {
+            border-color: #1B4D72 !important;
+        }
+        
+        #aiChatBubble .chat-input::placeholder {
+            color: #999 !important;
+        }
+        
+        #aiChatBubble .send-button {
+            width: 45px !important;
+            height: 45px !important;
+            border-radius: 50% !important;
+            background: #1B4D72 !important;
+            border: none !important;
+            color: white !important;
+            cursor: pointer !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            transition: all 0.2s ease !important;
+            flex-shrink: 0 !important;
+        }
+        
+        #aiChatBubble .send-button:hover {
+            background: #0F2A3E !important;
+            transform: scale(1.05) !important;
+        }
+        
+        #aiChatBubble .send-button:disabled {
+            background: #ccc !important;
+            cursor: not-allowed !important;
+            transform: none !important;
+        }
+        
+        #aiChatBubble .send-icon {
+            font-size: 18px !important;
+        }
+        
+        #aiChatBubble .welcome-message {
+            text-align: center !important;
+            padding: 20px !important;
+            color: #1B4D72 !important;
+            font-size: 14px !important;
+            background: #E6F3F8 !important;
+            border-radius: 15px !important;
+            margin-bottom: 10px !important;
+        }
+        
+        #aiChatBubble .welcome-message h4 {
+            margin: 0 0 10px 0 !important;
+            color: #1B4D72 !important;
+            font-size: 16px !important;
+        }
+        
+        /* Responsive design */
+        @media (max-width: 768px) {
+            #aiChatBubble .chat-window {
+                width: 300px !important;
+                height: 450px !important;
+                right: -10px !important;
+            }
+            
+            #aiChatBubble {
+                bottom: 15px !important;
+                right: 15px !important;
+            }
+            
+            #aiChatBubble .chat-button {
+                width: 55px !important;
+                height: 55px !important;
+            }
+            
+            #aiChatBubble .chat-icon {
+                font-size: 22px !important;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            #aiChatBubble .chat-window {
+                width: calc(100vw - 30px) !important;
+                height: 400px !important;
+                right: -15px !important;
+            }
+            
+            #aiChatBubble .chat-messages {
+                padding: 15px !important;
+            }
+            
+            #aiChatBubble .chat-input-area {
+                padding: 15px !important;
+            }
+        }
+        
+    </style>
+    
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <!-- All inline styles have been moved to CSS/site-styles.css -->
+    <asp:ContentPlaceHolder ID="HeaderContent" runat="server"></asp:ContentPlaceHolder>
+</head>
+<body>
+    <form runat="server">
+        <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <asp:Image ID="Logo" runat="server" ImageUrl="~/Assets/Images/Logo.jpg" AlternateText="Logo" />
+            </div>
+            
+            <div class="search-container">
+                <input type="text" placeholder="Bạn cần tìm gì?" />
+            </div>
+            
+            <nav class="nav-item">
+                <asp:Button ID="Button1" runat="server" Text="Trang Chủ" CssClass="menu-item" OnClick="ButtonHome_Click" />
+                <asp:Button ID="Contact" runat="server" Text="Liên Hệ" CssClass="menu-item" OnClick="Contact_Click"/>
+                <asp:Button ID="Button2" runat="server" Text="Dịch Vụ" CssClass="menu-item" OnClick="Services_Click"/>
+                <asp:Button ID="Button4" runat="server" Text="Giỏ Hàng" CssClass="menu-item" OnClick="Cart_Click"/>
+                
+                <asp:LoginView ID="LoginView1" runat="server">
+                    <AnonymousTemplate>
+                        <asp:Button ID="Button5" runat="server" Text="Đăng Nhập" CssClass="menu-item" OnClick="Login_Click" />
+                        <asp:Button ID="Button6" runat="server" Text="Đăng Ký" CssClass="menu-item" OnClick="Register_Click" />
+                    </AnonymousTemplate>
+                    <LoggedInTemplate>
+                        <asp:Button ID="Button7" runat="server" Text="Tài Khoản" CssClass="menu-item" OnClick="Account_Click" />
+                        <asp:Button ID="Button8" runat="server" Text="Đăng Xuất" CssClass="menu-item" OnClick="Logout_Click" />
+                    </LoggedInTemplate>
+                </asp:LoginView>
+            </nav>
+        </header>
+
+        <!-- News Section -->
+        <section class="news-section">
+            <div class="container">
+                <asp:ContentPlaceHolder ID="NewsContent" runat="server">
+                    <div class="news-ticker">
+                    </div>
+                </asp:ContentPlaceHolder>
+            </div>
+        </section>
+
+        <!-- Main Layout Container -->
+        <div class="main-layout">
+            <!-- Left Advertisement Banner -->
+            <aside class="ad-banner-left">
+                <h3 class="ad-banner-title">🎁 Ưu Đãi Hot</h3>
+                
+                <!-- Ad Item 1 -->
+                <div class="ad-item">
+                    <span class="ad-badge">HOT</span>
+                    <asp:Image ID="ImgAdLeft1" runat="server" ImageUrl="~/Assets/Images/Banner1.png" AlternateText="Khuyến mãi đặc biệt" />
+                    <h4>Giảm 50% Toàn Bộ</h4>
+                    <p>Áp dụng cho tất cả sản phẩm công nghệ mới nhất</p>
+                </div>
+                
+                <!-- Ad Item 2 - Iframe Example -->
+                <div class="ad-iframe-container">
+                    <iframe src="about:blank" title="Quảng cáo 1" scrolling="no"></iframe>
+                </div>
+                
+                <!-- Ad Item 3 -->
+                <div class="ad-item">
+                    <span class="ad-badge">NEW</span>
+                    <asp:Image ID="ImgAdLeft2" runat="server" ImageUrl="~/Assets/Images/Banner2.png" AlternateText="Sản phẩm mới" />
+                    <h4>Ra Mắt Sản Phẩm Mới</h4>
+                    <p>Công nghệ tiên tiến nhất năm 2025</p>
+                </div>
+            </aside>
+
+            <!-- Animated Sidebar -->
+            <aside class="sidebar">              
+                <asp:ContentPlaceHolder ID="SidebarContent" runat="server"></asp:ContentPlaceHolder>
+            </aside>
+
+            <!-- Main Content Area -->
+            <main class="main-content">
+                <!-- Banner Carousel -->
+                <asp:ContentPlaceHolder ID="BannerContent" runat="server">
+                    <section class="banner">
+                        <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+                            <!-- Carousel Indicators -->
+                            <div class="carousel-indicators">
+                                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                            </div>
+
+                            <!-- Carousel Slides -->
+                            <div class="carousel-inner">
+                                <div class="carousel-item active">
+                                    <asp:Image ID="Image1" runat="server" ImageUrl="~/Assets/Images/Banner1.png" AlternateText="Khuyến mãi đặc biệt" CssClass="d-block w-100" />
+                                    <div class="carousel-caption d-none d-md-block">
+                                    </div>
+                                </div>
+                                <div class="carousel-item">
+                                    <asp:Image ID="Image2" runat="server" ImageUrl="~/Assets/Images/Banner2.png" AlternateText="Sản phẩm mới" CssClass="d-block w-100" />
+                                    <div class="carousel-caption d-none d-md-block">
+                                    </div>
+                                </div>
+                                <div class="carousel-item">
+                                    <asp:Image ID="Image3" runat="server" ImageUrl="~/Assets/Images/Banner3.png" AlternateText="Miễn phí vận chuyển" CssClass="d-block w-100" />
+                                    <div class="carousel-caption d-none d-md-block">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Carousel Controls -->
+                            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Previous</span>
+                            </button>
+                            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Next</span>
+                            </button>
+                        </div>
+
+                        <div class="banner-text">
+                        </div>
+                    </section>
+                </asp:ContentPlaceHolder>
+
+                <!-- Breadcrumb Navigation -->
+                <nav class="breadcrumb-container" aria-label="breadcrumb">
+                    <asp:ContentPlaceHolder ID="BreadcrumbContent" runat="server">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="#">Trang chủ</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Sản phẩm</li>
+                        </ol>
+                    </asp:ContentPlaceHolder>
+                </nav>
+
+                <!-- Main Content Area -->
+                <div class="content-wrapper">
+                    <asp:ContentPlaceHolder ID="MainContent" runat="server">
+                    </asp:ContentPlaceHolder>
+                </div>
+            </main>
+
+            <!-- Right Advertisement Banner -->
+            <aside class="ad-banner-right">
+                <h3 class="ad-banner-title">⚡ Quảng Cáo</h3>
+                
+                <!-- Ad Item 1 -->
+                <div class="ad-item">
+                    <span class="ad-badge">⭐</span>
+                    <asp:Image ID="ImgAdRight1" runat="server" ImageUrl="~/Assets/Images/Ad1.png" AlternateText="Quảng cáo 1" />
+                    <h4>Khuyến Mãi Đặc Biệt</h4>
+                    <p>Ưu đãi hấp dẫn chỉ có tại Radian Shop</p>
+                </div>
+                
+                <!-- Ad Item 2 -->
+                <div class="ad-item">
+                    <span class="ad-badge">🎁</span>
+                    <asp:Image ID="ImgAdRight2" runat="server" ImageUrl="~/Assets/Images/Ad2.png" AlternateText="Quảng cáo 2" />
+                    <h4>Sản Phẩm Hot</h4>
+                    <p>Những sản phẩm được yêu thích nhất</p>
+                </div>
+                
+                <!-- Ad Item 3 - Iframe Example -->
+                <div class="ad-iframe-container">
+                    <iframe src="about:blank" title="Quảng cáo 3" scrolling="no"></iframe>
+                </div>
+                
+                <!-- Ad Item 4 - Service Images -->
+                <div class="ad-item">
+                    <span class="ad-badge">✓</span>
+                    <asp:Image ID="ImgAdRight3" runat="server" ImageUrl="~/Assets/Images/Ship.png" AlternateText="Miễn phí vận chuyển" />
+                    <h4>Miễn Phí Ship</h4>
+                    <p>Giao hàng toàn quốc</p>
+                </div>
+            </aside>
+        </div>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Thông tin liên hệ</h3>
+                    <address>
+                        <p>📧 Email: Radian@Radianshop.com</p>
+                        <p>📞 Điện thoại: +84 123 456 789</p>
+                        <p>📍 Địa chỉ: Sơn Trà, Đà Nẵng</p>
+                        <p>🕒 Giờ làm việc: 8:00 - 22:00 (Thứ 2 - Chủ nhật)</p>
+                    </address>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Chính sách</h3>
+                    <nav>
+                        <a href="#" aria-label="Chính sách bảo mật">Chính sách bảo mật</a>
+                        <a href="#" aria-label="Chính sách vận chuyển">Chính sách vận chuyển</a>
+                        <a href="#" aria-label="Chính sách đổi trả">Chính sách đổi trả</a>
+                        <a href="#" aria-label="Quy định sử dụng">Quy định sử dụng</a>
+                        <a href="#" aria-label="Chính sách bảo hành">Chính sách bảo hành</a>
+                    </nav>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Hỗ trợ khách hàng</h3>
+                    <nav>
+                        <a href="#" aria-label="Trung tâm trợ giúp">Trung tâm trợ giúp</a>
+                        <a href="#" aria-label="Hướng dẫn mua hàng">Hướng dẫn mua hàng</a>
+                        <a href="#" aria-label="Phương thức thanh toán">Phương thức thanh toán</a>
+                        <a href="#" aria-label="Câu hỏi thường gặp">Câu hỏi thường gặp</a>
+                        <a href="#" aria-label="Theo dõi đơn hàng">Theo dõi đơn hàng</a>
+                    </nav>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Kết nối với chúng tôi</h3>
+                    <div class="social-links">
+                        <a href="https://www.facebook.com/le.ha.338212" aria-label="Facebook" class="social-link">
+                            <span>📘 Facebook</span>
+                        </a>
+                        <a href="https://www.instagram.com/chyken_ha/" aria-label="Instagram" class="social-link">
+                            <span>📷 Instagram</span>
+                        </a>
+                        <a href="https://chat.zalo.me/" aria-label="Zalo" class="social-link">
+                            <span>💬 Zalo</span>
+                        </a>
+                    </div>
+                    
+                    <div class="newsletter">
+                        <h4>Đăng ký nhận tin</h4>
+                        <div class="newsletter-form">
+                            <input type="email" placeholder="Nhập email của bạn" aria-label="Email đăng ký nhận tin" />
+                            <button type="button" class="btn-subscribe">Đăng ký</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <div class="container">
+                    <p>&copy; 2025 Radian Shop. Tất cả các quyền được bảo lưu.</p>
+                </div>
+            </div>
+            
+            <asp:ContentPlaceHolder ID="FooterContent" runat="server"></asp:ContentPlaceHolder>
+        </footer>
+
+        <!-- Back to top button -->
+        <button id="backToTop" class="back-to-top" aria-label="Quay lên đầu trang" style="display: none;">
+            ↑
+        </button>
+
+        <!-- Loading overlay (optional) -->
+        <div id="loadingOverlay" class="loading-overlay" style="display: none;">
+            <div class="loading-spinner"></div>
+            <p>Đang tải...</p>
+        </div>
+    </form>
+
+    <!-- JavaScript for enhanced functionality -->
+        <!-- Custom JavaScript -->
+        <script src="~/Assets/JS/site-scripts.js"></script>
+        <!-- AI Chat Bubble JavaScript -->
+        <script>
+            // AI Chat Bubble Class
+            class AIChatBubble {
+                constructor() {
+                    this.isOpen = false;
+                    this.isTyping = false;
+                    this.chatHistory = [];
+                    this.init();
+                }
+
+                init() {
+                    this.createChatBubble();
+                    this.bindEvents();
+                    this.addWelcomeMessage();
+                }
+
+                createChatBubble() {
+                    const chatBubbleHTML = `
+                        <div class="ai-chat-bubble" id="aiChatBubble">
+                            <div class="chat-window" id="chatWindow">
+                                <div class="chat-header">
+                                    <h3 class="chat-title">🤖 Trợ lý AI</h3>
+                                    <button class="close-chat" id="closeChat">×</button>
+                                </div>
+                                <div class="chat-messages" id="chatMessages">
+                                    <!-- Messages will be added here -->
+                                </div>
+                                <div class="chat-input-area">
+                                    <textarea class="chat-input" id="chatInput" placeholder="Nhập câu hỏi của bạn..." rows="1"></textarea>
+                                    <button class="send-button" id="sendButton">
+                                        <span class="send-icon">📤</span>
+                                    </button>
+                                </div>
+                            </div>
+                            <button class="chat-button" id="chatButton">
+                                <span class="chat-icon">💬</span>
+                            </button>
+                        </div>
+                    `;
+
+                    document.body.insertAdjacentHTML('beforeend', chatBubbleHTML);
+                }
+
+                bindEvents() {
+                    const chatButton = document.getElementById('chatButton');
+                    const closeChat = document.getElementById('closeChat');
+                    const sendButton = document.getElementById('sendButton');
+                    const chatInput = document.getElementById('chatInput');
+                    const chatWindow = document.getElementById('chatWindow');
+
+                    if (chatButton) chatButton.addEventListener('click', () => this.toggleChat());
+                    if (closeChat) closeChat.addEventListener('click', () => this.closeChat());
+                    if (sendButton) sendButton.addEventListener('click', () => this.sendMessage());
+                    if (chatInput) {
+                        chatInput.addEventListener('keypress', (e) => {
+                            if (e.key === 'Enter' && !e.shiftKey) {
+                                e.preventDefault();
+                                this.sendMessage();
+                            }
+                        });
+                        chatInput.addEventListener('input', () => this.autoResizeTextarea(chatInput));
+                    }
+                }
+
+                toggleChat() {
+                    const chatWindow = document.getElementById('chatWindow');
+                    if (this.isOpen) {
+                        this.closeChat();
+                    } else {
+                        this.openChat();
+                    }
+                }
+
+                openChat() {
+                    const chatWindow = document.getElementById('chatWindow');
+                    const chatInput = document.getElementById('chatInput');
+                    
+                    if (chatWindow) chatWindow.classList.add('active');
+                    this.isOpen = true;
+                    
+                    setTimeout(() => {
+                        if (chatInput) chatInput.focus();
+                    }, 300);
+                }
+
+                closeChat() {
+                    const chatWindow = document.getElementById('chatWindow');
+                    if (chatWindow) chatWindow.classList.remove('active');
+                    this.isOpen = false;
+                }
+
+                autoResizeTextarea(textarea) {
+                    textarea.style.height = 'auto';
+                    textarea.style.height = Math.min(textarea.scrollHeight, 100) + 'px';
+                }
+
+                addWelcomeMessage() {
+                    const chatMessages = document.getElementById('chatMessages');
+                    if (chatMessages) {
+                        const welcomeMessage = `
+                            <div class="welcome-message">
+                                <h4>👋 Chào mừng đến với Radian Shop!</h4>
+                                <p>Tôi là trợ lý AI của bạn. Tôi có thể giúp bạn:</p>
+                                <ul style="text-align: left; margin: 10px 0;">
+                                    <li>🔍 Tìm hiểu về sản phẩm điện tử</li>
+                                    <li>💡 Đưa ra lời khuyên mua sắm</li>
+                                    <li>📱 So sánh các thiết bị</li>
+                                    <li>❓ Trả lời câu hỏi về công nghệ</li>
+                                </ul>
+                                <p>Hãy hỏi tôi bất cứ điều gì!</p>
+                            </div>
+                        `;
+                        chatMessages.innerHTML = welcomeMessage;
+                    }
+                }
+
+                async sendMessage() {
+                    const chatInput = document.getElementById('chatInput');
+                    const sendButton = document.getElementById('sendButton');
+                    const message = chatInput ? chatInput.value.trim() : '';
+
+                    if (!message || this.isTyping) return;
+
+                    this.addMessage(message, 'user');
+                    
+                    if (chatInput) {
+                        chatInput.value = '';
+                        this.autoResizeTextarea(chatInput);
+                    }
+                    
+                    if (sendButton) sendButton.disabled = true;
+                    this.isTyping = true;
+
+                    this.showTypingIndicator();
+
+                    try {
+                        const response = await this.callGeminiAPI(message);
+                        this.hideTypingIndicator();
+                        this.addMessage(response, 'ai');
+                    } catch (error) {
+                        console.error('Error calling Gemini API:', error);
+                        this.hideTypingIndicator();
+                        this.addMessage('Xin lỗi, tôi không thể xử lý yêu cầu của bạn lúc này. Vui lòng thử lại sau.', 'ai');
+                    } finally {
+                        if (sendButton) sendButton.disabled = false;
+                        this.isTyping = false;
+                        if (chatInput) chatInput.focus();
+                    }
+                }
+
+                addMessage(message, sender) {
+                    const chatMessages = document.getElementById('chatMessages');
+                    if (!chatMessages) return;
+                    
+                    const messageDiv = document.createElement('div');
+                    messageDiv.className = `chat-message message-${sender}`;
+                    messageDiv.textContent = message;
+                    
+                    chatMessages.appendChild(messageDiv);
+                    chatMessages.scrollTop = chatMessages.scrollHeight;
+
+                    this.chatHistory.push({ message, sender, timestamp: new Date() });
+                }
+
+                showTypingIndicator() {
+                    const chatMessages = document.getElementById('chatMessages');
+                    if (!chatMessages) return;
+                    
+                    const typingDiv = document.createElement('div');
+                    typingDiv.className = 'typing-indicator active';
+                    typingDiv.id = 'typingIndicator';
+                    typingDiv.innerHTML = `
+                        <div class="typing-dot"></div>
+                        <div class="typing-dot"></div>
+                        <div class="typing-dot"></div>
+                    `;
+                    
+                    chatMessages.appendChild(typingDiv);
+                    chatMessages.scrollTop = chatMessages.scrollHeight;
+                }
+
+                hideTypingIndicator() {
+                    const typingIndicator = document.getElementById('typingIndicator');
+                    if (typingIndicator) {
+                        typingIndicator.remove();
+                    }
+                }
+
+                async callGeminiAPI(message) {
+                    try {
+                        console.log('Sending message to SimpleChat handler:', message);
+                        
+                        // Test with simple handler first
+                        const response = await fetch('SimpleChat.ashx', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({ message: message })
+                        });
+
+                        console.log('Response status:', response.status);
+                        console.log('Response ok:', response.ok);
+
+                        if (!response.ok) {
+                            const errorText = await response.text();
+                            console.error('Response error:', errorText);
+                            throw new Error(`HTTP error! status: ${response.status}`);
+                        }
+
+                        const responseText = await response.text();
+                        console.log('Response text:', responseText);
+                        
+                        let data;
+                        try {
+                            data = JSON.parse(responseText);
+                            console.log('Parsed data:', data);
+                        } catch (parseError) {
+                            console.error('JSON parse error:', parseError);
+                            console.error('Response text:', responseText);
+                            throw new Error('Invalid JSON response from server');
+                        }
+                        
+                        if (data.error) {
+                            console.error('API error:', data.error);
+                            throw new Error(data.error);
+                        }
+
+                        console.log('AI response:', data.response);
+                        return data.response || 'Không có phản hồi từ AI.';
+                    } catch (error) {
+                        console.error('callGeminiAPI error:', error);
+                        throw error;
+                    }
+                }
+            }
+
+            // Initialize chat bubble when DOM is loaded
+            document.addEventListener('DOMContentLoaded', () => {
+                try {
+                    window.aiChatBubble = new AIChatBubble();
+                } catch (error) {
+                    console.error('Error initializing AI Chat Bubble:', error);
+                }
+            });
+
+            // Fallback initialization
+            if (document.readyState === 'loading') {
+                // DOM is still loading, wait for DOMContentLoaded
+            } else {
+                // DOM is already loaded, initialize immediately
+                try {
+                    window.aiChatBubble = new AIChatBubble();
+                } catch (error) {
+                    console.error('Error initializing AI Chat Bubble:', error);
+                }
+            }
+
+            // Keyboard shortcuts
+            document.addEventListener('keydown', (e) => {
+                if ((e.ctrlKey || e.metaKey) && e.key === '/') {
+                    e.preventDefault();
+                    if (window.aiChatBubble) {
+                        window.aiChatBubble.toggleChat();
+                    }
+                }
+                
+                if (e.key === 'Escape' && window.aiChatBubble && window.aiChatBubble.isOpen) {
+                    window.aiChatBubble.closeChat();
+                }
+            });
+        </script>
+</body>
+</html>

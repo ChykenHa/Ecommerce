@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Page Method</title>
+</head>
+<body>
+    <h1>Test Page Method</h1>
+    <button onclick="testPageMethod()">Test Page Method</button>
+    <div id="result"></div>
+
+    <script>
+        async function testPageMethod() {
+            try {
+                console.log('Testing Page Method...');
+                
+                const response = await fetch('Home.aspx/TestChat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({})
+                });
+
+                console.log('Response status:', response.status);
+                console.log('Response ok:', response.ok);
+
+                const responseText = await response.text();
+                console.log('Response text:', responseText);
+
+                document.getElementById('result').innerHTML = '<p>Response: ' + responseText + '</p>';
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('result').innerHTML = '<p>Error: ' + error.message + '</p>';
+            }
+        }
+    </script>
+</body>
+</html>
