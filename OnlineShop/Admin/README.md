@@ -1,196 +1,296 @@
-# Admin Dashboard - Radian Shop
+# Hướng Dẫn Hệ Thống Quản Trị (Admin Panel)
 
-## 🎯 Tổng quan
-Admin Dashboard là hệ thống quản lý hoàn chỉnh cho website bán hàng điện tử Radian Shop, được xây dựng bằng ASP.NET Web Forms với giao diện hiện đại và responsive.
+## Thông Tin Đăng Nhập
 
-## 🚀 Tính năng chính
+### Tài khoản Admin mặc định:
+- **Username**: `admin`  
+- **Password**: `admin123`  
+- **URL đăng nhập**: `http://localhost:62512/Admin/AdminLogin.aspx`
 
-### 📊 Dashboard Tổng quan
-- **Thống kê real-time**: Tổng đơn hàng, sản phẩm, người dùng, doanh thu
-- **Quick Actions**: Các nút thao tác nhanh đến các chức năng chính
-- **Recent Products**: Hiển thị sản phẩm mới thêm gần đây
-- **Responsive Design**: Tương thích mọi thiết bị
+### Tài khoản phụ:
+- **Username**: `radianadmin`  
+- **Password**: `Radian@2025`
 
-### 📦 Quản lý sản phẩm
-- **CRUD Operations**: Thêm, sửa, xóa sản phẩm
-- **Search & Filter**: Tìm kiếm và lọc theo danh mục
-- **Bulk Operations**: Xóa hàng loạt, xuất Excel
-- **Image Upload**: Upload hình ảnh sản phẩm
-- **Pagination**: Phân trang cho danh sách lớn
+## Cấu Trúc Hệ Thống
 
-### 🔐 Bảo mật
-- **Session Authentication**: Kiểm tra đăng nhập admin
-- **Input Validation**: Validate dữ liệu đầu vào
-- **SQL Parameter Binding**: Tránh SQL injection
-- **File Upload Security**: Validate file types
+### 1. Dashboard (`AdminDashboard.aspx`)
+- **Chức năng**:
+  - Thống kê tổng quan: đơn hàng, sản phẩm, người dùng, doanh thu
+  - Hiển thị 10 sản phẩm gần đây nhất
+  - Charts và biểu đồ thống kê
+  
+- **Dữ liệu hiển thị**:
+  - Query từ bảng `MatHang`, `LoaiHang`
+  - Tính toán tổng doanh thu từ giá sản phẩm
 
-## 📁 Cấu trúc thư mục
+### 2. Quản Lý Sản Phẩm (`ProductManagement.aspx`)
+- **Chức năng**:
+  - Xem danh sách sản phẩm (GridView với pagination)
+  - Tìm kiếm theo tên, mô tả
+  - Lọc theo danh mục
+  - Sắp xếp theo tên, giá
+  - Thêm, sửa, xóa sản phẩm
+  - Upload hình ảnh sản phẩm
+  
+- **Database**:
+  - Bảng `MatHang`: id_hang, tenhang, mota, dongia, id_loai, soluong
+  - Bảng `LoaiHang`: id_loai, tenloai, mota
 
+### 3. Quản Lý Đơn Hàng (`OrderManagement.aspx`)
+- **Chức năng**:
+  - Xem danh sách đơn hàng
+  - Lọc theo trạng thái (Chờ xử lý, Đang xử lý, Đang giao, Hoàn thành, Đã hủy)
+  - Lọc theo khoảng ngày
+  - Cập nhật trạng thái đơn hàng
+  - Xem chi tiết đơn hàng
+  - Xuất báo cáo Excel
+  
+- **Trạng thái đơn hàng**:
+  - `Pending`: Chờ xử lý (màu cam)
+  - `Processing`: Đang xử lý (màu xanh dương)
+  - `Shipping`: Đang giao (màu tím)
+  - `Completed`: Hoàn thành (màu xanh lá)
+  - `Cancelled`: Đã hủy (màu đỏ)
+
+### 4. Quản Lý Người Dùng (`UserManagement.aspx`)
+- **Chức năng**:
+  - Xem danh sách khách hàng
+  - Tìm kiếm theo tên, email, số điện thoại
+  - Lọc theo trạng thái (Hoạt động / Bị khóa)
+  - Khóa/Mở khóa tài khoản
+  - Thêm người dùng mới
+  - Chỉnh sửa thông tin người dùng
+
+### 5. Quản Lý Danh Mục (`CategoryManagement.aspx`)
+- **Chức năng**:
+  - Xem danh sách danh mục sản phẩm
+  - Thêm danh mục mới
+  - Chỉnh sửa trực tiếp (inline editing)
+  - Xóa danh mục (nếu không có sản phẩm)
+  - Hiển thị số lượng sản phẩm theo danh mục
+  
+- **Lưu ý**: Không thể xóa danh mục đang có sản phẩm (Foreign Key constraint)
+
+### 6. Báo Cáo (`Reports.aspx`)
+- **Chức năng**:
+  - Báo cáo doanh thu theo tháng (Line Chart)
+  - Báo cáo đơn hàng theo trạng thái (Doughnut Chart)
+  - Top 10 sản phẩm bán chạy
+  - Thống kê tổng hợp: doanh thu, đơn hàng, khách hàng mới, sản phẩm đã bán
+  - Lọc báo cáo theo khoảng ngày
+  - Xuất PDF
+  
+- **Công nghệ**: Chart.js để vẽ biểu đồ
+
+## Cơ Sở Dữ Liệu
+
+### Bảng `QuanTriVien`
+```sql
+id_quantrivien INT PRIMARY KEY
+tendangnhap VARCHAR(50)
+matkhau VARCHAR(100)
+hoten NVARCHAR(100)
+email VARCHAR(100)
+id_quyen VARCHAR(20) FK -> Quyen(id_quyen)
 ```
-Admin/
-├── AdminLogin.aspx          # Trang đăng nhập admin
-├── AdminLogin.aspx.cs       # Code-behind đăng nhập
-├── AdminLogin.aspx.designer.cs
-├── AdminDashboard.aspx      # Trang dashboard chính
-├── AdminDashboard.aspx.cs   # Code-behind dashboard
-├── AdminDashboard.aspx.designer.cs
-├── AdminMaster.master       # Master page cho admin
-├── AdminMaster.master.cs    # Code-behind master page
-├── AdminMaster.master.designer.cs
-├── ProductManagement.aspx   # Trang quản lý sản phẩm
-├── ProductManagement.aspx.cs # Code-behind quản lý sản phẩm
-└── ProductManagement.aspx.designer.cs
 
-Assets/
-├── CSS/
-│   └── admin-styles.css     # CSS cho admin dashboard
-└── JS/
-    └── admin-scripts.js     # JavaScript cho admin dashboard
+### Bảng `Quyen`
+```sql
+id_quyen VARCHAR(20) PRIMARY KEY
+tenquyen NVARCHAR(100)
+mota NVARCHAR(255)
 ```
 
-## 🛠️ Cài đặt và sử dụng
+**Các quyền có sẵn**:
+- `ADMIN`: Quản trị viên - Toàn quyền
+- `MANAGER`: Quản lý - Quản lý sản phẩm và đơn hàng
+- `STAFF`: Nhân viên - Xem và cập nhật đơn hàng
 
-### 1. Truy cập Admin Dashboard
-```
-URL: /Admin/AdminLogin.aspx
-```
+## Tính Năng Bảo Mật
 
-### 2. Đăng nhập
-```
-Username: admin
-Password: admin123
-```
-
-### 3. Sử dụng các tính năng
-- **Dashboard**: Xem tổng quan hệ thống
-- **Quản lý sản phẩm**: Thêm, sửa, xóa sản phẩm
-- **Quản lý đơn hàng**: Xem và xử lý đơn hàng (đang phát triển)
-- **Quản lý người dùng**: Quản lý tài khoản khách hàng (đang phát triển)
-
-## 🎨 Giao diện
-
-### Màu sắc chủ đạo
-- **Primary**: #2563EB (Blue)
-- **Secondary**: #64748B (Gray)
-- **Success**: #10B981 (Green)
-- **Warning**: #F59E0B (Orange)
-- **Danger**: #EF4444 (Red)
-
-### Responsive Breakpoints
-- **Desktop**: > 1024px
-- **Tablet**: 768px - 1024px
-- **Mobile**: < 768px
-
-## 🔧 Cấu hình
-
-### Database Connection
-```csharp
-string connect = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\\DataBase.mdf;Integrated Security=True;Connect Timeout=30;Application Name=OnlineShop";
-```
-
-### Session Variables
-```csharp
-Session["AdminLoggedIn"] = "true";
-Session["AdminUsername"] = username;
-Session["AdminLoginTime"] = DateTime.Now;
-```
-
-## 📱 Responsive Features
-
-### Desktop
-- Sidebar cố định bên trái
-- Layout đầy đủ với tất cả tính năng
-- Hover effects và animations
-
-### Tablet
-- Sidebar có thể thu gọn
-- Layout tối ưu cho màn hình vừa
-- Touch-friendly interface
-
-### Mobile
-- Sidebar overlay
-- Hamburger menu
-- Tối ưu cho touch interaction
-
-## 🚀 Tính năng nâng cao
-
-### JavaScript Features
-- **Auto-refresh**: Cập nhật dữ liệu mỗi 30 giây
-- **Modal Management**: Quản lý popup forms
-- **Data Tables**: Tìm kiếm, sắp xếp, phân trang
-- **Notifications**: Thông báo real-time
-- **Keyboard Shortcuts**: Ctrl+M để toggle sidebar
-
-### CSS Features
-- **Modern Design**: Gradient backgrounds, shadows
-- **Smooth Animations**: Transitions và hover effects
-- **Flexbox/Grid**: Layout hiện đại
-- **Custom Properties**: CSS variables cho dễ maintain
-
-## 🔒 Bảo mật
-
-### Authentication
+### 1. Authentication
 - Session-based authentication
-- Automatic redirect nếu chưa đăng nhập
-- Logout functionality
+- Kiểm tra `Session["AdminLoggedIn"]` trên mỗi trang
+- Auto-redirect về trang login nếu chưa đăng nhập
+- Remember Me (lưu trạng thái đăng nhập)
 
-### Data Protection
-- SQL parameter binding
-- Input validation
-- File upload restrictions
-- XSS protection
-
-## 📊 Performance
-
-### Optimizations
-- **Lazy Loading**: Load data khi cần
-- **Pagination**: Giới hạn số records hiển thị
-- **Caching**: Cache static resources
-- **Minification**: CSS/JS được optimize
-
-### Database
-- **Connection Pooling**: Tái sử dụng connections
-- **Query Optimization**: Indexed queries
-- **Timeout Settings**: Tránh timeout
-
-## 🐛 Troubleshooting
-
-### Lỗi thường gặp
-
-1. **Parser Error**: Kiểm tra namespace trong .aspx files
-2. **Control not found**: Đảm bảo designer files được tạo đúng
-3. **Database connection**: Kiểm tra connection string
-4. **File upload**: Kiểm tra permissions và file size limits
-
-### Debug Mode
+### 2. Session Management
 ```csharp
-System.Diagnostics.Debug.WriteLine($"Debug message: {variable}");
+Session["AdminLoggedIn"] = "true"
+Session["AdminUsername"] = username
+Session["AdminFullName"] = fullname
+Session["AdminEmail"] = email
+Session["AdminRole"] = role
+Session["AdminLoginTime"] = DateTime.Now
 ```
 
-## 🔄 Updates và Maintenance
+### 3. Logout
+- Clear toàn bộ session
+- Redirect về trang login
+- Button logout có sẵn ở sidebar
 
-### Version History
-- **v1.0.0**: Initial release với basic features
-- **v1.1.0**: Thêm responsive design
-- **v1.2.0**: Thêm bulk operations
-- **v1.3.0**: Thêm notifications system
+## UI/UX Design
 
-### Future Features
-- [ ] Order Management
-- [ ] User Management  
-- [ ] Reports & Analytics
-- [ ] Email Notifications
-- [ ] Multi-language Support
-- [ ] API Integration
+### Color Scheme
+- Primary: `#667eea` (Purple-Blue)
+- Secondary: `#764ba2` (Purple)
+- Success: `#2ecc71` (Green)
+- Danger: `#e74c3c` (Red)
+- Warning: `#f39c12` (Orange)
+- Info: `#3498db` (Blue)
 
-## 📞 Support
+### Layout
+- **Sidebar**: Menu điều hướng (collapsible)
+- **Top Bar**: Breadcrumb, notifications, admin profile
+- **Main Content**: Nội dung chính của từng trang
+- **Responsive**: Tự động điều chỉnh trên mobile/tablet
 
-Nếu gặp vấn đề, vui lòng:
-1. Kiểm tra Error List trong Visual Studio
-2. Xem Debug Output
-3. Kiểm tra Browser Console
-4. Verify database connection
+### Components
+- Bootstrap 5.3.0
+- Font Awesome 6.4.0 icons
+- GridView với Bootstrap styling
+- Modal dialogs
+- Toast notifications
+- Loading spinners
+
+## Cách Sử Dụng
+
+### Bước 1: Đăng nhập
+1. Truy cập `http://localhost:62512/Admin/AdminLogin.aspx`
+2. Nhập username: `admin`, password: `admin123`
+3. Click "Đăng nhập"
+
+### Bước 2: Quản lý sản phẩm
+1. Click "Quản lý sản phẩm" trong sidebar
+2. Xem danh sách sản phẩm hiện có
+3. Click "Thêm sản phẩm" để thêm mới
+4. Click "Sửa" để chỉnh sửa
+5. Click "Xóa" để xóa (có confirm)
+
+### Bước 3: Quản lý đơn hàng
+1. Click "Quản lý đơn hàng"
+2. Lọc theo trạng thái hoặc ngày
+3. Click "Chi tiết" để xem chi tiết đơn
+4. Click "Cập nhật" để thay đổi trạng thái
+
+### Bước 4: Xem báo cáo
+1. Click "Báo cáo"
+2. Chọn loại báo cáo
+3. Chọn khoảng thời gian
+4. Click "Tạo báo cáo"
+5. Click "Xuất PDF" nếu cần
+
+## Xử Lý Lỗi
+
+### Lỗi thường gặp:
+
+**1. "Could not load type 'OnlineShop.Global'"**
+- **Nguyên nhân**: Chưa rebuild sau khi thay đổi code
+- **Giải pháp**: 
+  ```
+  1. Clean Solution (Build → Clean Solution)
+  2. Rebuild Solution (Build → Rebuild Solution)
+  3. Restart IIS Express
+  ```
+
+**2. "Parser Error - Could not load file or assembly"**
+- **Nguyên nhân**: Thiếu NuGet packages
+- **Giải pháp**:
+  ```
+  1. Right-click Solution → Restore NuGet Packages
+  2. Rebuild Solution
+  ```
+
+**3. Lỗi Database Connection**
+- **Nguyên nhân**: Chuỗi kết nối không đúng hoặc DB không tồn tại
+- **Giải pháp**:
+  ```csharp
+  string connect = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\\DataBase.mdf;Integrated Security=True;Connect Timeout=30;Application Name=OnlineShop";
+  ```
+  - Kiểm tra file `DataBase.mdf` trong `App_Data`
+  - Rebuild database nếu cần
+
+**4. Session timeout / Auto logout**
+- **Nguyên nhân**: Session expire (mặc định 30 phút)
+- **Giải pháp**: Tăng timeout trong `Web.config`:
+  ```xml
+  <sessionState mode="InProc" timeout="60" />
+  ```
+
+## Performance Tips
+
+### 1. Caching
+- Implement output caching cho báo cáo
+- Cache danh mục sản phẩm (ít thay đổi)
+
+### 2. Pagination
+- Luôn dùng `AllowPaging="true"` cho GridView
+- Set `PageSize` phù hợp (10-20 items)
+
+### 3. Database
+- Tạo index cho các cột thường query:
+  ```sql
+  CREATE INDEX IX_MatHang_id_loai ON MatHang(id_loai)
+  CREATE INDEX IX_MatHang_tenhang ON MatHang(tenhang)
+  ```
+
+### 4. Images
+- Compress ảnh sản phẩm trước khi upload
+- Sử dụng WebP format (đã implement)
+- Lazy loading cho gallery
+
+## Mở Rộng Tương Lai
+
+### Tính năng nên thêm:
+1. ✅ Dashboard với charts
+2. ✅ Quản lý danh mục inline editing
+3. ✅ Báo cáo thống kê với Chart.js
+4. ⬜ Export Excel/PDF cho tất cả danh sách
+5. ⬜ Upload nhiều ảnh cho 1 sản phẩm
+6. ⬜ Rich text editor cho mô tả sản phẩm
+7. ⬜ Bulk operations (xóa/cập nhật hàng loạt)
+8. ⬜ Email notifications cho đơn hàng mới
+9. ⬜ Real-time dashboard updates (SignalR)
+10. ⬜ Role-based access control (RBAC) nâng cao
+11. ⬜ Audit logging (theo dõi thao tác admin)
+12. ⬜ Inventory management (quản lý kho)
+13. ⬜ Customer support chat
+14. ⬜ Marketing campaigns management
+
+## API Endpoints (Future)
+
+Nếu muốn tách Admin thành SPA (Single Page Application):
+```
+GET    /api/products          - List products
+POST   /api/products          - Create product
+PUT    /api/products/{id}     - Update product
+DELETE /api/products/{id}     - Delete product
+GET    /api/orders            - List orders
+PUT    /api/orders/{id}/status - Update order status
+GET    /api/reports/revenue   - Revenue report
+GET    /api/dashboard/stats   - Dashboard statistics
+```
+
+## Credits
+
+- **Framework**: ASP.NET Web Forms 4.8
+- **UI**: Bootstrap 5.3.0
+- **Icons**: Font Awesome 6.4.0
+- **Charts**: Chart.js
+- **Database**: SQL Server LocalDB
+- **IDE**: Visual Studio 2022
+
+## Support
+
+Nếu gặp vấn đề, kiểm tra:
+1. Build Output window trong Visual Studio
+2. Browser Console (F12)
+3. IIS Express logs
+4. SQL Server error logs
 
 ---
 
-**© 2025 Radian Shop. Tất cả quyền được bảo lưu.**
+**Version**: 1.0.0  
+**Last Updated**: October 2025  
+**Developed by**: Radian Shop Team
+

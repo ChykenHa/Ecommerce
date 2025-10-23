@@ -24,6 +24,7 @@
     </NuGetPackageImportStamp>
     <WebGreaseLibPath>..\packages\WebGrease.1.5.2\lib</WebGreaseLibPath>
     <TargetFrameworkProfile />
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -171,7 +172,12 @@
   <ItemGroup>
     <Content Include="Admin\AdminDashboard.aspx" />
     <Content Include="Admin\AdminLogin.aspx" />
+    <Content Include="Admin\CategoryManagement.aspx" />
+    <Content Include="Admin\OrderManagement.aspx" />
     <Content Include="Admin\ProductManagement.aspx" />
+    <Content Include="Admin\Reports.aspx" />
+    <Content Include="Admin\Settings.aspx" />
+    <Content Include="Admin\UserManagement.aspx" />
     <Content Include="App_Data\DataBase.mdf" />
     <Content Include="App_Data\DataBase_log.ldf">
       <DependentUpon>DataBase.mdf</DependentUpon>
@@ -283,10 +289,12 @@
     <Content Include="GioHang.aspx" />
     <Content Include="Global.asax" />
     <Content Include="Login.aspx" />
+    <Content Include="LienHe.aspx" />
     <Content Include="Home.aspx" />
     <Content Include="Register.aspx" />
     <Content Include="SanPham.aspx" />
     <Content Include="TaiKhoan.aspx" />
+    <Content Include="favicon.svg" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -313,12 +321,47 @@
     <Compile Include="Admin\AdminMaster.master.designer.cs">
       <DependentUpon>AdminMaster.master</DependentUpon>
     </Compile>
+    <Compile Include="Admin\CategoryManagement.aspx.cs">
+      <DependentUpon>CategoryManagement.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\CategoryManagement.aspx.designer.cs">
+      <DependentUpon>CategoryManagement.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\OrderManagement.aspx.cs">
+      <DependentUpon>OrderManagement.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\OrderManagement.aspx.designer.cs">
+      <DependentUpon>OrderManagement.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Admin\ProductManagement.aspx.cs">
       <DependentUpon>ProductManagement.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Admin\ProductManagement.aspx.designer.cs">
       <DependentUpon>ProductManagement.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\Reports.aspx.cs">
+      <DependentUpon>Reports.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\Reports.aspx.designer.cs">
+      <DependentUpon>Reports.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\Settings.aspx.cs">
+      <DependentUpon>Settings.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\Settings.aspx.designer.cs">
+      <DependentUpon>Settings.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\UserManagement.aspx.cs">
+      <DependentUpon>UserManagement.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\UserManagement.aspx.designer.cs">
+      <DependentUpon>UserManagement.aspx</DependentUpon>
     </Compile>
     <Compile Include="ThanhToan.aspx.cs">
       <DependentUpon>ThanhToan.aspx</DependentUpon>
@@ -357,6 +400,13 @@
     </Compile>
     <Compile Include="Login.aspx.designer.cs">
       <DependentUpon>Login.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="LienHe.aspx.cs">
+      <DependentUpon>LienHe.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="LienHe.aspx.designer.cs">
+      <DependentUpon>LienHe.aspx</DependentUpon>
     </Compile>
     <Compile Include="Home.aspx.cs">
       <DependentUpon>Home.aspx</DependentUpon>
@@ -496,8 +546,9 @@
     <Content Include="Images_DB\Loai_5\97.webp" />
     <Content Include="Images_DB\Loai_5\98.webp" />
     <Content Include="Images_DB\Loai_5\99.webp" />
-    <Content Include="ChatBot\GeminiChatHandler.ashx" />
+    <Content Include="ChatBot\SimpleChatHandler.ashx" />
     <Content Include="Admin\AdminMaster.master" />
+    <Content Include="Admin\README.md" />
     <None Include="packages.config" />
     <None Include="Site1.master" />
     <None Include="Web.Debug.config">

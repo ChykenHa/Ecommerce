@@ -2,6 +2,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head runat="server">
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="~/favicon.svg" />
+    <link rel="icon" type="image/x-icon" href="~/Assets/Images/Logo.jpg" />
+    <link rel="shortcut icon" href="~/favicon.svg" />
+    
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!-- Bootstrap CSS -->
@@ -12,6 +17,7 @@
     <!-- Custom CSS with cache busting -->
     <link href="~/Assets/CSS/site-styles.css?v=2025" rel="stylesheet" />
     <link href="~/Assets/CSS/login-register-styles.css?v=2025" rel="stylesheet" />
+    <link href="~/Assets/CSS/ai-chatbot.css?v=2025" rel="stylesheet" />
     
     <!-- Immediate Background Fix + AI Chat Bubble -->
     <style>
@@ -604,6 +610,6 @@
         <!-- Custom JavaScript -->
         <script src="<%= ResolveUrl("~/Assets/JS/site-scripts.js") %>"></script>
         <!-- AI Chat Bubble JavaScript -->
-        <script src="<%= ResolveUrl("~/Assets/JS/ai-chat-bubble.js") %>"></script>
+        <script src="<%= ResolveUrl("~/Assets/JS/ai-chat-bubble.js?v=20250125") %>"></script>
 </body>
 </html>

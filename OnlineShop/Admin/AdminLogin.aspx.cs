@@ -54,26 +54,44 @@ namespace OnlineShop
 
         private bool AuthenticateAdmin(string username, string password)
         {
-            // For demo purposes, using simple hardcoded credentials
-            // In production, this should query the database and use proper password hashing
-            
-            if (username == "admin" && password == "admin123")
-            {
-                return true;
-            }
-
-            // You can also check against database
+            // Check against QuanTriVien table
             using (SqlConnection conn = new SqlConnection(connect))
             {
                 try
                 {
                     conn.Open();
-                    string query = "SELECT COUNT(*) FROM AdminUsers WHERE Username = @Username AND Password = @Password AND IsActive = 1";
+                    string query = @"SELECT COUNT(*) 
+                                    FROM QuanTriVien qtv
+                                    INNER JOIN Quyen q ON qtv.id_quyen = q.id_quyen
+                                    WHERE qtv.tendangnhap = @Username 
+                                    AND qtv.matkhau = @Password";
+                    
                     SqlCommand cmd = new SqlCommand(query, conn);
                     cmd.Parameters.AddWithValue("@Username", username);
                     cmd.Parameters.AddWithValue("@Password", password); // In production, use hashed password
 
                     int count = (int)cmd.ExecuteScalar();
+                    
+                    if (count > 0)
+                    {
+                        // Lưu thông tin admin vào session
+                        string queryInfo = @"SELECT qtv.hoten, qtv.email, q.tenquyen 
+                                           FROM QuanTriVien qtv
+                                           INNER JOIN Quyen q ON qtv.id_quyen = q.id_quyen
+                                           WHERE qtv.tendangnhap = @Username";
+                        SqlCommand cmdInfo = new SqlCommand(queryInfo, conn);
+                        cmdInfo.Parameters.AddWithValue("@Username", username);
+                        
+                        SqlDataReader reader = cmdInfo.ExecuteReader();
+                        if (reader.Read())
+                        {
+                            Session["AdminFullName"] = reader["hoten"].ToString();
+                            Session["AdminEmail"] = reader["email"].ToString();
+                            Session["AdminRole"] = reader["tenquyen"].ToString();
+                        }
+                        reader.Close();
+                    }
+                    
                     return count > 0;
                 }
                 catch (Exception ex)

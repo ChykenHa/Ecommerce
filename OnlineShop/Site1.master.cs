@@ -35,7 +35,7 @@ namespace OnlineShop
 
         protected void Contact_Click(object sender, EventArgs e)
         {
-            // TODO: Implement contact page navigation
+            Response.Redirect("LienHe.aspx");
         }
 
         protected void btnSearch_Click(object sender, EventArgs e)

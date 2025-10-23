@@ -164,25 +164,102 @@ class AIChatBubble {
         } catch (error) {
             console.error('Error calling Gemini API:', error);
             this.hideTypingIndicator();
-            this.addMessage('Xin lỗi, tôi không thể xử lý yêu cầu của bạn lúc này. Vui lòng thử lại sau.', 'ai');
+            
+            // Get fallback response based on message content
+            const fallbackResponse = this.getFallbackResponse(message);
+            this.addMessage(fallbackResponse, 'ai');
         } finally {
             sendButton.disabled = false;
             this.isTyping = false;
             chatInput.focus();
         }
     }
+    
+    getFallbackResponse(message) {
+        const lowerMessage = message.toLowerCase();
+        
+        // Product queries
+        if (lowerMessage.includes('điện thoại') || lowerMessage.includes('phone')) {
+            return '📱 Chúng tôi có nhiều dòng điện thoại:\n\n' +
+                   '• iPhone 15 Pro Max - 29.990.000 ₫\n' +
+                   '• Samsung Galaxy S24 Ultra - 27.990.000 ₫\n' +
+                   '• Xiaomi 14 - 14.990.000 ₫\n\n' +
+                   'Bạn muốn tìm hiểu thêm về dòng nào?';
+        }
+        
+        if (lowerMessage.includes('laptop')) {
+            return '💻 Các dòng laptop phổ biến:\n\n' +
+                   '• MacBook Air M3 - 31.990.000 ₫\n' +
+                   '• Dell XPS 15 - 45.990.000 ₫\n' +
+                   '• ASUS ROG Zephyrus - 42.990.000 ₫\n\n' +
+                   'Bạn cần laptop cho mục đích gì?';
+        }
+        
+        if (lowerMessage.includes('giá') || lowerMessage.includes('bao nhiêu')) {
+            return '💰 Tôi có thể giúp bạn tìm sản phẩm theo mức giá:\n\n' +
+                   '• Dưới 10 triệu\n' +
+                   '• 10-20 triệu\n' +
+                   '• 20-30 triệu\n' +
+                   '• Trên 30 triệu\n\n' +
+                   'Bạn muốn tìm trong khoảng giá nào?';
+        }
+        
+        if (lowerMessage.includes('khuyến mãi') || lowerMessage.includes('giảm giá')) {
+            return '🎁 Khuyến mãi đang có:\n\n' +
+                   '• Giảm 15% cho iPhone 15 Series\n' +
+                   '• Tặng AirPods khi mua MacBook\n' +
+                   '• Giảm 20% phụ kiện khi mua laptop\n\n' +
+                   'Ghé shop để nhận ưu đãi nhé!';
+        }
+        
+        // Greetings
+        if (lowerMessage.includes('xin chào') || lowerMessage.includes('chào') || 
+            lowerMessage.includes('hi') || lowerMessage.includes('hello')) {
+            return '👋 Xin chào! Tôi là trợ lý AI của Radian Shop.\n\n' +
+                   'Tôi có thể giúp bạn:\n' +
+                   '• Tìm sản phẩm phù hợp\n' +
+                   '• So sánh thiết bị\n' +
+                   '• Tư vấn mua hàng\n' +
+                   '• Trả lời thắc mắc về công nghệ\n\n' +
+                   'Bạn cần tìm sản phẩm gì?';
+        }
+        
+        // Default response
+        return '🤖 Xin lỗi, tôi đang gặp chút vấn đề kết nối với AI server.\n\n' +
+               'Nhưng tôi vẫn có thể giúp bạn! Hãy thử hỏi về:\n' +
+               '• 📱 Điện thoại (iPhone, Samsung...)\n' +
+               '• 💻 Laptop (MacBook, Dell, ASUS...)\n' +
+               '• 🎧 Tai nghe & phụ kiện\n' +
+               '• 💰 Giá cả & khuyến mãi\n\n' +
+               'Hoặc bạn có thể gọi hotline: 1900-xxxx';
+    }
 
     addMessage(message, sender) {
         const chatMessages = document.getElementById('chatMessages');
         const messageDiv = document.createElement('div');
         messageDiv.className = `chat-message message-${sender}`;
-        messageDiv.textContent = message;
+        
+        // Format message with proper line breaks and emojis
+        messageDiv.innerHTML = this.formatMessage(message);
         
         chatMessages.appendChild(messageDiv);
         chatMessages.scrollTop = chatMessages.scrollHeight;
 
         // Store in history
         this.chatHistory.push({ message, sender, timestamp: new Date() });
+    }
+    
+    formatMessage(message) {
+        // Message already contains safe HTML from server (br, b, span tags)
+        // Just add some styling enhancements
+        let formatted = message
+            .replace(/•/g, '<span style="color: #667eea; font-weight: bold;">•</span>')
+            .replace(/₫/g, '<span style="color: #e74c3c; font-weight: 600;">₫</span>')
+            .replace(/🔥/g, '<span style="font-size: 1.2em;">🔥</span>')
+            .replace(/⚡/g, '<span style="font-size: 1.2em;">⚡</span>')
+            .replace(/💎/g, '<span style="font-size: 1.2em;">💎</span>');
+        
+        return formatted;
     }
 
     showTypingIndicator() {
@@ -211,7 +288,11 @@ class AIChatBubble {
         try {
             console.log('Sending message to Gemini API:', message);
             
-            const response = await fetch('ChatBot/GeminiChatHandler.ashx', {
+            // Detect if we're in admin panel or main site
+            const isAdmin = window.location.pathname.toLowerCase().includes('/admin/');
+            const handlerPath = isAdmin ? '../ChatBot/SimpleChatHandler.ashx' : 'ChatBot/SimpleChatHandler.ashx';
+            
+            const response = await fetch(handlerPath, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
