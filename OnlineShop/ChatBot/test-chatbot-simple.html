@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Chatbot - Radian Shop</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .test-container {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        .test-form {
+            margin-bottom: 20px;
+        }
+        .test-input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+        .test-button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+        }
+        .test-button:hover {
+            transform: translateY(-2px);
+        }
+        .test-result {
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 10px;
+            white-space: pre-wrap;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        .success {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+        }
+        .error {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+        }
+        .loading {
+            background: #d1ecf1;
+            border: 1px solid #bee5eb;
+            color: #0c5460;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>🤖 Test Chatbot AI</h1>
+        
+        <div class="test-form">
+            <input type="text" id="testInput" class="test-input" placeholder="Nhập tin nhắn test..." value="Xin chào">
+            <button onclick="testChatbot()" class="test-button">Test Chatbot</button>
+        </div>
+        
+        <div id="testResult" class="test-result" style="display: none;"></div>
+        
+        <div style="margin-top: 30px; padding: 20px; background: #f8f9fa; border-radius: 10px;">
+            <h3>📋 Hướng dẫn:</h3>
+            <ul>
+                <li>Nhập tin nhắn vào ô input</li>
+                <li>Nhấn "Test Chatbot" để gửi</li>
+                <li>Kiểm tra kết quả trả về</li>
+                <li>Nếu có lỗi, mở Console (F12) để xem chi tiết</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        async function testChatbot() {
+            const input = document.getElementById('testInput');
+            const result = document.getElementById('testResult');
+            const message = input.value.trim();
+            
+            if (!message) {
+                alert('Vui lòng nhập tin nhắn!');
+                return;
+            }
+            
+            // Show loading
+            result.style.display = 'block';
+            result.className = 'test-result loading';
+            result.textContent = 'Đang gửi tin nhắn...';
+            
+            try {
+                console.log('Testing chatbot with message:', message);
+                
+                const response = await fetch('/ChatBot/GeminiChatHandler.ashx', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ message: message })
+                });
+                
+                console.log('Response status:', response.status);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                console.log('Response data:', data);
+                
+                if (data.error) {
+                    throw new Error(data.error);
+                }
+                
+                // Show success result
+                result.className = 'test-result success';
+                result.textContent = `✅ Thành công!\n\nTin nhắn: ${message}\n\nPhản hồi AI: ${data.response || 'Không có phản hồi'}`;
+                
+            } catch (error) {
+                console.error('Test error:', error);
+                
+                // Show error result
+                result.className = 'test-result error';
+                result.textContent = `❌ Lỗi!\n\nTin nhắn: ${message}\n\nLỗi: ${error.message}\n\nChi tiết lỗi xem trong Console (F12)`;
+            }
+        }
+        
+        // Allow Enter key to test
+        document.getElementById('testInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                testChatbot();
+            }
+        });
+        
+        console.log('Test page loaded. Ready to test chatbot.');
+    </script>
+</body>
+</html>

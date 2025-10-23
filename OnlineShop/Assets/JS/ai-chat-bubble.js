@@ -208,25 +208,51 @@ class AIChatBubble {
     }
 
     async callGeminiAPI(message) {
-        const response = await fetch('/ChatBot/GeminiChatHandler.ashx', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ message: message })
-        });
+        try {
+            console.log('Sending message to Gemini API:', message);
+            
+            const response = await fetch('ChatBot/GeminiChatHandler.ashx', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ message: message })
+            });
 
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+            console.log('Response status:', response.status);
+            console.log('Response ok:', response.ok);
+
+            if (!response.ok) {
+                const errorText = await response.text();
+                console.error('Response error:', errorText);
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const responseText = await response.text();
+            console.log('Response text:', responseText);
+            
+            let data;
+            try {
+                data = JSON.parse(responseText);
+                console.log('Parsed data:', data);
+            } catch (parseError) {
+                console.error('JSON parse error:', parseError);
+                console.error('Response text:', responseText);
+                throw new Error('Invalid JSON response from server');
+            }
+            
+            if (data.error) {
+                console.error('API error:', data.error);
+                throw new Error(data.error);
+            }
+
+            console.log('AI response:', data.response);
+            return data.response || 'Không có phản hồi từ AI.';
+            
+        } catch (error) {
+            console.error('callGeminiAPI error:', error);
+            throw error;
         }
-
-        const data = await response.json();
-        
-        if (data.error) {
-            throw new Error(data.error);
-        }
-
-        return data.response || 'Không có phản hồi từ AI.';
     }
 
     // Utility methods

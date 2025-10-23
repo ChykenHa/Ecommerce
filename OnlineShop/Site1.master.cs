@@ -7,13 +7,10 @@ namespace OnlineShop
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            // Disable caching for dynamic content
             Response.Cache.SetCacheability(HttpCacheability.NoCache);
             Response.Cache.SetExpires(DateTime.UtcNow.AddMinutes(-1));
             Response.Cache.SetNoStore();
-            if (IsPostBack)
-            {
-
-            }
         }
 
         protected void ButtonHome_Click(object sender, EventArgs e)
@@ -33,16 +30,17 @@ namespace OnlineShop
 
         protected void Sales_Click(object sender, EventArgs e)
         {
-
+            // TODO: Implement sales page navigation
         }
 
         protected void Contact_Click(object sender, EventArgs e)
         {
-
+            // TODO: Implement contact page navigation
         }
+
         protected void btnSearch_Click(object sender, EventArgs e)
         {
-
+            // TODO: Implement search functionality
         }
 
         protected void Login_Click(object sender, EventArgs e)
@@ -52,8 +50,8 @@ namespace OnlineShop
         protected void Logout_Click(object sender, EventArgs e)
         {
             FormsAuthentication.SignOut();
-            Session.Abandon(); // Hủy tất cả session nếu có dùng
-            Response.Redirect("~/Home.aspx", true); // Điều này rất quan trọng
+            Session.Abandon();
+            Response.Redirect("~/Home.aspx", true);
         }
 
         protected void Cart_Click(object sender, EventArgs e)
@@ -63,32 +61,32 @@ namespace OnlineShop
 
         protected void btnAll_Click(object sender, EventArgs e)
         {
-
+            // TODO: Implement all products filter
         }
 
         protected void btnSmartphone_Click(object sender, EventArgs e)
         {
-
+            // TODO: Implement smartphone filter
         }
 
         protected void btnLaptop_Click(object sender, EventArgs e)
         {
-
+            // TODO: Implement laptop filter
         }
 
         protected void btnTablet_Click(object sender, EventArgs e)
         {
-
+            // TODO: Implement tablet filter
         }
 
         protected void btnHeadphone_Click(object sender, EventArgs e)
         {
-
+            // TODO: Implement headphone filter
         }
 
         protected void btnAccessories_Click(object sender, EventArgs e)
         {
-
+            // TODO: Implement accessories filter
         }
 
         protected void Register_Click(object sender, EventArgs e)

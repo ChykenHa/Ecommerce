@@ -21,7 +21,7 @@ class Utils {
      * @param {number} wait - Wait time in milliseconds
      * @returns {Function} Debounced function
      */
-    static debounce(func, wait = 300) {
+    static debounce(func, wait = 150) { // Reduced from 250ms for faster response
         let timeout;
         return (...args) => {
             clearTimeout(timeout);
@@ -35,7 +35,7 @@ class Utils {
      * @param {number} limit - Time limit in milliseconds
      * @returns {Function} Throttled function
      */
-    static throttle(func, limit = 100) {
+    static throttle(func, limit = 16) { // 60fps = ~16ms for stable performance
         let inThrottle;
         return (...args) => {
             if (!inThrottle) {
@@ -148,12 +148,13 @@ class ScrollManager {
         // Use throttled scroll handler for better performance
         const handleScroll = Utils.throttle(() => {
             requestAnimationFrame(() => {
-                backToTopBtn.style.display = window.pageYOffset > 300 ? 'grid' : 'none';
-                if (window.pageYOffset > 300) {
+                const shouldShow = window.pageYOffset > 300;
+                backToTopBtn.style.display = shouldShow ? 'grid' : 'none';
+                if (shouldShow) {
                     backToTopBtn.style.transform = 'scale(1) rotate(0deg)';
                 }
             });
-        }, 100);
+        }, 16); // 60fps for stable performance
 
         Utils.addListener(window, 'scroll', handleScroll, { passive: true });
 
@@ -764,11 +765,356 @@ class App {
             });
         });
 
+        // Setup enhanced animations
+        this.setupEnhancedAnimations();
+        
         // Setup newsletter subscription
         this.setupNewsletterSubscription();
         
         // Add loading complete class
         document.body.classList.add('loaded');
+    }
+
+    /**
+     * Setup enhanced tech animations and effects
+     */
+    setupEnhancedAnimations() {
+        // Add entrance animations to elements
+        this.addEntranceAnimations();
+        
+        // Setup parallax effects
+        this.setupParallaxEffects();
+        
+        // Setup interactive hover effects
+        this.setupInteractiveEffects();
+        
+        // Setup loading animations
+        this.setupLoadingAnimations();
+        
+        // Setup tech effects
+        this.setupTechEffects();
+        
+        // Setup matrix rain effect
+        this.setupMatrixRain();
+        
+        // Setup holographic elements
+        this.setupHolographicElements();
+    }
+
+    /**
+     * Add entrance animations to elements
+     */
+    addEntranceAnimations() {
+        const elements = Utils.$$('.product-item, .ad-item, .menu-item, .footer-section');
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry, index) => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0) scale(1)';
+                    }, index * 100);
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, {
+            rootMargin: '0px 0px -50px 0px',
+            threshold: 0.1
+        });
+
+        elements.forEach(element => {
+            element.style.opacity = '0';
+            element.style.transform = 'translateY(30px) scale(0.95)';
+            element.style.transition = 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
+            observer.observe(element);
+        });
+    }
+
+    /**
+     * Setup parallax effects for background elements
+     */
+    setupParallaxEffects() {
+        const parallaxElements = Utils.$$('.banner, .ad-banner-left, .ad-banner-right');
+        
+        const handleParallax = Utils.throttle(() => {
+            const scrolled = window.pageYOffset;
+            const rate = scrolled * -0.5;
+            
+            parallaxElements.forEach(element => {
+                element.style.transform = `translateY(${rate}px)`;
+            });
+        }, 16);
+
+        Utils.addListener(window, 'scroll', handleParallax, { passive: true });
+    }
+
+    /**
+     * Setup interactive hover effects
+     */
+    setupInteractiveEffects() {
+        // Add ripple effect to buttons
+        const buttons = Utils.$$('.btn-buy-now, .mua-ngay-button, .menu-item');
+        
+        buttons.forEach(button => {
+            Utils.addListener(button, 'click', (e) => {
+                this.createRippleEffect(e, button);
+            });
+        });
+
+        // Add magnetic effect to product items
+        const productItems = Utils.$$('.product-item');
+        
+        productItems.forEach(item => {
+            Utils.addListener(item, 'mousemove', (e) => {
+                this.magneticEffect(e, item);
+            });
+            
+            Utils.addListener(item, 'mouseleave', () => {
+                item.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+    }
+
+    /**
+     * Create ripple effect on click
+     */
+    createRippleEffect(event, element) {
+        const ripple = document.createElement('span');
+        const rect = element.getBoundingClientRect();
+        const size = Math.max(rect.width, rect.height);
+        const x = event.clientX - rect.left - size / 2;
+        const y = event.clientY - rect.top - size / 2;
+        
+        ripple.style.cssText = `
+            position: absolute;
+            width: ${size}px;
+            height: ${size}px;
+            left: ${x}px;
+            top: ${y}px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            transform: scale(0);
+            animation: ripple 0.6s linear;
+            pointer-events: none;
+        `;
+        
+        element.style.position = 'relative';
+        element.style.overflow = 'hidden';
+        element.appendChild(ripple);
+        
+        setTimeout(() => ripple.remove(), 600);
+    }
+
+    /**
+     * Create magnetic effect on hover
+     */
+    magneticEffect(event, element) {
+        const rect = element.getBoundingClientRect();
+        const x = event.clientX - rect.left - rect.width / 2;
+        const y = event.clientY - rect.top - rect.height / 2;
+        
+        const moveX = x * 0.1;
+        const moveY = y * 0.1;
+        
+        element.style.transform = `translate(${moveX}px, ${moveY}px) scale(1.02)`;
+    }
+
+    /**
+     * Setup loading animations
+     */
+    setupLoadingAnimations() {
+        // Add loading animation to images
+        const images = Utils.$$('img');
+        
+        images.forEach(img => {
+            if (!img.complete) {
+                img.style.opacity = '0';
+                img.style.transition = 'opacity 0.3s ease';
+                
+                Utils.addListener(img, 'load', () => {
+                    img.style.opacity = '1';
+                });
+            }
+        });
+
+        // Add skeleton loading for dynamic content
+        this.setupSkeletonLoading();
+    }
+
+    /**
+     * Setup skeleton loading for dynamic content
+     */
+    setupSkeletonLoading() {
+        const skeletonHTML = `
+            <div class="skeleton-loading" style="
+                background: linear-gradient(90deg, 
+                    rgba(0, 212, 255, 0.1) 25%, 
+                    rgba(0, 245, 255, 0.2) 50%, 
+                    rgba(0, 212, 255, 0.1) 75%
+                );
+                background-size: 200% 100%;
+                animation: skeleton-loading 1.5s infinite;
+                border-radius: 8px;
+                height: 20px;
+                margin: 10px 0;
+            "></div>
+        `;
+        
+        // Add CSS for skeleton animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes skeleton-loading {
+                0% { background-position: -200% 0; }
+                100% { background-position: 200% 0; }
+            }
+            
+            @keyframes ripple {
+                to {
+                    transform: scale(4);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    }
+
+    /**
+     * Setup tech effects for modern UI
+     */
+    setupTechEffects() {
+        // Add tech glow to important elements
+        const importantElements = Utils.$$('.product-item, .menu-item, .btn-buy-now');
+        
+        importantElements.forEach(element => {
+            Utils.addListener(element, 'mouseenter', () => {
+                element.classList.add('glow-effect');
+            });
+            
+            Utils.addListener(element, 'mouseleave', () => {
+                element.classList.remove('glow-effect');
+            });
+        });
+
+        // Add neon text effect to titles
+        const titles = Utils.$$('h1, h2, h3, .product-title');
+        titles.forEach(title => {
+            title.classList.add('text-glow');
+        });
+
+        // Add tech loading to buttons
+        const buttons = Utils.$$('.btn-buy-now, .mua-ngay-button');
+        buttons.forEach(button => {
+            Utils.addListener(button, 'click', () => {
+                button.classList.add('tech-loading');
+                setTimeout(() => {
+                    button.classList.remove('tech-loading');
+                }, 2000);
+            });
+        });
+    }
+
+    /**
+     * Setup floating stars and bubbles effect
+     */
+    setupMatrixRain() {
+        this.createFloatingStars();
+        this.createFloatingBubbles();
+        this.createFloatingOrbs();
+    }
+
+    /**
+     * Create floating stars
+     */
+    createFloatingStars() {
+        const createStar = () => {
+            const star = document.createElement('div');
+            star.className = 'floating-star';
+            star.style.left = Math.random() * 100 + '%';
+            star.style.animationDelay = Math.random() * 8 + 's';
+            star.style.animationDuration = (8 + Math.random() * 4) + 's';
+            document.body.appendChild(star);
+
+            setTimeout(() => {
+                star.remove();
+            }, 12000);
+        };
+
+        // Create stars periodically
+        setInterval(createStar, 2000);
+        
+        // Create initial stars
+        for (let i = 0; i < 5; i++) {
+            setTimeout(createStar, i * 400);
+        }
+    }
+
+    /**
+     * Create floating bubbles
+     */
+    createFloatingBubbles() {
+        const createBubble = () => {
+            const bubble = document.createElement('div');
+            bubble.className = 'floating-bubble';
+            bubble.style.left = Math.random() * 100 + '%';
+            bubble.style.animationDelay = Math.random() * 12 + 's';
+            bubble.style.animationDuration = (12 + Math.random() * 6) + 's';
+            document.body.appendChild(bubble);
+
+            setTimeout(() => {
+                bubble.remove();
+            }, 18000);
+        };
+
+        // Create bubbles periodically
+        setInterval(createBubble, 3000);
+        
+        // Create initial bubbles
+        for (let i = 0; i < 3; i++) {
+            setTimeout(createBubble, i * 1000);
+        }
+    }
+
+    /**
+     * Create floating orbs
+     */
+    createFloatingOrbs() {
+        const createOrb = () => {
+            const orb = document.createElement('div');
+            orb.className = 'floating-orb';
+            orb.style.left = Math.random() * 100 + '%';
+            orb.style.animationDelay = Math.random() * 15 + 's';
+            orb.style.animationDuration = (15 + Math.random() * 10) + 's';
+            document.body.appendChild(orb);
+
+            setTimeout(() => {
+                orb.remove();
+            }, 25000);
+        };
+
+        // Create orbs periodically
+        setInterval(createOrb, 5000);
+        
+        // Create initial orbs
+        for (let i = 0; i < 2; i++) {
+            setTimeout(createOrb, i * 2500);
+        }
+    }
+
+    /**
+     * Setup holographic elements
+     */
+    setupHolographicElements() {
+        const holographicElements = Utils.$$('.product-item, .menu-item');
+        
+        holographicElements.forEach(element => {
+            Utils.addListener(element, 'mouseenter', () => {
+                element.classList.add('holographic');
+            });
+            
+            Utils.addListener(element, 'mouseleave', () => {
+                element.classList.remove('holographic');
+            });
+        });
     }
 
     /**

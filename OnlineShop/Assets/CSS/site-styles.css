@@ -1,32 +1,52 @@
 ﻿
 /* ==========================================================================
-   1. Modern CSS Variables and Base Styles (Dark Ocean Theme)
+   1. Modern CSS Variables and Base Styles (Blue Tech Theme)
    ========================================================================== */
 :root {
-    /* Dark Ocean color scheme - Modern with better contrast */
-    --primary: #1B4D72;            /* Deep ocean blue */
-    --primary-light: #2E6B8F;      /* Lighter ocean blue */
-    --primary-dark: #0F2A3E;       /* Deep sea navy */
-    --secondary: #4A90A4;          /* Ocean teal */
-    --secondary-light: #6BA3B5;    /* Light ocean teal */
-    --accent: #82C3D7;             /* Seafoam accent */
-    --soft-red: #1B4D72;           /* Renamed but kept for backwards compatibility */
-    --text-dark: #0F2A3E;          /* Deep sea navy for dark text */
-    --text-medium: #1B4D72;        /* Deep ocean blue for medium text */
-    --text-light: #ffffff;
-    --bg-light: #F0F8FC;           /* Very light ocean mist */
-    --bg-highlight: #E6F3F8;       /* Light ocean mist highlight */
-    --border-light: #C2D9E0;       /* Ocean mist border */
+    /* Blue Tech Color Palette */
+    --primary: #0F172A;            /* Deep dark blue */
+    --primary-light: #1E293B;     /* Dark slate blue */
+    --primary-dark: #020617;      /* Deepest blue */
+    --secondary: #1E40AF;         /* Deep blue */
+    --secondary-light: #2563EB;   /* Bright blue */
+    --accent: #3B82F6;            /* Light blue */
+    --accent-light: #60A5FA;      /* Very light blue */
+    --accent-glow: #2563EB;       /* Glow effect color */
+    --soft-red: #EF4444;          /* Electric red */
+    --success: #10B981;           /* Electric green */
+    --warning: #F59E0B;           /* Electric orange */
+    --text-dark: #0F172A;         /* Deep dark blue text */
+    --text-medium: #1E293B;       /* Dark slate */
+    --text-light: #FFFFFF;        /* Pure white */
+    --text-bright: #60A5FA;       /* Bright blue text */
+    --text-muted: #64748B;        /* Muted text */
+    --text-glow: #3B82F6;         /* Glowing text */
+    --bg-light: #F1F5F9;          /* Light background */
+    --bg-highlight: #E2E8F0;      /* Highlight background */
+    --bg-glass: rgba(255, 255, 255, 0.1); /* Glass effect */
+    --border-light: #60A5FA;      /* Light blue border */
+    --border-dark: #1E293B;       /* Dark blue border */
+    --border-glow: rgba(96, 165, 250, 0.5); /* Glowing border */
     
-    /* Dark ocean gradient background with better performance */
+    /* Custom Gradient Background - From User Image */
     --gradient-bg: linear-gradient(135deg, 
-        #0F2A3E 0%,     /* Deep sea navy */
-        #1B4D72 20%,    /* Deep ocean blue */
-        #2E6B8F 40%,    /* Ocean blue */
-        #4A90A4 60%,    /* Ocean teal */
-        #1B4D72 80%,    /* Back to deep ocean */
-        #0F2A3E 100%    /* Deep sea navy */
+        #213448 0%,     /* Dark blue from image */
+        #547792 35%,    /* Medium blue from image */
+        #94B4C1 70%,    /* Light blue from image */
+        #ECEFCA 100%    /* Cream from image */
     );
+    
+    /* Tech-focused gradients */
+    --gradient-tech: linear-gradient(135deg, #0F172A, #1E40AF, #3B82F6);
+    --gradient-neon: linear-gradient(135deg, #1E40AF, #2563EB, #60A5FA);
+    --gradient-glass: linear-gradient(145deg, rgba(59, 130, 246, 0.1), rgba(96, 165, 250, 0.05));
+    --gradient-glow: linear-gradient(135deg, rgba(37, 99, 235, 0.2), rgba(96, 165, 250, 0.1));
+    
+    /* Additional gradient variations */
+    --gradient-primary: linear-gradient(135deg, #0F172A, #1E40AF, #3B82F6);
+    --gradient-accent: linear-gradient(135deg, #1E40AF, #2563EB, #60A5FA);
+    --gradient-card: linear-gradient(145deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+    --gradient-glass: linear-gradient(135deg, rgba(255,255,255,0.15), rgba(255,255,255,0.05));
     
     /* Layered shadow system with ocean tones */
     --shadow-sm: 0 1px 3px rgba(15, 42, 62, 0.2);
@@ -60,11 +80,11 @@
     --radius-xl: 28px;
     --radius-circle: 50%;
     
-    /* Smooth transitions with custom easing */
-    --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-    --transition-normal: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    --transition-slow: 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-    --transition-bounce: 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    /* Optimized transitions for better performance */
+    --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-normal: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-slow: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-bounce: 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 }
 
 /* Modern Reset with better defaults */
@@ -84,10 +104,13 @@ html {
 
 body {
     font-family: var(--font-primary);
-    color: var(--text-dark);
-    background: var(--gradient-bg);
-    background-size: 400% 400%;
-    animation: darkOceanShift 20s ease infinite;
+    color: var(--text-light);
+    background: linear-gradient(135deg, 
+        #213448 0%,     /* Dark blue from image */
+        #547792 35%,    /* Medium blue from image */
+        #94B4C1 70%,    /* Light blue from image */
+        #ECEFCA 100%    /* Cream from image */
+    );
     background-attachment: fixed;
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
@@ -97,15 +120,52 @@ body {
     position: relative;
 }
 
-/* Optimized animation with will-change for better performance */
-@keyframes darkOceanShift {
-    0%, 100% { background-position: 0% 50%; }
-    25% { background-position: 50% 100%; }
-    50% { background-position: 100% 50%; }
-    75% { background-position: 50% 0%; }
+/* Static Blue Tech Background - No Animation */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        radial-gradient(circle at 20% 20%, rgba(30, 64, 175, 0.08) 0%, transparent 60%),
+        radial-gradient(circle at 80% 80%, rgba(37, 99, 235, 0.06) 0%, transparent 60%),
+        radial-gradient(circle at 40% 60%, rgba(59, 130, 246, 0.04) 0%, transparent 60%),
+        radial-gradient(circle at 60% 40%, rgba(96, 165, 250, 0.03) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: 0;
 }
 
-/* Improved link defaults */
+/* Static Blue Tech Grid Pattern - No Animation */
+body::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        linear-gradient(rgba(30, 64, 175, 0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(30, 64, 175, 0.02) 1px, transparent 1px);
+    background-size: 100px 100px, 100px 100px;
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* Removed all background animations - using static background now */
+
+@keyframes cornerGlow {
+    0%, 100% {
+        opacity: 0.3;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.6;
+        transform: scale(1.1);
+    }
+}
+
 a {
     color: inherit;
     text-decoration: none;
@@ -136,20 +196,50 @@ p, h1, h2, h3, h4, h5, h6 {
     overflow-wrap: break-word;
 }
 
-/* Updated Header with dark ocean theme */
+/* Enhanced Tech Header with Neon Effects */
 .header {
-    background: rgba(15, 42, 62, 0.2);
-    backdrop-filter: blur(20px);
+    background: rgba(10, 14, 26, 0.2);
+    backdrop-filter: blur(30px) saturate(200%);
+    -webkit-backdrop-filter: blur(30px) saturate(200%);
     padding: var(--space-md) var(--space-lg);
     display: flex;
     align-items: center;
     justify-content: space-between;
-    box-shadow: 0 8px 32px rgba(15, 42, 62, 0.2);
+    box-shadow: 
+        0 8px 32px rgba(0, 212, 255, 0.2),
+        0 0 40px rgba(0, 245, 255, 0.1),
+        inset 0 1px 0 rgba(0, 212, 255, 0.3);
     position: sticky;
     top: 0;
     z-index: 1000;
-    border-bottom: 1px solid rgba(130, 195, 215, 0.3);
+    border-bottom: 2px solid var(--border-glow);
     transition: all var(--transition-normal);
+    border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+    margin: 0 var(--space-sm);
+    width: calc(100% - 2 * var(--space-sm));
+    position: relative;
+    overflow: hidden;
+}
+
+.header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, 
+        transparent, 
+        rgba(0, 212, 255, 0.1), 
+        transparent
+    );
+    animation: headerScan 3s ease-in-out infinite;
+}
+
+@keyframes headerScan {
+    0% { left: -100%; }
+    50% { left: 100%; }
+    100% { left: 100%; }
 }
 
 .header::before {
@@ -233,24 +323,58 @@ p, h1, h2, h3, h4, h5, h6 {
     background: rgba(15, 42, 62, 0.4);
 }
 
-/* Navigation with ocean theme */
+/* Enhanced Tech Navigation with Neon Effects */
 .nav-item {
     display: flex;
     justify-content: center;
     align-items: center;
-    background: rgba(15, 42, 62, 0.2);
-    backdrop-filter: blur(20px);
-    border-radius: 25px;
-    padding: 12px 18px;
-    box-shadow: var(--shadow-md);
-    border: 1px solid rgba(130, 195, 215, 0.3);
+    background: rgba(10, 14, 26, 0.3);
+    backdrop-filter: blur(30px) saturate(200%);
+    -webkit-backdrop-filter: blur(30px) saturate(200%);
+    border-radius: 30px;
+    padding: 15px 25px;
+    box-shadow: 
+        0 8px 25px rgba(0, 212, 255, 0.2),
+        0 0 30px rgba(0, 245, 255, 0.1),
+        inset 0 1px 0 rgba(0, 212, 255, 0.2);
+    border: 2px solid var(--border-glow);
     position: relative;
     overflow: hidden;
     margin-left: auto;
     min-width: 600px;
-    gap: 8px;
+    gap: 12px;
     flex-wrap: wrap;
     z-index: 2;
+    transition: all var(--transition-normal);
+}
+
+.nav-item:hover {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 
+        0 20px 40px rgba(0, 212, 255, 0.3),
+        0 0 50px rgba(0, 245, 255, 0.2),
+        inset 0 1px 0 rgba(0, 212, 255, 0.4);
+    border-color: var(--accent);
+}
+
+.nav-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, 
+        rgba(0, 212, 255, 0.1) 0%, 
+        rgba(0, 245, 255, 0.05) 100%
+    );
+    opacity: 0;
+    transition: opacity var(--transition-normal);
+    z-index: 1;
+}
+
+.nav-item:hover::before {
+    opacity: 1;
 }
 
 .nav-item::before {
@@ -274,19 +398,21 @@ p, h1, h2, h3, h4, h5, h6 {
 }
 
 .menu-item {
-    background: rgba(15, 42, 62, 0.3);
-    color: white;
-    font-weight: 600;
-    padding: 12px 18px;
-    border-radius: 15px;
-    transition: all 0.3s ease;
+    background: rgba(10, 14, 26, 0.5);
+    color: var(--text-light);
+    font-weight: 700;
+    padding: 14px 22px;
+    border-radius: 20px;
+    transition: all var(--transition-normal);
     cursor: pointer;
     outline: none;
     text-transform: uppercase;
     font-size: var(--font-size-xs);
-    letter-spacing: 0.5px;
-    border: 2px solid rgba(130, 195, 215, 0.3);
-    box-shadow: var(--shadow-sm);
+    letter-spacing: 1px;
+    border: 2px solid var(--border-glow);
+    box-shadow: 
+        0 4px 15px rgba(0, 212, 255, 0.2),
+        inset 0 1px 0 rgba(0, 212, 255, 0.2);
     text-align: center;
     text-decoration: none;
     display: inline-block;
@@ -294,7 +420,9 @@ p, h1, h2, h3, h4, h5, h6 {
     position: relative;
     z-index: 2;
     overflow: hidden;
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    text-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
 }
 
 .menu-item::before {
@@ -323,11 +451,15 @@ p, h1, h2, h3, h4, h5, h6 {
 }
 
 .menu-item:hover {
-    background: linear-gradient(135deg, var(--primary-light), var(--primary)) !important;
-    color: white !important;
-    transform: translateY(-3px);
-    box-shadow: 0 8px 25px rgba(27, 77, 114, 0.3);
-    border-color: var(--primary) !important;
+    background: linear-gradient(135deg, var(--secondary), var(--accent)) !important;
+    color: var(--text-light) !important;
+    transform: translateY(-4px) scale(1.05);
+    box-shadow: 
+        0 15px 35px rgba(0, 212, 255, 0.4),
+        0 0 30px rgba(0, 245, 255, 0.3),
+        inset 0 1px 0 rgba(0, 212, 255, 0.4);
+    border-color: var(--accent) !important;
+    text-shadow: 0 0 20px rgba(0, 245, 255, 0.8);
 }
 
 .menu-item.active,
@@ -778,6 +910,9 @@ p, h1, h2, h3, h4, h5, h6 {
         linear-gradient(#fff 0 0) content-box, 
         linear-gradient(#fff 0 0);
     -webkit-mask-composite: xor;
+    mask: 
+        linear-gradient(#fff 0 0) content-box, 
+        linear-gradient(#fff 0 0);
     mask-composite: exclude;
     opacity: 0;
     transition: opacity var(--transition-normal);
@@ -818,24 +953,36 @@ p, h1, h2, h3, h4, h5, h6 {
 }
 
 /* ========================================================================== 
-   ANIMATED SIDEBAR - Ocean Theme
+   ENHANCED SIDEBAR - Dark Ocean Theme
    ========================================================================== */
 .sidebar {
     grid-column: 2;
     width: 100%;
     max-width: 320px;
-    background: rgba(15, 42, 62, 0.2);
-    backdrop-filter: blur(20px);
+    background: rgba(15, 23, 42, 0.2);
+    backdrop-filter: blur(25px) saturate(180%);
+    -webkit-backdrop-filter: blur(25px) saturate(180%);
     border-radius: var(--radius-lg);
     padding: var(--space-xl);
-    box-shadow: var(--shadow-lg);
-    border: 1px solid rgba(130, 195, 215, 0.3);
+    box-shadow: 
+        var(--shadow-lg),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(14, 165, 233, 0.3);
     position: sticky;
     top: 120px;
     align-self: flex-start;
     height: calc(100vh - 140px);
     overflow-y: auto;
     z-index: 2;
+    transition: all var(--transition-normal);
+}
+
+.sidebar:hover {
+    transform: translateY(-2px);
+    box-shadow: 
+        0 20px 40px rgba(15, 23, 42, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    border-color: rgba(14, 165, 233, 0.5);
 }
 
 .sidebar::before {
@@ -900,24 +1047,25 @@ p, h1, h2, h3, h4, h5, h6 {
     border-radius: 2px;
 }
 
-/* Sidebar Menu Items - Ocean Theme */
+/* Enhanced Tech Sidebar Menu Items */
 .sidebar .menu-item {
     display: block;
     width: 100%;
-    padding: var(--space-md) var(--space-lg);
-    margin-bottom: var(--space-sm);
-    background: linear-gradient(145deg, rgba(15, 42, 62, 0.2), rgba(27, 77, 114, 0.1)) !important;
-    border: 1px solid rgba(130, 195, 215, 0.3) !important;
-    color: white !important;
+    padding: var(--space-lg) var(--space-xl);
+    margin-bottom: var(--space-md);
+    background: rgba(10, 14, 26, 0.4) !important;
+    border: 2px solid var(--border-glow) !important;
+    color: var(--text-light) !important;
     text-decoration: none;
-    border-radius: var(--radius-md) !important;
-    font-weight: 600;
-    font-size: 0.95rem;
+    border-radius: var(--radius-lg) !important;
+    font-weight: 700;
+    font-size: 1rem;
     transition: all var(--transition-normal);
     position: relative;
     overflow: hidden;
     cursor: pointer;
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
     transform: translateX(0);
     opacity: 0;
     animation: slideInLeft 0.6s ease forwards;
@@ -925,6 +1073,10 @@ p, h1, h2, h3, h4, h5, h6 {
     letter-spacing: normal !important;
     min-width: auto !important;
     flex: none !important;
+    box-shadow: 
+        0 4px 15px rgba(0, 212, 255, 0.2),
+        inset 0 1px 0 rgba(0, 212, 255, 0.2);
+    text-shadow: 0 0 10px rgba(0, 212, 255, 0.3);
 }
 
 .sidebar .menu-item:nth-child(1) { animation-delay: 0.1s; }
@@ -965,11 +1117,15 @@ p, h1, h2, h3, h4, h5, h6 {
 }
 
 .sidebar .menu-item:hover {
-    background: linear-gradient(145deg, rgba(46, 107, 143, 0.3), rgba(27, 77, 114, 0.2)) !important;
-    transform: translateY(-3px) scale(1.02) !important;
-    box-shadow: var(--shadow-md) !important;
-    border-color: rgba(130, 195, 215, 0.5) !important;
-    color: white !important;
+    background: linear-gradient(145deg, rgba(0, 212, 255, 0.4), rgba(0, 245, 255, 0.3)) !important;
+    transform: translateY(-4px) scale(1.03) !important;
+    box-shadow: 
+        0 15px 35px rgba(0, 212, 255, 0.4),
+        0 0 30px rgba(0, 245, 255, 0.3),
+        inset 0 1px 0 rgba(0, 212, 255, 0.4) !important;
+    border-color: var(--accent) !important;
+    color: var(--text-light) !important;
+    text-shadow: 0 0 20px rgba(0, 245, 255, 0.8);
 }
 
 .sidebar .menu-item.active {
@@ -1059,17 +1215,23 @@ p, h1, h2, h3, h4, h5, h6 {
         inset 0 1px 0 rgba(255, 255, 255, 0.3) !important;
 }
 
-/* Main Content with ocean theme */
+/* Main Content with enhanced glassmorphism */
 .main-content {
     grid-column: 3;
-    background-color: rgba(255, 255, 255, 0.9);
-    border-radius: var(--radius-md);
-    box-shadow: var(--shadow-sm);
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border-radius: var(--radius-lg);
+    box-shadow: 
+        var(--shadow-lg),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
     padding: var(--space-xl);
     min-height: 80vh;
-    backdrop-filter: blur(5px);
     width: 100%;
     overflow: visible;
+    border: 1px solid rgba(14, 165, 233, 0.2);
+    position: relative;
+    z-index: 1;
 }
 
 /* Banner */
@@ -1127,21 +1289,51 @@ p, h1, h2, h3, h4, h5, h6 {
 }
 
 .product-item {
-    background: rgba(255, 255, 255, 0.9);
-    border-radius: var(--radius-md);
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border-radius: var(--radius-lg);
     overflow: hidden;
-    box-shadow: var(--shadow-sm);
-    transition: all var(--transition-normal);
+    box-shadow: 
+        var(--shadow-md),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); /* Faster transition */
     display: flex;
     flex-direction: column;
-    backdrop-filter: blur(5px);
-    text-decoration:none;
+    text-decoration: none;
+    border: 1px solid rgba(14, 165, 233, 0.2);
+    position: relative;
+    z-index: 1;
+    will-change: transform, box-shadow; /* Optimize for animations */
+}
+
+.product-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, 
+        rgba(14, 165, 233, 0.1) 0%, 
+        rgba(6, 182, 212, 0.05) 100%);
+    opacity: 0;
+    transition: opacity var(--transition-normal);
+    z-index: 0;
+}
+
+.product-item:hover::before {
+    opacity: 1;
 }
 
 .product-item:hover {
-    transform: translateY(-5px);
-    box-shadow: var(--shadow-lg);
-    background: rgba(255, 255, 255, 0.95);
+    transform: translateY(-4px) scale(1.01); /* Reduced movement for faster feel */
+    box-shadow: 
+        0 12px 24px rgba(14, 165, 233, 0.25), /* Reduced shadow */
+        0 0 20px rgba(6, 182, 212, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(14, 165, 233, 0.4);
 }
 
 .product-image {
@@ -1154,9 +1346,10 @@ p, h1, h2, h3, h4, h5, h6 {
     width: 100%;
     height: 100%;
     object-fit: contain;
-    transition: transform var(--transition-slow), opacity 0.3s ease;
+    transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s ease; /* Faster transitions */
     background: rgba(249, 249, 249, 0.8);
     padding: var(--space-md);
+    will-change: transform; /* Optimize for animations */
     /* Better image rendering for WebP */
     image-rendering: -webkit-optimize-contrast;
     image-rendering: crisp-edges;
@@ -1178,7 +1371,7 @@ p, h1, h2, h3, h4, h5, h6 {
 }
 
 .product-item:hover .product-image img {
-    transform: scale(1.05);
+    transform: scale(1.03); /* Reduced scale for faster feel */
 }
 
 /* Product Detail Image Styles for WebP Support */
@@ -1265,21 +1458,25 @@ img {
     flex: 1;
     display: flex;
     flex-direction: column;
-    text-decoration:none;
+    text-decoration: none;
+    position: relative;
+    z-index: 2;
 }
 
 .product-title {
     font-size: var(--font-size-md);
     margin-bottom: var(--space-sm);
-    font-weight: 600;
-    color: var(--text-dark);
+    font-weight: 700;
+    color: var(--text-light);
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
+    line-clamp: 2;
     overflow: hidden;
     min-height: 3em;
     line-height: 1.5;
-    text-decoration:none;
+    text-decoration: none;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 
 .product-price {
@@ -1290,15 +1487,17 @@ img {
 }
 
 .current-price {
-    color: var(--primary);
+    color: var(--accent);
     font-size: var(--font-size-lg);
-    font-weight: 700;
+    font-weight: 800;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 
 .original-price {
-    color: var(--text-medium);
+    color: var(--text-muted);
     text-decoration: line-through;
     font-size: var(--font-size-sm);
+    opacity: 0.8;
 }
 
 .product-actions {
@@ -1306,27 +1505,34 @@ img {
     margin-top: var(--space-md);
 }
 
-/* Updated Buy Now button with ocean gradient */
+/* Enhanced Tech Buy Now Button with Neon Effects */
 .btn-buy-now,
 .mua-ngay-button {
     width: 100%;
     padding: var(--space-md);
     border: none;
-    border-radius: var(--radius-md);
-    font-weight: 600;
+    border-radius: var(--radius-lg);
+    font-weight: 800;
     font-size: var(--font-size-md);
     cursor: pointer;
-    transition: all var(--transition-fast);
+    transition: all var(--transition-normal);
     display: flex;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(to right, var(--primary), var(--primary-dark)) !important;
-    color: white;
-    box-shadow: var(--shadow-sm);
+    background: linear-gradient(135deg, var(--secondary), var(--accent)) !important;
+    color: var(--text-light);
+    box-shadow: 
+        0 8px 25px rgba(0, 212, 255, 0.3),
+        0 0 20px rgba(0, 245, 255, 0.2),
+        inset 0 1px 0 rgba(0, 212, 255, 0.3);
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+    letter-spacing: 1px;
     position: relative;
     overflow: hidden;
+    border: 2px solid var(--border-glow);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    text-shadow: 0 0 15px rgba(0, 245, 255, 0.6);
 }
 
 .btn-buy-now::before,
@@ -1352,9 +1558,14 @@ img {
 
 .btn-buy-now:hover,
 .mua-ngay-button:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-md);
-    background: linear-gradient(to right, var(--primary-light), var(--primary)) !important;
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 
+        0 20px 40px rgba(0, 212, 255, 0.4),
+        0 0 30px rgba(0, 245, 255, 0.3),
+        inset 0 1px 0 rgba(0, 212, 255, 0.4);
+    background: linear-gradient(135deg, var(--accent), var(--accent-light)) !important;
+    border-color: var(--accent);
+    text-shadow: 0 0 25px rgba(0, 245, 255, 1);
 }
 
 .btn-buy-now:active,
@@ -1363,17 +1574,24 @@ img {
     box-shadow: var(--shadow-sm);
 }
 
-/* Footer with ocean theme */
+/* Enhanced Tech Footer with Neon Effects */
 .footer {
-    background: rgba(15, 42, 62, 0.2);
-    backdrop-filter: blur(20px);
-    color: white;
+    background: rgba(10, 14, 26, 0.3);
+    backdrop-filter: blur(30px) saturate(200%);
+    -webkit-backdrop-filter: blur(30px) saturate(200%);
+    color: var(--text-light);
     padding: var(--space-xxl) var(--space-lg) var(--space-lg);
     margin-top: var(--space-xxl);
     position: relative;
     overflow: hidden;
-    border-top: 1px solid rgba(130, 195, 215, 0.3);
-    box-shadow: 0 -8px 32px rgba(15, 42, 62, 0.2);
+    border-top: 2px solid var(--border-glow);
+    box-shadow: 
+        0 -8px 32px rgba(0, 212, 255, 0.2),
+        0 0 40px rgba(0, 245, 255, 0.1),
+        inset 0 1px 0 rgba(0, 212, 255, 0.2);
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    margin: var(--space-xxl) var(--space-sm) 0;
+    width: calc(100% - 2 * var(--space-sm));
 }
 
 .footer::before {
@@ -1731,6 +1949,373 @@ img {
     }
 }
 
+/* ==========================================================================
+   FLOATING STARS AND BUBBLES
+   ========================================================================== */
+
+/* Floating Stars */
+.floating-star {
+    position: fixed;
+    width: 2px;
+    height: 2px;
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 1;
+    animation: floatingStars 8s linear infinite;
+}
+
+.floating-star::before {
+    content: '';
+    position: absolute;
+    top: -1px;
+    left: -1px;
+    width: 4px;
+    height: 4px;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.6) 0%, transparent 70%);
+    border-radius: 50%;
+    animation: twinkle 2s ease-in-out infinite;
+}
+
+/* Floating Bubbles */
+.floating-bubble {
+    position: fixed;
+    width: 8px;
+    height: 8px;
+    background: radial-gradient(circle, rgba(37, 99, 235, 0.6) 0%, rgba(30, 58, 138, 0.3) 100%);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 1;
+    animation: floatingBubbles 12s linear infinite;
+    box-shadow: 
+        0 0 10px rgba(37, 99, 235, 0.3),
+        inset 0 0 5px rgba(255, 255, 255, 0.2);
+}
+
+.floating-bubble::before {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 3px;
+    height: 3px;
+    background: rgba(255, 255, 255, 0.4);
+    border-radius: 50%;
+    animation: twinkle 3s ease-in-out infinite;
+}
+
+/* Large Floating Orbs */
+.floating-orb {
+    position: fixed;
+    width: 20px;
+    height: 20px;
+    background: radial-gradient(circle, rgba(37, 99, 235, 0.4) 0%, rgba(30, 58, 138, 0.2) 100%);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 1;
+    animation: floatingBubbles 15s linear infinite;
+    box-shadow: 
+        0 0 20px rgba(37, 99, 235, 0.4),
+        inset 0 0 10px rgba(255, 255, 255, 0.1);
+}
+
+.floating-orb::before {
+    content: '';
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    width: 8px;
+    height: 8px;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    animation: twinkle 4s ease-in-out infinite;
+}
+
+/* ==========================================================================
+   TECH UTILITY CLASSES
+   ========================================================================== */
+
+/* Text Effects */
+.text-glow {
+    text-shadow: 0 0 10px var(--text-glow);
+    animation: neonPulse 2s ease-in-out infinite;
+}
+
+.text-neon {
+    color: var(--text-bright);
+    text-shadow: 
+        0 0 5px var(--accent-glow),
+        0 0 10px var(--accent-glow),
+        0 0 15px var(--accent-glow);
+}
+
+.text-high-contrast {
+    color: var(--text-light);
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+    font-weight: 700;
+}
+
+/* Tech Glow Effects */
+.glow-effect {
+    animation: techGlow 2s ease-in-out infinite;
+}
+
+.neon-border {
+    border: 2px solid var(--border-glow);
+    box-shadow: 
+        0 0 10px var(--accent-glow),
+        inset 0 0 10px var(--accent-glow);
+}
+
+.tech-card {
+    background: rgba(10, 14, 26, 0.4);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--border-glow);
+    box-shadow: 
+        0 8px 25px rgba(0, 212, 255, 0.2),
+        inset 0 1px 0 rgba(0, 212, 255, 0.1);
+}
+
+/* Holographic Effects */
+.holographic {
+    background: linear-gradient(45deg, 
+        var(--secondary) 0%, 
+        var(--accent) 25%, 
+        var(--accent-light) 50%, 
+        var(--accent) 75%, 
+        var(--secondary) 100%);
+    background-size: 400% 400%;
+    animation: holographic 3s ease infinite;
+}
+
+/* Data Stream Effect */
+.data-stream::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 2px;
+    height: 100%;
+    background: linear-gradient(to bottom, 
+        transparent, 
+        var(--accent-glow), 
+        transparent);
+    animation: dataStream 2s linear infinite;
+}
+
+/* Tech Loading States */
+.tech-loading {
+    position: relative;
+    overflow: hidden;
+}
+
+.tech-loading::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, 
+        transparent, 
+        rgba(0, 212, 255, 0.4), 
+        transparent);
+    animation: techScan 2s ease-in-out infinite;
+}
+
+/* ==========================================================================
+   PRODUCT DETAILS SECTION - HIGH CONTRAST
+   ========================================================================== */
+
+/* Product Details Container */
+.product-details,
+.details-section {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: var(--radius-lg);
+    padding: var(--space-xl);
+    margin: var(--space-lg) 0;
+    box-shadow: 
+        0 8px 25px rgba(0, 0, 0, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.8);
+    border: 1px solid rgba(0, 212, 255, 0.2);
+    position: relative;
+    overflow: hidden;
+}
+
+.product-details::before,
+.details-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, 
+        var(--secondary), 
+        var(--accent), 
+        var(--accent-light));
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+}
+
+/* Product Details Text */
+.product-details h1,
+.product-details h2,
+.product-details h3,
+.product-details h4,
+.product-details h5,
+.product-details h6 {
+    color: var(--text-dark) !important;
+    font-weight: 800;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    margin-bottom: var(--space-md);
+}
+
+.product-details p,
+.product-details span,
+.product-details div {
+    color: var(--text-dark) !important;
+    font-weight: 500;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    line-height: 1.6;
+}
+
+/* Product Information Labels */
+.product-details .product-code,
+.product-details .product-category,
+.product-details .product-status {
+    color: var(--text-dark) !important;
+    font-weight: 600;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* Product Description */
+.product-details .product-description {
+    color: var(--text-dark) !important;
+    font-weight: 500;
+    line-height: 1.7;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    background: rgba(248, 250, 252, 0.8);
+    padding: var(--space-md);
+    border-radius: var(--radius-md);
+    border-left: 4px solid var(--accent);
+}
+
+/* Product Specifications */
+.product-specs {
+    background: rgba(248, 250, 252, 0.9);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    padding: var(--space-lg);
+    border-radius: var(--radius-md);
+    margin-top: var(--space-md);
+    border: 1px solid rgba(0, 212, 255, 0.15);
+    box-shadow: 
+        0 4px 15px rgba(0, 0, 0, 0.05),
+        inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+.product-specs h4 {
+    color: var(--text-dark) !important;
+    font-weight: 700;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    margin-bottom: var(--space-md);
+}
+
+.product-specs ul {
+    list-style: none;
+    padding: 0;
+}
+
+.product-specs li {
+    color: var(--text-dark) !important;
+    padding: var(--space-sm) 0;
+    border-bottom: 1px solid rgba(0, 212, 255, 0.2);
+    display: flex;
+    justify-content: space-between;
+    font-weight: 500;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.product-specs li:last-child {
+    border-bottom: none;
+}
+
+.product-specs .spec-label {
+    font-weight: 700;
+    color: var(--text-dark) !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.product-specs .spec-value {
+    color: var(--text-dark) !important;
+    font-weight: 500;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+/* Tabs Styling */
+.product-tabs {
+    margin-top: var(--space-lg);
+}
+
+.product-tabs .tab-button {
+    background: rgba(255, 255, 255, 0.8);
+    color: var(--text-dark) !important;
+    border: 1px solid rgba(0, 212, 255, 0.3);
+    padding: var(--space-md) var(--space-lg);
+    margin-right: var(--space-sm);
+    border-radius: var(--radius-md) var(--radius-md) 0 0;
+    font-weight: 600;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    transition: all var(--transition-normal);
+}
+
+.product-tabs .tab-button.active {
+    background: rgba(0, 212, 255, 0.1);
+    border-color: var(--accent);
+    color: var(--text-dark) !important;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.product-tabs .tab-content {
+    background: rgba(255, 255, 255, 0.9);
+    padding: var(--space-lg);
+    border-radius: 0 var(--radius-md) var(--radius-md) var(--radius-md);
+    border: 1px solid rgba(0, 212, 255, 0.2);
+    color: var(--text-dark) !important;
+    font-weight: 500;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+/* Service Guarantees */
+.service-guarantees {
+    background: rgba(248, 250, 252, 0.9);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    padding: var(--space-lg);
+    border-radius: var(--radius-md);
+    margin-top: var(--space-md);
+    border: 1px solid rgba(0, 212, 255, 0.15);
+    box-shadow: 
+        0 4px 15px rgba(0, 0, 0, 0.05),
+        inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+.service-guarantees .guarantee-item {
+    color: var(--text-dark) !important;
+    font-weight: 600;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    margin-bottom: var(--space-sm);
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+}
+
+.service-guarantees .guarantee-item:last-child {
+    margin-bottom: 0;
+}
+
 /* Utility Classes */
 .text-center { text-align: center; }
 .text-left { text-align: left; }
@@ -1939,6 +2524,373 @@ img {
     body {
         animation: none;
         background-attachment: scroll;
+    }
+}
+
+/* ==========================================================================
+   ENHANCED TECH ANIMATIONS & EFFECTS
+   ========================================================================== */
+
+/* Tech Glow Effects */
+@keyframes techGlow {
+    0%, 100% {
+        box-shadow: 
+            0 0 5px var(--accent-glow),
+            0 0 10px var(--accent-glow),
+            0 0 15px var(--accent-glow);
+    }
+    50% {
+        box-shadow: 
+            0 0 10px var(--accent-glow),
+            0 0 20px var(--accent-glow),
+            0 0 30px var(--accent-glow);
+    }
+}
+
+/* Neon Pulse Animation */
+@keyframes neonPulse {
+    0%, 100% {
+        text-shadow: 
+            0 0 5px var(--text-glow),
+            0 0 10px var(--text-glow),
+            0 0 15px var(--text-glow);
+    }
+    50% {
+        text-shadow: 
+            0 0 10px var(--text-glow),
+            0 0 20px var(--text-glow),
+            0 0 30px var(--text-glow),
+            0 0 40px var(--text-glow);
+    }
+}
+
+/* Tech Scan Line Effect */
+@keyframes techScan {
+    0% {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+}
+
+/* Data Stream Animation */
+@keyframes dataStream {
+    0% {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+    10% {
+        opacity: 1;
+    }
+    90% {
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(100vh);
+        opacity: 0;
+    }
+}
+
+/* Holographic Effect */
+@keyframes holographic {
+    0%, 100% {
+        background-position: 0% 50%;
+        filter: hue-rotate(0deg);
+    }
+    50% {
+        background-position: 100% 50%;
+        filter: hue-rotate(180deg);
+    }
+}
+
+/* Tech Loading Spinner */
+@keyframes techSpin {
+    0% {
+        transform: rotate(0deg);
+        box-shadow: 
+            0 0 0 0 var(--accent-glow),
+            0 0 0 0 var(--secondary);
+    }
+    50% {
+        box-shadow: 
+            0 0 0 10px transparent,
+            0 0 0 20px var(--secondary);
+    }
+    100% {
+        transform: rotate(360deg);
+        box-shadow: 
+            0 0 0 0 transparent,
+            0 0 0 0 var(--secondary);
+    }
+}
+
+/* Matrix Rain Effect */
+@keyframes matrixRain {
+    0% {
+        transform: translateY(-100vh);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(100vh);
+        opacity: 0;
+    }
+}
+
+/* ==========================================================================
+   ENHANCED ANIMATIONS & EFFECTS
+   ========================================================================== */
+
+/* Floating animation for various elements */
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+/* Pulse animation for active elements */
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(14, 165, 233, 0.7);
+    }
+    70% {
+        box-shadow: 0 0 0 10px rgba(14, 165, 233, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(14, 165, 233, 0);
+    }
+}
+
+/* Shimmer effect for loading states */
+@keyframes shimmer {
+    0% {
+        background-position: -200% 0;
+    }
+    100% {
+        background-position: 200% 0;
+    }
+}
+
+/* Bounce animation for interactive elements */
+@keyframes bounce {
+    0%, 20%, 53%, 80%, 100% {
+        transform: translate3d(0, 0, 0);
+    }
+    40%, 43% {
+        transform: translate3d(0, -8px, 0);
+    }
+    70% {
+        transform: translate3d(0, -4px, 0);
+    }
+    90% {
+        transform: translate3d(0, -2px, 0);
+    }
+}
+
+/* Glow effect for hover states */
+@keyframes glow {
+    0% {
+        box-shadow: 0 0 5px rgba(14, 165, 233, 0.5);
+    }
+    50% {
+        box-shadow: 0 0 20px rgba(14, 165, 233, 0.8);
+    }
+    100% {
+        box-shadow: 0 0 5px rgba(14, 165, 233, 0.5);
+    }
+}
+
+/* Slide in from left animation */
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-100px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Slide in from right animation */
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(100px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Fade in up animation */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Scale in animation */
+@keyframes scaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Rotate animation for loading spinners */
+@keyframes rotate {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Wave animation for decorative elements */
+@keyframes wave {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-20px);
+    }
+}
+
+/* Gradient animation for backgrounds */
+@keyframes gradientShift {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+/* Enhanced button animations */
+.btn-buy-now,
+.mua-ngay-button {
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-buy-now::after,
+.mua-ngay-button::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+.btn-buy-now:active::after,
+.mua-ngay-button:active::after {
+    width: 300px;
+    height: 300px;
+}
+
+/* Enhanced product card animations */
+.product-item {
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.product-item:hover {
+    animation: float 2s ease-in-out infinite;
+}
+
+/* Enhanced menu item animations */
+.menu-item {
+    position: relative;
+    overflow: hidden;
+}
+
+.menu-item::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, 
+        transparent, 
+        rgba(255, 255, 255, 0.2), 
+        transparent
+    );
+    transition: left 0.5s;
+}
+
+.menu-item:hover::after {
+    left: 100%;
+}
+
+/* Loading states */
+.loading {
+    position: relative;
+    overflow: hidden;
+}
+
+.loading::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, 
+        transparent, 
+        rgba(255, 255, 255, 0.2), 
+        transparent
+    );
+    animation: shimmer 1.5s infinite;
+}
+
+/* Focus states for accessibility */
+.menu-item:focus,
+.btn-buy-now:focus,
+.mua-ngay-button:focus {
+    outline: 3px solid rgba(14, 165, 233, 0.5);
+    outline-offset: 2px;
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+    
+    .product-item:hover {
+        animation: none;
     }
 }
 

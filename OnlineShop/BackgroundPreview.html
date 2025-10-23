@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Background Preview - OnlineShop</title>
+    <link href="Assets/CSS/modern-backgrounds.css" rel="stylesheet" />
+    <style>
+        /* Preview Page Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            min-height: 100vh;
+            transition: all 0.5s ease;
+        }
+
+        .preview-container {
+            position: relative;
+            z-index: 10;
+            padding: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header-preview {
+            text-align: center;
+            padding: 3rem 2rem;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .header-preview h1 {
+            color: white;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .header-preview p {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.2rem;
+        }
+
+        .current-bg {
+            background: rgba(59, 130, 246, 0.2);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 10px;
+            display: inline-block;
+            margin-top: 1rem;
+            font-weight: bold;
+        }
+
+        .bg-grid-preview {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .bg-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 1.5rem;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .bg-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(96, 165, 250, 0.5);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .bg-card.active {
+            border-color: #3B82F6;
+            background: rgba(59, 130, 246, 0.2);
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
+        }
+
+        .bg-card h3 {
+            color: white;
+            margin-bottom: 0.5rem;
+            font-size: 1.3rem;
+        }
+
+        .bg-card p {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .bg-card .performance {
+            color: #10B981;
+            font-weight: bold;
+            font-size: 0.85rem;
+        }
+
+        .sample-content {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-top: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .sample-products {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .product-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 1rem;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .product-card h4 {
+            color: #0F172A;
+            margin: 0.5rem 0;
+        }
+
+        .product-card .price {
+            color: #3B82F6;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .button {
+            background: linear-gradient(135deg, #1E40AF, #3B82F6);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            margin-top: 0.5rem;
+            width: 100%;
+        }
+
+        .button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(59, 130, 246, 0.4);
+        }
+
+        .instructions {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-top: 2rem;
+            border: 2px solid rgba(96, 165, 250, 0.3);
+        }
+
+        .instructions h2 {
+            color: white;
+            margin-bottom: 1rem;
+        }
+
+        .instructions code {
+            background: rgba(0, 0, 0, 0.3);
+            color: #60A5FA;
+            padding: 0.2rem 0.5rem;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+        }
+
+        .instructions p {
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.8;
+            margin-bottom: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .header-preview h1 {
+                font-size: 1.8rem;
+            }
+            
+            .bg-grid-preview {
+                grid-template-columns: 1fr;
+            }
+            
+            .sample-products {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gradient-mesh">
+    <div class="preview-container">
+        <!-- Header -->
+        <div class="header-preview">
+            <h1>🎨 Background Preview</h1>
+            <p>Click any card below to see the background in action!</p>
+            <div class="current-bg">Current: <span id="currentBgName">Gradient Mesh</span></div>
+        </div>
+
+        <!-- Background Options Grid -->
+        <div class="bg-grid-preview">
+            <!-- Background 1 -->
+            <div class="bg-card active" onclick="changeBackground('', 'Gradient Mesh (Default)')">
+                <h3>1. Gradient Mesh ⭐</h3>
+                <p>Modern gradient with subtle mesh overlay</p>
+                <p><strong>Vibe:</strong> Professional, Clean</p>
+                <p class="performance">⚡⚡⚡⚡⚡ Excellent</p>
+            </div>
+
+            <!-- Background 2 -->
+            <div class="bg-card" onclick="changeBackground('bg-aurora', 'Aurora Gradient')">
+                <h3>2. Aurora Gradient ✨</h3>
+                <p>Flowing aurora-like gradients</p>
+                <p><strong>Vibe:</strong> Dynamic, Vibrant</p>
+                <p class="performance">⚡⚡⚡⚡⚡ Excellent</p>
+            </div>
+
+            <!-- Background 3 -->
+            <div class="bg-card" onclick="changeBackground('bg-geometric', 'Geometric Pattern')">
+                <h3>3. Geometric Pattern 💼</h3>
+                <p>Subtle geometric diamond pattern</p>
+                <p><strong>Vibe:</strong> Professional, Structured</p>
+                <p class="performance">⚡⚡⚡⚡ Very Good</p>
+            </div>
+
+            <!-- Background 4 -->
+            <div class="bg-card" onclick="changeBackground('bg-waves', 'Waves')">
+                <h3>4. Waves 🌊</h3>
+                <p>Gentle wave effects</p>
+                <p><strong>Vibe:</strong> Calm, Elegant</p>
+                <p class="performance">⚡⚡⚡⚡⚡ Excellent</p>
+            </div>
+
+            <!-- Background 5 -->
+            <div class="bg-card" onclick="changeBackground('bg-dots', 'Dots Pattern')">
+                <h3>5. Dots Pattern ⚪</h3>
+                <p>Clean dot grid pattern</p>
+                <p><strong>Vibe:</strong> Minimal, Clean</p>
+                <p class="performance">⚡⚡⚡⚡⚡ Excellent</p>
+            </div>
+
+            <!-- Background 6 -->
+            <div class="bg-card" onclick="changeBackground('bg-glass', 'Glass Morphism')">
+                <h3>6. Glass Morphism 🔮</h3>
+                <p>Blurred glass orbs effect</p>
+                <p><strong>Vibe:</strong> Ultra Modern</p>
+                <p class="performance">⚡⚡⚡⚡ Very Good</p>
+            </div>
+
+            <!-- Background 7 -->
+            <div class="bg-card" onclick="changeBackground('bg-stripes', 'Diagonal Stripes')">
+                <h3>7. Diagonal Stripes 📐</h3>
+                <p>Subtle diagonal stripe pattern</p>
+                <p><strong>Vibe:</strong> Bold, Modern</p>
+                <p class="performance">⚡⚡⚡⚡⚡ Excellent</p>
+            </div>
+
+            <!-- Background 8 -->
+            <div class="bg-card" onclick="changeBackground('bg-grid', 'Grid')">
+                <h3>8. Grid 🔲</h3>
+                <p>Clean tech grid pattern</p>
+                <p><strong>Vibe:</strong> Futuristic, Tech</p>
+                <p class="performance">⚡⚡⚡⚡⚡ Excellent</p>
+            </div>
+
+            <!-- Background 9 -->
+            <div class="bg-card" onclick="changeBackground('bg-hexagon', 'Hexagon Pattern')">
+                <h3>9. Hexagon 🔷</h3>
+                <p>Honeycomb hexagon pattern</p>
+                <p><strong>Vibe:</strong> Unique, Geometric</p>
+                <p class="performance">⚡⚡⚡⚡ Very Good</p>
+            </div>
+
+            <!-- Background 10 -->
+            <div class="bg-card" onclick="changeBackground('bg-particles', 'Particles')">
+                <h3>10. Particles ✨</h3>
+                <p>Floating particle dots</p>
+                <p><strong>Vibe:</strong> Elegant, Space-like</p>
+                <p class="performance">⚡⚡⚡⚡⚡ Excellent</p>
+            </div>
+
+            <!-- Bonus Backgrounds -->
+            <div class="bg-card" onclick="changeBackground('bg-gradient-dots', 'Gradient + Dots')">
+                <h3>🎁 Gradient + Dots</h3>
+                <p>Beautiful combination</p>
+                <p><strong>Vibe:</strong> Interesting</p>
+                <p class="performance">⚡⚡⚡⚡⚡ Excellent</p>
+            </div>
+
+            <div class="bg-card" onclick="changeBackground('bg-glass-grid', 'Glass + Grid')">
+                <h3>🎁 Glass + Grid</h3>
+                <p>Tech grid with glass blur</p>
+                <p><strong>Vibe:</strong> Ultra-modern</p>
+                <p class="performance">⚡⚡⚡⚡ Very Good</p>
+            </div>
+
+            <div class="bg-card" onclick="changeBackground('bg-aurora-particles', 'Aurora + Particles')">
+                <h3>🎁 Aurora + Particles</h3>
+                <p>Colorful with particle stars</p>
+                <p><strong>Vibe:</strong> Eye-catching</p>
+                <p class="performance">⚡⚡⚡⚡ Very Good</p>
+            </div>
+
+            <!-- Custom Image Gradient -->
+            <div class="bg-card" onclick="changeBackground('bg-custom-gradient', 'Custom Image Gradient')" style="border: 2px solid #ECEFCA;">
+                <h3>🎨 Custom Image Gradient</h3>
+                <p>Your provided gradient: Dark Blue → Light Blue → Cream</p>
+                <p><strong>Vibe:</strong> Elegant, Sophisticated</p>
+                <p class="performance">⚡⚡⚡⚡⚡ Excellent</p>
+            </div>
+
+            <div class="bg-card" onclick="changeBackground('bg-custom-gradient-alt', 'Custom Gradient Alt')">
+                <h3>🎨 Custom Alt Version</h3>
+                <p>Alternative layout with cream accent</p>
+                <p><strong>Vibe:</strong> Warm, Professional</p>
+                <p class="performance">⚡⚡⚡⚡⚡ Excellent</p>
+            </div>
+        </div>
+
+        <!-- Sample Content -->
+        <div class="sample-content">
+            <h2 style="color: white; text-align: center; margin-bottom: 1rem;">Sample Products Preview</h2>
+            <p style="color: rgba(255, 255, 255, 0.8); text-align: center; margin-bottom: 2rem;">
+                This shows how your products will look with the selected background
+            </p>
+            
+            <div class="sample-products">
+                <div class="product-card">
+                    <div style="height: 150px; background: #f0f0f0; border-radius: 10px; margin-bottom: 1rem;"></div>
+                    <h4>iPhone 15 Pro</h4>
+                    <p class="price">25.990.000 ₫</p>
+                    <button class="button">Mua ngay</button>
+                </div>
+
+                <div class="product-card">
+                    <div style="height: 150px; background: #f0f0f0; border-radius: 10px; margin-bottom: 1rem;"></div>
+                    <h4>MacBook Air M2</h4>
+                    <p class="price">28.990.000 ₫</p>
+                    <button class="button">Mua ngay</button>
+                </div>
+
+                <div class="product-card">
+                    <div style="height: 150px; background: #f0f0f0; border-radius: 10px; margin-bottom: 1rem;"></div>
+                    <h4>AirPods Pro</h4>
+                    <p class="price">5.990.000 ₫</p>
+                    <button class="button">Mua ngay</button>
+                </div>
+
+                <div class="product-card">
+                    <div style="height: 150px; background: #f0f0f0; border-radius: 10px; margin-bottom: 1rem;"></div>
+                    <h4>Samsung Galaxy S24</h4>
+                    <p class="price">22.990.000 ₫</p>
+                    <button class="button">Mua ngay</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Instructions -->
+        <div class="instructions">
+            <h2>📝 How to Apply to Your Site</h2>
+            <p><strong>1.</strong> Choose your favorite background above</p>
+            <p><strong>2.</strong> Open your <code>Site1.master</code> file</p>
+            <p><strong>3.</strong> Add in the <code>&lt;head&gt;</code> section:</p>
+            <p><code>&lt;link href="~/Assets/CSS/modern-backgrounds.css" rel="stylesheet" /&gt;</code></p>
+            <p><strong>4.</strong> Change the <code>&lt;body&gt;</code> tag to include the class:</p>
+            <p><code>&lt;body class="bg-glass"&gt;</code> (replace with your chosen background)</p>
+            <p><strong>5.</strong> Save and refresh! 🎉</p>
+            
+            <p style="margin-top: 2rem; padding: 1rem; background: rgba(59, 130, 246, 0.2); border-radius: 10px; border-left: 4px solid #3B82F6;">
+                <strong>💡 Recommended for Tech Shop:</strong> <code>bg-glass</code> or <code>bg-grid</code>
+            </p>
+            
+            <p style="margin-top: 1rem; padding: 1rem; background: rgba(236, 239, 202, 0.2); border-radius: 10px; border-left: 4px solid #ECEFCA;">
+                <strong>🎨 NEW: Your Custom Gradient:</strong> <code>bg-custom-gradient</code> - Matches your provided image perfectly!
+            </p>
+        </div>
+    </div>
+
+    <script>
+        function changeBackground(className, name) {
+            // Remove all background classes
+            document.body.className = className;
+            
+            // Update current background name
+            document.getElementById('currentBgName').textContent = name;
+            
+            // Update active card
+            document.querySelectorAll('.bg-card').forEach(card => {
+                card.classList.remove('active');
+            });
+            event.currentTarget.classList.add('active');
+            
+            // Save to localStorage
+            localStorage.setItem('previewBackground', className);
+            localStorage.setItem('previewBackgroundName', name);
+        }
+
+        // Load saved background on page load
+        window.addEventListener('load', function() {
+            const savedBg = localStorage.getItem('previewBackground');
+            const savedName = localStorage.getItem('previewBackgroundName');
+            
+            if (savedBg !== null) {
+                document.body.className = savedBg;
+                document.getElementById('currentBgName').textContent = savedName || 'Gradient Mesh';
+                
+                // Update active card
+                const cards = document.querySelectorAll('.bg-card');
+                cards.forEach((card, index) => {
+                    card.classList.remove('active');
+                    if (card.getAttribute('onclick').includes(savedBg)) {
+                        card.classList.add('active');
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

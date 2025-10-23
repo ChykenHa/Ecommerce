@@ -8,11 +8,23 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" />
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-    <!-- Custom CSS -->
-    <link href="~/Assets/CSS/site-styles.css" rel="stylesheet" />
     
-    <!-- Inline CSS for AI Chat Bubble (fallback) -->
+    <!-- Custom CSS with cache busting -->
+    <link href="~/Assets/CSS/site-styles.css?v=2025" rel="stylesheet" />
+    <link href="~/Assets/CSS/login-register-styles.css?v=2025" rel="stylesheet" />
+    
+    <!-- Immediate Background Fix + AI Chat Bubble -->
     <style>
+        /* Force background change immediately */
+        body {
+            background: linear-gradient(135deg, 
+                #213448 0%,     /* Dark blue from image */
+                #547792 35%,    /* Medium blue from image */
+                #94B4C1 70%,    /* Light blue from image */
+                #ECEFCA 100%    /* Cream from image */
+            ) !important;
+            background-attachment: fixed !important;
+        }
         #aiChatBubble {
             position: fixed !important;
             bottom: 20px !important;
@@ -27,7 +39,7 @@
             width: 60px !important;
             height: 60px !important;
             border-radius: 50% !important;
-            background: linear-gradient(135deg, #1B4D72, #4A90A4) !important;
+            background: linear-gradient(135deg, #213448, #547792) !important;
             border: none !important;
             cursor: pointer !important;
             box-shadow: 0 4px 15px rgba(15, 42, 62, 0.25) !important;
@@ -40,7 +52,7 @@
         
         #aiChatBubble .chat-button:hover {
             transform: scale(1.1) !important;
-            background: linear-gradient(135deg, #0F2A3E, #1B4D72) !important;
+            background: linear-gradient(135deg, #213448, #94B4C1) !important;
         }
         
         #aiChatBubble .chat-icon {
@@ -82,7 +94,7 @@
         }
         
         #aiChatBubble .chat-header {
-            background: linear-gradient(135deg, #0F2A3E 0%, #1B4D72 20%, #2E6B8F 40%, #4A90A4 60%, #1B4D72 80%, #0F2A3E 100%) !important;
+            background: linear-gradient(135deg, #213448 0%, #547792 25%, #94B4C1 75%, #ECEFCA 100%) !important;
             color: white !important;
             padding: 15px 20px !important;
             display: flex !important;
@@ -346,7 +358,7 @@
                 <input type="text" placeholder="Bạn cần tìm gì?" />
             </div>
             
-            <nav class="nav-item">
+            <nav class="nav-item nav-parallax">
                 <asp:Button ID="Button1" runat="server" Text="Trang Chủ" CssClass="menu-item" OnClick="ButtonHome_Click" />
                 <asp:Button ID="Contact" runat="server" Text="Liên Hệ" CssClass="menu-item" OnClick="Contact_Click"/>
                 <asp:Button ID="Button2" runat="server" Text="Dịch Vụ" CssClass="menu-item" OnClick="Services_Click"/>
@@ -382,7 +394,7 @@
                 <h3 class="ad-banner-title">🎁 Ưu Đãi Hot</h3>
                 
                 <!-- Ad Item 1 -->
-                <div class="ad-item">
+                <div class="ad-item card-parallax">
                     <span class="ad-badge">HOT</span>
                     <asp:Image ID="ImgAdLeft1" runat="server" ImageUrl="~/Assets/Images/Banner1.png" AlternateText="Khuyến mãi đặc biệt" />
                     <h4>Giảm 50% Toàn Bộ</h4>
@@ -478,7 +490,7 @@
                 <h3 class="ad-banner-title">⚡ Quảng Cáo</h3>
                 
                 <!-- Ad Item 1 -->
-                <div class="ad-item">
+                <div class="ad-item card-parallax">
                     <span class="ad-badge">⭐</span>
                     <asp:Image ID="ImgAdRight1" runat="server" ImageUrl="~/Assets/Images/Ad1.png" AlternateText="Quảng cáo 1" />
                     <h4>Khuyến Mãi Đặc Biệt</h4>
@@ -486,7 +498,7 @@
                 </div>
                 
                 <!-- Ad Item 2 -->
-                <div class="ad-item">
+                <div class="ad-item card-parallax">
                     <span class="ad-badge">🎁</span>
                     <asp:Image ID="ImgAdRight2" runat="server" ImageUrl="~/Assets/Images/Ad2.png" AlternateText="Quảng cáo 2" />
                     <h4>Sản Phẩm Hot</h4>
@@ -515,7 +527,7 @@
                     <h3>Thông tin liên hệ</h3>
                     <address>
                         <p>📧 Email: Radian@Radianshop.com</p>
-                        <p>📞 Điện thoại: +84 123 456 789</p>
+                        <p>📞 Điện thoại: +84 364 972 519</p>
                         <p>📍 Địa chỉ: Sơn Trà, Đà Nẵng</p>
                         <p>🕒 Giờ làm việc: 8:00 - 22:00 (Thứ 2 - Chủ nhật)</p>
                     </address>
@@ -590,279 +602,8 @@
 
     <!-- JavaScript for enhanced functionality -->
         <!-- Custom JavaScript -->
-        <script src="~/Assets/JS/site-scripts.js"></script>
+        <script src="<%= ResolveUrl("~/Assets/JS/site-scripts.js") %>"></script>
         <!-- AI Chat Bubble JavaScript -->
-        <script>
-            // AI Chat Bubble Class
-            class AIChatBubble {
-                constructor() {
-                    this.isOpen = false;
-                    this.isTyping = false;
-                    this.chatHistory = [];
-                    this.init();
-                }
-
-                init() {
-                    this.createChatBubble();
-                    this.bindEvents();
-                    this.addWelcomeMessage();
-                }
-
-                createChatBubble() {
-                    const chatBubbleHTML = `
-                        <div class="ai-chat-bubble" id="aiChatBubble">
-                            <div class="chat-window" id="chatWindow">
-                                <div class="chat-header">
-                                    <h3 class="chat-title">🤖 Trợ lý AI</h3>
-                                    <button class="close-chat" id="closeChat">×</button>
-                                </div>
-                                <div class="chat-messages" id="chatMessages">
-                                    <!-- Messages will be added here -->
-                                </div>
-                                <div class="chat-input-area">
-                                    <textarea class="chat-input" id="chatInput" placeholder="Nhập câu hỏi của bạn..." rows="1"></textarea>
-                                    <button class="send-button" id="sendButton">
-                                        <span class="send-icon">📤</span>
-                                    </button>
-                                </div>
-                            </div>
-                            <button class="chat-button" id="chatButton">
-                                <span class="chat-icon">💬</span>
-                            </button>
-                        </div>
-                    `;
-
-                    document.body.insertAdjacentHTML('beforeend', chatBubbleHTML);
-                }
-
-                bindEvents() {
-                    const chatButton = document.getElementById('chatButton');
-                    const closeChat = document.getElementById('closeChat');
-                    const sendButton = document.getElementById('sendButton');
-                    const chatInput = document.getElementById('chatInput');
-                    const chatWindow = document.getElementById('chatWindow');
-
-                    if (chatButton) chatButton.addEventListener('click', () => this.toggleChat());
-                    if (closeChat) closeChat.addEventListener('click', () => this.closeChat());
-                    if (sendButton) sendButton.addEventListener('click', () => this.sendMessage());
-                    if (chatInput) {
-                        chatInput.addEventListener('keypress', (e) => {
-                            if (e.key === 'Enter' && !e.shiftKey) {
-                                e.preventDefault();
-                                this.sendMessage();
-                            }
-                        });
-                        chatInput.addEventListener('input', () => this.autoResizeTextarea(chatInput));
-                    }
-                }
-
-                toggleChat() {
-                    const chatWindow = document.getElementById('chatWindow');
-                    if (this.isOpen) {
-                        this.closeChat();
-                    } else {
-                        this.openChat();
-                    }
-                }
-
-                openChat() {
-                    const chatWindow = document.getElementById('chatWindow');
-                    const chatInput = document.getElementById('chatInput');
-                    
-                    if (chatWindow) chatWindow.classList.add('active');
-                    this.isOpen = true;
-                    
-                    setTimeout(() => {
-                        if (chatInput) chatInput.focus();
-                    }, 300);
-                }
-
-                closeChat() {
-                    const chatWindow = document.getElementById('chatWindow');
-                    if (chatWindow) chatWindow.classList.remove('active');
-                    this.isOpen = false;
-                }
-
-                autoResizeTextarea(textarea) {
-                    textarea.style.height = 'auto';
-                    textarea.style.height = Math.min(textarea.scrollHeight, 100) + 'px';
-                }
-
-                addWelcomeMessage() {
-                    const chatMessages = document.getElementById('chatMessages');
-                    if (chatMessages) {
-                        const welcomeMessage = `
-                            <div class="welcome-message">
-                                <h4>👋 Chào mừng đến với Radian Shop!</h4>
-                                <p>Tôi là trợ lý AI của bạn. Tôi có thể giúp bạn:</p>
-                                <ul style="text-align: left; margin: 10px 0;">
-                                    <li>🔍 Tìm hiểu về sản phẩm điện tử</li>
-                                    <li>💡 Đưa ra lời khuyên mua sắm</li>
-                                    <li>📱 So sánh các thiết bị</li>
-                                    <li>❓ Trả lời câu hỏi về công nghệ</li>
-                                </ul>
-                                <p>Hãy hỏi tôi bất cứ điều gì!</p>
-                            </div>
-                        `;
-                        chatMessages.innerHTML = welcomeMessage;
-                    }
-                }
-
-                async sendMessage() {
-                    const chatInput = document.getElementById('chatInput');
-                    const sendButton = document.getElementById('sendButton');
-                    const message = chatInput ? chatInput.value.trim() : '';
-
-                    if (!message || this.isTyping) return;
-
-                    this.addMessage(message, 'user');
-                    
-                    if (chatInput) {
-                        chatInput.value = '';
-                        this.autoResizeTextarea(chatInput);
-                    }
-                    
-                    if (sendButton) sendButton.disabled = true;
-                    this.isTyping = true;
-
-                    this.showTypingIndicator();
-
-                    try {
-                        const response = await this.callGeminiAPI(message);
-                        this.hideTypingIndicator();
-                        this.addMessage(response, 'ai');
-                    } catch (error) {
-                        console.error('Error calling Gemini API:', error);
-                        this.hideTypingIndicator();
-                        this.addMessage('Xin lỗi, tôi không thể xử lý yêu cầu của bạn lúc này. Vui lòng thử lại sau.', 'ai');
-                    } finally {
-                        if (sendButton) sendButton.disabled = false;
-                        this.isTyping = false;
-                        if (chatInput) chatInput.focus();
-                    }
-                }
-
-                addMessage(message, sender) {
-                    const chatMessages = document.getElementById('chatMessages');
-                    if (!chatMessages) return;
-                    
-                    const messageDiv = document.createElement('div');
-                    messageDiv.className = `chat-message message-${sender}`;
-                    messageDiv.textContent = message;
-                    
-                    chatMessages.appendChild(messageDiv);
-                    chatMessages.scrollTop = chatMessages.scrollHeight;
-
-                    this.chatHistory.push({ message, sender, timestamp: new Date() });
-                }
-
-                showTypingIndicator() {
-                    const chatMessages = document.getElementById('chatMessages');
-                    if (!chatMessages) return;
-                    
-                    const typingDiv = document.createElement('div');
-                    typingDiv.className = 'typing-indicator active';
-                    typingDiv.id = 'typingIndicator';
-                    typingDiv.innerHTML = `
-                        <div class="typing-dot"></div>
-                        <div class="typing-dot"></div>
-                        <div class="typing-dot"></div>
-                    `;
-                    
-                    chatMessages.appendChild(typingDiv);
-                    chatMessages.scrollTop = chatMessages.scrollHeight;
-                }
-
-                hideTypingIndicator() {
-                    const typingIndicator = document.getElementById('typingIndicator');
-                    if (typingIndicator) {
-                        typingIndicator.remove();
-                    }
-                }
-
-                async callGeminiAPI(message) {
-                    try {
-                        console.log('Sending message to SimpleChat handler:', message);
-                        
-                        // Test with simple handler first
-                        const response = await fetch('SimpleChat.ashx', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                            },
-                            body: JSON.stringify({ message: message })
-                        });
-
-                        console.log('Response status:', response.status);
-                        console.log('Response ok:', response.ok);
-
-                        if (!response.ok) {
-                            const errorText = await response.text();
-                            console.error('Response error:', errorText);
-                            throw new Error(`HTTP error! status: ${response.status}`);
-                        }
-
-                        const responseText = await response.text();
-                        console.log('Response text:', responseText);
-                        
-                        let data;
-                        try {
-                            data = JSON.parse(responseText);
-                            console.log('Parsed data:', data);
-                        } catch (parseError) {
-                            console.error('JSON parse error:', parseError);
-                            console.error('Response text:', responseText);
-                            throw new Error('Invalid JSON response from server');
-                        }
-                        
-                        if (data.error) {
-                            console.error('API error:', data.error);
-                            throw new Error(data.error);
-                        }
-
-                        console.log('AI response:', data.response);
-                        return data.response || 'Không có phản hồi từ AI.';
-                    } catch (error) {
-                        console.error('callGeminiAPI error:', error);
-                        throw error;
-                    }
-                }
-            }
-
-            // Initialize chat bubble when DOM is loaded
-            document.addEventListener('DOMContentLoaded', () => {
-                try {
-                    window.aiChatBubble = new AIChatBubble();
-                } catch (error) {
-                    console.error('Error initializing AI Chat Bubble:', error);
-                }
-            });
-
-            // Fallback initialization
-            if (document.readyState === 'loading') {
-                // DOM is still loading, wait for DOMContentLoaded
-            } else {
-                // DOM is already loaded, initialize immediately
-                try {
-                    window.aiChatBubble = new AIChatBubble();
-                } catch (error) {
-                    console.error('Error initializing AI Chat Bubble:', error);
-                }
-            }
-
-            // Keyboard shortcuts
-            document.addEventListener('keydown', (e) => {
-                if ((e.ctrlKey || e.metaKey) && e.key === '/') {
-                    e.preventDefault();
-                    if (window.aiChatBubble) {
-                        window.aiChatBubble.toggleChat();
-                    }
-                }
-                
-                if (e.key === 'Escape' && window.aiChatBubble && window.aiChatBubble.isOpen) {
-                    window.aiChatBubble.closeChat();
-                }
-            });
-        </script>
+        <script src="<%= ResolveUrl("~/Assets/JS/ai-chat-bubble.js") %>"></script>
 </body>
 </html>

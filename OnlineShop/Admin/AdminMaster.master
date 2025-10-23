@@ -1,0 +1,149 @@
+<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="AdminMaster.master.cs" Inherits="OnlineShop.AdminMaster" %>
+
+<!DOCTYPE html>
+<html lang="vi">
+<head runat="server">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <!-- Admin CSS -->
+    <link href="../Assets/CSS/admin-styles.css" rel="stylesheet" />
+    
+    <asp:ContentPlaceHolder ID="AdminHead" runat="server"></asp:ContentPlaceHolder>
+</head>
+<body>
+    <form runat="server">
+        <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
+        
+        <!-- Admin Sidebar -->
+        <div class="admin-sidebar" id="adminSidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <asp:Image ID="Logo" runat="server" ImageUrl="../Assets/Images/Logo.jpg" AlternateText="Radian Shop" />
+                    <span class="logo-text">Radian Admin</span>
+                </div>
+                <button class="sidebar-toggle" id="sidebarToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <ul class="nav-list">
+                    <li class="nav-item">
+                        <a href="AdminDashboard.aspx" class="nav-link">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    
+                    <li class="nav-item">
+                        <a href="ProductManagement.aspx" class="nav-link">
+                            <i class="fas fa-box"></i>
+                            <span>Quản lý sản phẩm</span>
+                        </a>
+                    </li>
+                    
+                    <li class="nav-item">
+                        <a href="OrderManagement.aspx" class="nav-link">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span>Quản lý đơn hàng</span>
+                        </a>
+                    </li>
+                    
+                    <li class="nav-item">
+                        <a href="UserManagement.aspx" class="nav-link">
+                            <i class="fas fa-users"></i>
+                            <span>Quản lý người dùng</span>
+                        </a>
+                    </li>
+                    
+                    <li class="nav-item">
+                        <a href="CategoryManagement.aspx" class="nav-link">
+                            <i class="fas fa-tags"></i>
+                            <span>Quản lý danh mục</span>
+                        </a>
+                    </li>
+                    
+                    <li class="nav-item">
+                        <a href="Reports.aspx" class="nav-link">
+                            <i class="fas fa-chart-bar"></i>
+                            <span>Báo cáo</span>
+                        </a>
+                    </li>
+                    
+                    <li class="nav-item">
+                        <a href="Settings.aspx" class="nav-link">
+                            <i class="fas fa-cog"></i>
+                            <span>Cài đặt</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <div class="admin-info">
+                    <div class="admin-avatar">
+                        <i class="fas fa-user-shield"></i>
+                    </div>
+                    <div class="admin-details">
+                        <span class="admin-name">Admin</span>
+                        <span class="admin-role">Quản trị viên</span>
+                    </div>
+                </div>
+                <asp:Button ID="btnLogout" runat="server" Text="Đăng xuất" CssClass="btn-logout" OnClick="btnLogout_Click" />
+            </div>
+        </div>
+
+        <!-- Admin Main Content -->
+        <div class="admin-main" id="adminMain">
+            <!-- Top Navigation -->
+            <header class="admin-header">
+                <div class="header-left">
+                    <button class="menu-toggle" id="menuToggle">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <h1 class="page-title">
+                        <asp:ContentPlaceHolder ID="PageTitle" runat="server"></asp:ContentPlaceHolder>
+                    </h1>
+                </div>
+                
+                <div class="header-right">
+                    <div class="header-actions">
+                        <a href="../Home.aspx" class="btn btn-outline-primary" target="_blank">
+                            <i class="fas fa-external-link-alt"></i>
+                            Xem website
+                        </a>
+                        
+                        <div class="notifications">
+                            <button class="notification-btn">
+                                <i class="fas fa-bell"></i>
+                                <span class="notification-badge">3</span>
+                            </button>
+                        </div>
+                        
+                        <div class="admin-profile">
+                            <div class="profile-avatar">
+                                <i class="fas fa-user-shield"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Main Content Area -->
+            <main class="admin-content">
+                <asp:ContentPlaceHolder ID="AdminMain" runat="server"></asp:ContentPlaceHolder>
+            </main>
+        </div>
+    </form>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Admin JS -->
+    <script src="../Assets/JS/admin-scripts.js"></script>
+</body>
+</html>

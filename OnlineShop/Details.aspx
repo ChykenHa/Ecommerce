@@ -69,20 +69,24 @@
 }
 
 .product-detail-title {
-    font-size: 24px;
-    font-weight: 700;
+    font-size: 28px;
+    font-weight: 800;
     margin-bottom: 15px;
-    color: #333;
+    color: #0B1426 !important;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    line-height: 1.3;
 }
 
 .product-meta {
     margin-bottom: 20px;
     font-size: 14px;
-    color: #666;
+    color: #1E293B !important;
+    font-weight: 500;
 }
 
 .product-meta > div {
-    margin-bottom: 5px;
+    margin-bottom: 8px;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 
 .product-price-wrapper {
@@ -107,7 +111,9 @@
 .product-detail-description {
     margin-bottom: 30px;
     line-height: 1.6;
-    color: #444;
+    color: #1E293B !important;
+    font-weight: 500;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 
 .product-quantity {
@@ -154,55 +160,94 @@
 
 .product-actions {
     display: flex;
-    gap: 15px;
+    gap: 12px;
     margin-bottom: 30px;
+    align-items: center;
 }
 
 .btn-add-cart {
-    padding: 12px 25px;
-    background-color: #f5f5f5;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    font-weight: 600;
+    padding: 14px 28px;
+    background: rgba(255, 255, 255, 0.9);
+    border: 2px solid rgba(37, 99, 235, 0.3);
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 14px;
+    color: #0B1426 !important;
     cursor: pointer;
-    transition: all 0.3s;
+    transition: all 0.3s ease;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
 .btn-add-cart:hover {
-    background-color: #e0e0e0;
+    background: rgba(37, 99, 235, 0.1);
+    border-color: #2563EB;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(37, 99, 235, 0.2);
 }
 
 .btn-buy-now {
-    padding: 12px 25px;
-    background-color: #e53935;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    font-weight: 600;
+    padding: 14px 28px;
+    background: linear-gradient(135deg, #547792, #213448);
+    color: white !important;
+    border: 2px solid rgba(37, 99, 235, 0.3);
+    border-radius: 8px;
+    font-weight: 800;
+    font-size: 14px;
     cursor: pointer;
-    transition: all 0.3s;
+    transition: all 0.3s ease;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 
+        0 4px 15px rgba(37, 99, 235, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 .btn-buy-now:hover {
-    background-color: #c62828;
+    background: linear-gradient(135deg, #1E3A8A, #1A2B3A);
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 
+        0 8px 25px rgba(37, 99, 235, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    border-color: #2563EB;
+}
+
+.btn-buy-now:active {
+    transform: translateY(-1px) scale(0.98);
 }
 
 .product-guarantee {
-    padding: 15px;
-    border: 1px solid #e0e0e0;
-    border-radius: 4px;
-    background-color: #f9f9f9;
+    padding: 20px;
+    border: 2px solid rgba(37, 99, 235, 0.2);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
 .guarantee-item {
     display: flex;
     align-items: center;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
+    color: #0B1426 !important;
+    font-weight: 600;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.guarantee-item:last-child {
+    margin-bottom: 0;
 }
 
 .guarantee-item i {
-    margin-right: 10px;
-    color: #0066cc;
+    margin-right: 12px;
+    color: #2563EB;
+    font-size: 16px;
 }
 
 .product-tabs {
@@ -216,18 +261,30 @@
 }
 
 .tab-btn {
-    padding: 12px 20px;
-    background: none;
-    border: none;
-    border-bottom: 2px solid transparent;
-    font-weight: 600;
+    padding: 14px 24px;
+    background: rgba(255, 255, 255, 0.8);
+    border: 2px solid rgba(37, 99, 235, 0.2);
+    border-bottom: 3px solid transparent;
+    font-weight: 700;
+    color: #0B1426 !important;
     cursor: pointer;
-    transition: all 0.3s;
+    transition: all 0.3s ease;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
 }
 
 .tab-btn.active {
-    color: #0066cc;
-    border-bottom-color: #0066cc;
+    color: #2563EB !important;
+    border-bottom-color: #2563EB;
+    background: rgba(37, 99, 235, 0.1);
+    box-shadow: 0 4px 15px rgba(37, 99, 235, 0.2);
+}
+
+.tab-btn:hover {
+    background: rgba(37, 99, 235, 0.05);
+    border-color: #2563EB;
+    transform: translateY(-2px);
 }
 
 .tab-pane {
@@ -448,6 +505,7 @@
     overflow: hidden;
     display: -webkit-box;
     -webkit-line-clamp: 2;
+    line-clamp: 2;
     -webkit-box-orient: vertical;
 }
 

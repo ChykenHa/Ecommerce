@@ -5,11 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Đăng nhập/Đăng ký - Radian Shop</title>
     
-    <!-- Login/Register Styles -->
-    <link href="~/Assets/CSS/login-register-styles.css" rel="stylesheet" />
+    <!-- Login/Register Styles with cache busting -->
+    <link href="~/Assets/CSS/login-register-styles.css?v=2025" rel="stylesheet" />
     
-    
-        <!-- All CSS moved to CSS/login-register-styles.css -->
+    <!-- Force custom gradient background immediately -->
+    <style>
+        body {
+            background: linear-gradient(135deg, 
+                #213448 0%,     /* Dark blue from image */
+                #547792 35%,    /* Medium blue from image */
+                #94B4C1 70%,    /* Light blue from image */
+                #ECEFCA 100%    /* Cream from image */
+            ) !important;
+            background-attachment: fixed !important;
+        }
+    </style>
+
 </head>
 <body>
     <form id="form2" runat="server">

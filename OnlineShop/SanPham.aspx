@@ -32,20 +32,18 @@
                 <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
                 <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
             </div>
-
             <!-- Slides -->
             <div class="carousel-inner">
                 <div class="carousel-item active">
-                    <asp:Image ID="Image1" runat="server" ImageUrl="~/Assets/Images/Banner1.png" CssClass="d-block w-100"/>
+                    <asp:Image ID="Image1" runat="server" ImageUrl="~/Assets/Images/Banner1.png" CssClass="carousel-inner"/>
                 </div>
                 <div class="carousel-item">
-                    <asp:Image ID="Image2" runat="server" ImageUrl="~/Assets/Images/Banner2.png" CssClass="d-block w-100"/>
+                    <asp:Image ID="Image2" runat="server" ImageUrl="~/Assets/Images/Banner2.png" CssClass="carousel-inner"/>
                 </div>
                 <div class="carousel-item">
-                    <asp:Image ID="Image3" runat="server" ImageUrl="~/Assets/Images/Banner3.png" CssClass="d-block w-100"/>
+                    <asp:Image ID="Image3" runat="server" ImageUrl="~/Assets/Images/Banner3.png" CssClass="carousel-inner"/>
                 </div>
             </div>
-
             <!-- Controls -->
             <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -86,20 +84,22 @@
             align-items: center;
             gap: 6px;
             padding: 10px 16px;
-            background: #f8f9fa;
-            color: #495057;
+            background: rgba(255, 255, 255, 0.9);
+            color: #0B1426 !important;
             text-decoration: none;
             border-radius: 8px;
-            font-weight: 500;
+            font-weight: 600;
             transition: all 0.3s ease;
-            border: 1px solid #dee2e6;
+            border: 2px solid rgba(37, 99, 235, 0.3);
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
         }
 
         .page-nav:hover {
-            background: #007bff;
-            color: white;
+            background: #547792;
+            color: white !important;
             transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0, 123, 255, 0.3);
+            box-shadow: 0 4px 8px rgba(84, 119, 146, 0.3);
+            border-color: #547792;
         }
 
         .page-nav:disabled,
@@ -129,31 +129,34 @@
             justify-content: center;
             width: 40px;
             height: 40px;
-            background: #fff;
-            color: #495057;
+            background: rgba(255, 255, 255, 0.9);
+            color: #0B1426 !important;
             text-decoration: none;
             border-radius: 8px;
-            font-weight: 500;
+            font-weight: 600;
             transition: all 0.3s ease;
-            border: 1px solid #dee2e6;
+            border: 2px solid rgba(37, 99, 235, 0.3);
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
         }
 
         .page-number:hover {
-            background: #007bff;
-            color: white;
+            background: #547792;
+            color: white !important;
             transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0, 123, 255, 0.3);
+            box-shadow: 0 4px 8px rgba(84, 119, 146, 0.3);
+            border-color: #547792;
         }
 
         .page-number.active {
-            background: #007bff;
-            color: white;
-            font-weight: 600;
-            box-shadow: 0 4px 8px rgba(0, 123, 255, 0.3);
+            background: #547792;
+            color: white !important;
+            font-weight: 700;
+            box-shadow: 0 4px 8px rgba(84, 119, 146, 0.3);
+            border-color: #547792;
         }
 
         .page-number.active:hover {
-            background: #0056b3;
+            background: #1E3A8A;
         }
 
         .pagination-info {
@@ -235,35 +238,44 @@
         .product-title {
             margin: 0 0 12px 0;
             font-size: 16px;
-            font-weight: 600;
+            font-weight: 700;
             line-height: 1.4;
+            color: #0B1426 !important;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
         }
 
         .product-title a {
-            color: #333;
+            color: #0B1426 !important;
             text-decoration: none;
+            font-weight: 700;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
         }
 
         .product-title a:hover {
-            color: #007bff;
+            color: #2563EB !important;
+            text-shadow: 0 1px 3px rgba(37, 99, 235, 0.3);
         }
 
         .product-description {
-            color: #666;
+            color: #1E293B !important;
             font-size: 14px;
+            font-weight: 500;
             line-height: 1.5;
             margin: 0 0 16px 0;
             display: -webkit-box;
             -webkit-line-clamp: 2;
+            line-clamp: 2;
             -webkit-box-orient: vertical;
             overflow: hidden;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
         }
 
         .product-price {
             font-size: 18px;
-            font-weight: 700;
-            color: #e74c3c;
+            font-weight: 800;
+            color: #EF4444 !important;
             margin: 0 0 16px 0;
+            text-shadow: 0 1px 3px rgba(239, 68, 68, 0.3);
         }
 
         .product-actions {
@@ -290,20 +302,32 @@
         }
 
         /* Sort Dropdown */
+        .section-title {
+            color: #0B1426 !important;
+            font-weight: 800;
+            font-size: 24px;
+            margin-bottom: 20px;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
         .dropdown-sort {
-            padding: 10px 16px;
-            border: 1px solid #dee2e6;
+            padding: 12px 16px;
+            border: 2px solid rgba(37, 99, 235, 0.3);
             border-radius: 8px;
-            background: #fff;
+            background: rgba(255, 255, 255, 0.9);
             font-size: 14px;
-            color: #495057;
+            font-weight: 600;
+            color: #0B1426 !important;
             min-width: 200px;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
         }
 
         .dropdown-sort:focus {
             outline: none;
-            border-color: #007bff;
-            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+            border-color: #2563EB;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+            background: rgba(255, 255, 255, 1);
         }
     </style>
     <div class="product-container">
@@ -348,7 +372,7 @@
             </asp:Repeater>
         </div>
         
-        <!-- Pagination -->
+        <!-- Simplified Pagination -->
         <div class="pagination-container">
             <div class="pagination">
                 <asp:LinkButton ID="btnPrevious" runat="server" CssClass="page-nav" OnClick="btnPrevious_Click">
@@ -359,17 +383,11 @@
                     <asp:LinkButton ID="LinkButton1" runat="server" CssClass="page-number" OnClick="LinkButton1_Click">1</asp:LinkButton>
                     <asp:LinkButton ID="LinkButton2" runat="server" CssClass="page-number" OnClick="LinkButton2_Click">2</asp:LinkButton>
                     <asp:LinkButton ID="LinkButton3" runat="server" CssClass="page-number" OnClick="LinkButton3_Click">3</asp:LinkButton>
-                    <asp:LinkButton ID="LinkButton4" runat="server" CssClass="page-number" OnClick="LinkButton4_Click">4</asp:LinkButton>
-                    <asp:LinkButton ID="LinkButton5" runat="server" CssClass="page-number" OnClick="LinkButton5_Click">5</asp:LinkButton>
                 </div>
                 
                 <asp:LinkButton ID="btnNext" runat="server" CssClass="page-nav" OnClick="btnNext_Click">
                     Sau <i class="fas fa-chevron-right"></i>
                 </asp:LinkButton>
-            </div>
-            
-            <div class="pagination-info">
-                <asp:Label ID="lblTotalPages" runat="server" CssClass="total-pages"></asp:Label>
             </div>
         </div>
     </div>

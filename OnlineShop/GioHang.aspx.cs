@@ -285,7 +285,7 @@ namespace OnlineShop
                 return;
             }
 
-            // Lưu thông tin voucher để sử dụng ở trang thanh toán
+            // Save voucher info for checkout page
             if (Session["AppliedVoucherCode"] != null)
             {
                 decimal subtotal = CalculateSubtotal(cart);

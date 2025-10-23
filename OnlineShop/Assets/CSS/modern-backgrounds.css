@@ -1,0 +1,394 @@
+/* ==========================================================================
+   MODERN BACKGROUNDS - EASY TO CUSTOMIZE
+   Multiple beautiful background options - Choose one by changing class on <body>
+   All backgrounds are performance-optimized (no animations)
+   ========================================================================== */
+
+/* ==========================================================================
+   BACKGROUND OPTION 1: GRADIENT MESH (Default - Modern & Clean)
+   Usage: <body> or <body class="bg-gradient-mesh">
+   ========================================================================== */
+body,
+body.bg-gradient-mesh {
+    background: 
+        radial-gradient(at 0% 0%, rgba(30, 64, 175, 0.3) 0px, transparent 50%),
+        radial-gradient(at 100% 0%, rgba(59, 130, 246, 0.3) 0px, transparent 50%),
+        radial-gradient(at 100% 100%, rgba(30, 64, 175, 0.3) 0px, transparent 50%),
+        radial-gradient(at 0% 100%, rgba(59, 130, 246, 0.3) 0px, transparent 50%),
+        linear-gradient(135deg, #0F172A 0%, #1E293B 25%, #334155 50%, #1E40AF 75%, #3B82F6 100%);
+    background-attachment: fixed;
+    position: relative;
+}
+
+/* Optional: Add subtle pattern overlay */
+body::after,
+body.bg-gradient-mesh::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        repeating-linear-gradient(45deg, transparent, transparent 2px, rgba(96, 165, 250, 0.02) 2px, rgba(96, 165, 250, 0.02) 4px);
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* ==========================================================================
+   BACKGROUND OPTION 2: AURORA GRADIENT (Colorful & Dynamic)
+   Usage: <body class="bg-aurora">
+   ========================================================================== */
+body.bg-aurora {
+    background: 
+        radial-gradient(ellipse at top, rgba(59, 130, 246, 0.4), transparent 60%),
+        radial-gradient(ellipse at bottom left, rgba(30, 64, 175, 0.4), transparent 60%),
+        radial-gradient(ellipse at bottom right, rgba(96, 165, 250, 0.4), transparent 60%),
+        linear-gradient(180deg, #0F172A 0%, #1E293B 50%, #1E40AF 100%);
+    background-attachment: fixed;
+}
+
+/* ==========================================================================
+   BACKGROUND OPTION 3: GEOMETRIC PATTERN (Modern & Professional)
+   Usage: <body class="bg-geometric">
+   ========================================================================== */
+body.bg-geometric {
+    background-color: #0F172A;
+    background-image:
+        linear-gradient(30deg, rgba(30, 64, 175, 0.1) 12%, transparent 12.5%, transparent 87%, rgba(30, 64, 175, 0.1) 87.5%, rgba(30, 64, 175, 0.1)),
+        linear-gradient(150deg, rgba(30, 64, 175, 0.1) 12%, transparent 12.5%, transparent 87%, rgba(30, 64, 175, 0.1) 87.5%, rgba(30, 64, 175, 0.1)),
+        linear-gradient(30deg, rgba(30, 64, 175, 0.1) 12%, transparent 12.5%, transparent 87%, rgba(30, 64, 175, 0.1) 87.5%, rgba(30, 64, 175, 0.1)),
+        linear-gradient(150deg, rgba(30, 64, 175, 0.1) 12%, transparent 12.5%, transparent 87%, rgba(30, 64, 175, 0.1) 87.5%, rgba(30, 64, 175, 0.1)),
+        linear-gradient(60deg, rgba(59, 130, 246, 0.05) 25%, transparent 25.5%, transparent 75%, rgba(59, 130, 246, 0.05) 75%, rgba(59, 130, 246, 0.05)),
+        linear-gradient(60deg, rgba(59, 130, 246, 0.05) 25%, transparent 25.5%, transparent 75%, rgba(59, 130, 246, 0.05) 75%, rgba(59, 130, 246, 0.05)),
+        linear-gradient(135deg, #0F172A 0%, #1E293B 50%, #1E40AF 100%);
+    background-size: 80px 140px;
+    background-position: 0 0, 0 0, 40px 70px, 40px 70px, 0 0, 40px 70px;
+    background-attachment: fixed;
+}
+
+/* ==========================================================================
+   BACKGROUND OPTION 4: WAVES (Smooth & Elegant)
+   Usage: <body class="bg-waves">
+   ========================================================================== */
+body.bg-waves {
+    background: linear-gradient(135deg, #0F172A 0%, #1E293B 50%, #1E40AF 100%);
+    background-attachment: fixed;
+    position: relative;
+}
+
+body.bg-waves::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        radial-gradient(circle at 20% 50%, rgba(59, 130, 246, 0.15) 0%, transparent 50%),
+        radial-gradient(circle at 80% 50%, rgba(30, 64, 175, 0.15) 0%, transparent 50%);
+    z-index: 0;
+    pointer-events: none;
+}
+
+body.bg-waves::after {
+    content: '';
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 300px;
+    background: 
+        linear-gradient(to top, rgba(30, 64, 175, 0.3) 0%, transparent 100%);
+    z-index: 0;
+    pointer-events: none;
+}
+
+/* ==========================================================================
+   BACKGROUND OPTION 5: DOTS PATTERN (Minimalist & Clean)
+   Usage: <body class="bg-dots">
+   ========================================================================== */
+body.bg-dots {
+    background: 
+        radial-gradient(circle, rgba(96, 165, 250, 0.15) 1px, transparent 1px),
+        linear-gradient(135deg, #0F172A 0%, #1E293B 50%, #1E40AF 100%);
+    background-size: 20px 20px, 100% 100%;
+    background-attachment: fixed;
+}
+
+/* ==========================================================================
+   BACKGROUND OPTION 6: GLASS MORPHISM (Ultra Modern)
+   Usage: <body class="bg-glass">
+   ========================================================================== */
+body.bg-glass {
+    background: 
+        linear-gradient(135deg, #0F172A 0%, #1E293B 25%, #1E40AF 75%, #3B82F6 100%);
+    background-attachment: fixed;
+    position: relative;
+}
+
+body.bg-glass::before {
+    content: '';
+    position: fixed;
+    top: 10%;
+    left: 10%;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(59, 130, 246, 0.2) 0%, transparent 70%);
+    border-radius: 50%;
+    filter: blur(80px);
+    z-index: 0;
+    pointer-events: none;
+}
+
+body.bg-glass::after {
+    content: '';
+    position: fixed;
+    bottom: 10%;
+    right: 10%;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(30, 64, 175, 0.25) 0%, transparent 70%);
+    border-radius: 50%;
+    filter: blur(100px);
+    z-index: 0;
+    pointer-events: none;
+}
+
+/* ==========================================================================
+   BACKGROUND OPTION 7: DIAGONAL STRIPES (Bold & Modern)
+   Usage: <body class="bg-stripes">
+   ========================================================================== */
+body.bg-stripes {
+    background: 
+        repeating-linear-gradient(
+            45deg,
+            #0F172A,
+            #0F172A 20px,
+            #1E293B 20px,
+            #1E293B 40px
+        ),
+        linear-gradient(135deg, #0F172A 0%, #1E40AF 100%);
+    background-attachment: fixed;
+}
+
+/* ==========================================================================
+   BACKGROUND OPTION 8: GRID (Tech & Futuristic)
+   Usage: <body class="bg-grid">
+   ========================================================================== */
+body.bg-grid {
+    background-color: #0F172A;
+    background-image:
+        linear-gradient(rgba(96, 165, 250, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(96, 165, 250, 0.05) 1px, transparent 1px);
+    background-size: 50px 50px;
+    background-position: center center;
+    position: relative;
+}
+
+body.bg-grid::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(ellipse at center, transparent 0%, #0F172A 100%);
+    z-index: 0;
+    pointer-events: none;
+}
+
+/* ==========================================================================
+   BACKGROUND OPTION 9: HEXAGON PATTERN (Unique & Modern)
+   Usage: <body class="bg-hexagon">
+   ========================================================================== */
+body.bg-hexagon {
+    background: 
+        radial-gradient(circle farthest-side at 0% 50%, rgba(59, 130, 246, 0.1) 23.5%, transparent 0) 21px 30px,
+        radial-gradient(circle farthest-side at 0% 50%, rgba(30, 64, 175, 0.1) 24%, transparent 0) 19px 30px,
+        linear-gradient(rgba(59, 130, 246, 0.1) 14%, transparent 0, transparent 85%, rgba(59, 130, 246, 0.1) 0) 0 0,
+        linear-gradient(150deg, rgba(59, 130, 246, 0.1) 24%, rgba(30, 64, 175, 0.1) 0, rgba(30, 64, 175, 0.1) 26%, transparent 0, transparent 74%, rgba(30, 64, 175, 0.1) 0, rgba(30, 64, 175, 0.1) 76%, rgba(59, 130, 246, 0.1) 0) 0 0,
+        linear-gradient(30deg, rgba(59, 130, 246, 0.1) 24%, rgba(30, 64, 175, 0.1) 0, rgba(30, 64, 175, 0.1) 26%, transparent 0, transparent 74%, rgba(30, 64, 175, 0.1) 0, rgba(30, 64, 175, 0.1) 76%, rgba(59, 130, 246, 0.1) 0) 0 0,
+        linear-gradient(90deg, rgba(30, 64, 175, 0.1) 2%, rgba(59, 130, 246, 0.1) 0, rgba(59, 130, 246, 0.1) 98%, rgba(30, 64, 175, 0.1) 0%) 0 0,
+        linear-gradient(135deg, #0F172A 0%, #1E293B 50%, #1E40AF 100%);
+    background-size: 40px 70px;
+    background-attachment: fixed;
+}
+
+/* ==========================================================================
+   BACKGROUND OPTION 10: PARTICLES (Subtle & Elegant)
+   Usage: <body class="bg-particles">
+   ========================================================================== */
+body.bg-particles {
+    background: linear-gradient(135deg, #0F172A 0%, #1E293B 50%, #1E40AF 100%);
+    background-attachment: fixed;
+    position: relative;
+}
+
+body.bg-particles::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        radial-gradient(2px 2px at 20% 30%, rgba(96, 165, 250, 0.3), transparent),
+        radial-gradient(2px 2px at 60% 70%, rgba(96, 165, 250, 0.3), transparent),
+        radial-gradient(1px 1px at 50% 50%, rgba(96, 165, 250, 0.3), transparent),
+        radial-gradient(1px 1px at 80% 10%, rgba(96, 165, 250, 0.3), transparent),
+        radial-gradient(2px 2px at 90% 60%, rgba(96, 165, 250, 0.3), transparent),
+        radial-gradient(1px 1px at 33% 50%, rgba(96, 165, 250, 0.3), transparent),
+        radial-gradient(1px 1px at 79% 53%, rgba(96, 165, 250, 0.3), transparent);
+    background-size: 200% 200%;
+    background-position: 0% 0%;
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* ==========================================================================
+   ENSURE CONTENT IS ABOVE BACKGROUND
+   ========================================================================== */
+.header,
+.main-layout,
+.footer,
+.sidebar,
+.main-content,
+.ad-banner-left,
+.ad-banner-right {
+    position: relative;
+    z-index: 1;
+}
+
+/* ==========================================================================
+   BACKGROUND OPTION 11: CUSTOM IMAGE GRADIENT (From User)
+   Usage: <body class="bg-custom-gradient">
+   Colors: #213448 (dark blue) → #547792 (medium blue) → #94B4C1 (light blue) → #ECEFCA (cream)
+   ========================================================================== */
+body.bg-custom-gradient {
+    background: 
+        radial-gradient(at 20% 20%, rgba(33, 52, 72, 0.8) 0%, transparent 50%),
+        radial-gradient(at 80% 20%, rgba(84, 119, 146, 0.6) 0%, transparent 50%),
+        radial-gradient(at 80% 80%, rgba(148, 180, 193, 0.6) 0%, transparent 50%),
+        radial-gradient(at 20% 80%, rgba(236, 239, 202, 0.4) 0%, transparent 50%),
+        linear-gradient(135deg, #213448 0%, #547792 35%, #94B4C1 70%, #ECEFCA 100%);
+    background-attachment: fixed;
+    position: relative;
+}
+
+/* Optional: Add subtle diamond pattern overlay for texture */
+body.bg-custom-gradient::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        repeating-linear-gradient(45deg, transparent, transparent 3px, rgba(255, 255, 255, 0.02) 3px, rgba(255, 255, 255, 0.02) 6px);
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* Alternative version with more prominent cream accent */
+body.bg-custom-gradient-alt {
+    background: 
+        radial-gradient(circle at 30% 40%, rgba(236, 239, 202, 0.3) 0%, transparent 50%),
+        radial-gradient(circle at 70% 70%, rgba(148, 180, 193, 0.4) 0%, transparent 60%),
+        linear-gradient(125deg, #213448 0%, #547792 40%, #94B4C1 75%, #ECEFCA 100%);
+    background-attachment: fixed;
+}
+
+/* ==========================================================================
+   CUSTOM BACKGROUND COMBINATIONS (Mix & Match)
+   ========================================================================== */
+
+/* Gradient + Dots */
+body.bg-gradient-dots {
+    background: 
+        radial-gradient(circle, rgba(96, 165, 250, 0.1) 1px, transparent 1px),
+        linear-gradient(135deg, #0F172A 0%, #1E293B 25%, #334155 50%, #1E40AF 75%, #3B82F6 100%);
+    background-size: 30px 30px, 100% 100%;
+    background-attachment: fixed;
+}
+
+/* Glass + Grid */
+body.bg-glass-grid {
+    background: 
+        linear-gradient(rgba(96, 165, 250, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(96, 165, 250, 0.03) 1px, transparent 1px),
+        linear-gradient(135deg, #0F172A 0%, #1E293B 25%, #1E40AF 75%, #3B82F6 100%);
+    background-size: 50px 50px, 50px 50px, 100% 100%;
+    background-attachment: fixed;
+}
+
+body.bg-glass-grid::before {
+    content: '';
+    position: fixed;
+    top: 20%;
+    left: 15%;
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, rgba(59, 130, 246, 0.15) 0%, transparent 70%);
+    border-radius: 50%;
+    filter: blur(60px);
+    z-index: 0;
+    pointer-events: none;
+}
+
+/* Aurora + Particles */
+body.bg-aurora-particles {
+    background: 
+        radial-gradient(ellipse at top, rgba(59, 130, 246, 0.3), transparent 50%),
+        radial-gradient(ellipse at bottom, rgba(30, 64, 175, 0.3), transparent 50%),
+        linear-gradient(180deg, #0F172A 0%, #1E293B 50%, #1E40AF 100%);
+    background-attachment: fixed;
+}
+
+body.bg-aurora-particles::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        radial-gradient(1px 1px at 25% 25%, rgba(96, 165, 250, 0.4), transparent),
+        radial-gradient(1px 1px at 75% 75%, rgba(96, 165, 250, 0.4), transparent),
+        radial-gradient(2px 2px at 50% 50%, rgba(96, 165, 250, 0.4), transparent);
+    background-size: 150% 150%;
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* ==========================================================================
+   RESPONSIVE ADJUSTMENTS
+   ========================================================================== */
+@media (max-width: 768px) {
+    /* Simplify patterns on mobile for better performance */
+    body.bg-geometric,
+    body.bg-hexagon {
+        background-size: 40px 70px;
+    }
+    
+    body.bg-dots,
+    body.bg-gradient-dots {
+        background-size: 15px 15px, 100% 100%;
+    }
+    
+    body.bg-grid,
+    body.bg-glass-grid {
+        background-size: 30px 30px, 30px 30px, 100% 100%;
+    }
+}
+
+/* ==========================================================================
+   DARK MODE SUPPORT (Optional)
+   ========================================================================== */
+@media (prefers-color-scheme: light) {
+    /* If you want a light version, uncomment and customize:
+    body.bg-light {
+        background: linear-gradient(135deg, #F1F5F9, #E2E8F0, #CBD5E1);
+    }
+    */
+}

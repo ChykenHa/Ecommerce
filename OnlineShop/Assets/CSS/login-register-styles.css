@@ -7,13 +7,14 @@
    CSS Variables and Modern Color System
    ======================================================================== */
 :root {
-    /* Color Palette - Modern Blue Gradient System */
-    --primary: #0077B6;
-    --primary-light: #00B4D8;
-    --primary-dark: #03045E;
-    --secondary: #90E0EF;
-    --secondary-light: #CAF0F8;
-    --accent: #48CAE4;
+    /* Color Palette - Dark Ocean Theme */
+    --primary: #0A1929;
+    --primary-light: #1E3A8A;
+    --primary-dark: #0F172A;
+    --secondary: #0EA5E9;
+    --secondary-light: #38BDF8;
+    --accent: #06B6D4;
+    --accent-light: #67E8F9;
     
     /* Semantic Colors */
     --text-dark: #03045E;
@@ -55,11 +56,11 @@
     --radius-2xl: 30px;
     --radius-circle: 50%;
     
-    /* Transitions - Smooth & Natural */
-    --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
-    --transition-normal: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    --transition-slow: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-    --transition-bounce: 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    /* Optimized Transitions for Better Performance */
+    --transition-fast: 0.12s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-normal: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-slow: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-bounce: 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 }
 
 /* ========================================================================
@@ -81,23 +82,13 @@ body {
     position: relative;
     overflow-x: hidden;
     
-    /* Modern Gradient Background with Animation */
+    /* Custom Gradient Background - From User Image */
     background: linear-gradient(135deg, 
-        #667eea 0%, 
-        #764ba2 25%, 
-        #f093fb 50%, 
-        #4facfe 75%, 
-        #00f2fe 100%
+        #213448 0%,     /* Dark blue from image */
+        #547792 35%,    /* Medium blue from image */
+        #94B4C1 70%,    /* Light blue from image */
+        #ECEFCA 100%    /* Cream from image */
     );
-    background-size: 400% 400%;
-    animation: gradientFlow 15s ease infinite;
-}
-
-@keyframes gradientFlow {
-    0%, 100% { background-position: 0% 50%; }
-    25% { background-position: 50% 100%; }
-    50% { background-position: 100% 50%; }
-    75% { background-position: 50% 0%; }
 }
 
 /* Animated Background Overlay */
@@ -203,21 +194,21 @@ h1 {
 }
 
 /* ========================================================================
-   Auth Card with Advanced Glassmorphism
+   Enhanced Auth Card with Dark Ocean Glassmorphism
    ======================================================================== */
 .auth-card {
-    background: rgba(255, 255, 255, 0.25);
-    backdrop-filter: blur(25px) saturate(180%);
-    -webkit-backdrop-filter: blur(25px) saturate(180%);
+    background: rgba(15, 23, 42, 0.2);
+    backdrop-filter: blur(30px) saturate(200%);
+    -webkit-backdrop-filter: blur(30px) saturate(200%);
     border-radius: var(--radius-2xl);
     overflow: hidden;
     box-shadow: 
         var(--shadow-2xl),
-        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
     width: 100%;
     max-width: 480px;
     padding: var(--space-2xl);
-    border: 1px solid rgba(255, 255, 255, 0.3);
+    border: 1px solid rgba(14, 165, 233, 0.3);
     position: relative;
     animation: 
         fadeInUp 0.8s var(--transition-bounce),
@@ -311,16 +302,20 @@ h1 {
 .form-control {
     width: 100%;
     padding: var(--space-lg) var(--space-md);
-    border: 2px solid rgba(255, 255, 255, 0.4);
+    border: 2px solid rgba(14, 165, 233, 0.3);
     border-radius: var(--radius-lg);
     font-size: var(--font-size-md);
     font-family: inherit;
     transition: all var(--transition-normal);
-    background: rgba(255, 255, 255, 0.8);
-    backdrop-filter: blur(10px);
-    color: var(--text-dark);
+    background: rgba(15, 23, 42, 0.3);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    color: var(--text-light);
     font-weight: 500;
     outline: none;
+    box-shadow: 
+        var(--shadow-sm),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
 .form-control::placeholder {
@@ -329,11 +324,12 @@ h1 {
 }
 
 .form-control:focus {
-    border-color: var(--primary);
-    background: rgba(255, 255, 255, 0.95);
+    border-color: var(--accent);
+    background: rgba(15, 23, 42, 0.4);
     box-shadow: 
-        0 0 0 4px rgba(0, 119, 182, 0.15),
-        0 8px 20px rgba(0, 119, 182, 0.1);
+        0 0 0 4px rgba(6, 182, 212, 0.2),
+        0 8px 20px rgba(14, 165, 233, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
     transform: translateY(-2px);
 }
 
@@ -362,8 +358,8 @@ h1 {
 }
 
 .form-check-input:checked {
-    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-    border-color: var(--primary);
+    background: linear-gradient(135deg, #547792, #213448);
+    border-color: #547792;
 }
 
 .form-check-input:checked::before {
@@ -427,18 +423,24 @@ h1 {
 }
 
 .primary-button {
-    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-    color: white;
-    box-shadow: var(--shadow-lg);
-    border: 2px solid rgba(255, 255, 255, 0.2);
+    background: linear-gradient(135deg, #547792, #94B4C1);
+    color: var(--text-light);
+    box-shadow: 
+        var(--shadow-lg),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    border: 2px solid rgba(14, 165, 233, 0.3);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
 }
 
 .primary-button:hover {
-    background: linear-gradient(135deg, var(--primary-light), var(--primary));
-    transform: translateY(-3px);
+    background: linear-gradient(135deg, #94B4C1, #ECEFCA);
+    transform: translateY(-3px) scale(1.02);
     box-shadow: 
-        0 15px 30px rgba(0, 119, 182, 0.4),
-        0 0 40px rgba(0, 119, 182, 0.2);
+        0 15px 35px rgba(14, 165, 233, 0.4),
+        0 0 30px rgba(6, 182, 212, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    border-color: rgba(14, 165, 233, 0.6);
 }
 
 .primary-button:active {
@@ -519,11 +521,11 @@ h1 {
 }
 
 .facebook {
-    background: linear-gradient(135deg, #4267B2, #3B5998);
+    background: linear-gradient(135deg, #547792, #213448);
 }
 
 .google {
-    background: linear-gradient(135deg, #EA4335, #DB4437);
+    background: linear-gradient(135deg, #94B4C1, #547792);
 }
 
 /* ========================================================================
